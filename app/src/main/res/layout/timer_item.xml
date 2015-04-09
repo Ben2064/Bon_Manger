@@ -7,14 +7,16 @@
     <LinearLayout
         android:orientation="horizontal"
         android:layout_width="match_parent"
-        android:layout_height="75dp">
+        android:layout_height="75dp"
+        android:background="#ff000000">
 
         <ProgressBar
             style="?android:attr/progressBarStyleSmall"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:id="@+id/timerIcon"
-            android:layout_weight="20" />
+            android:layout_weight="20"
+            android:indeterminate="false" />
 
         <TextView
             android:layout_width="match_parent"
@@ -22,7 +24,10 @@
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:text="Timer Name"
             android:id="@+id/timerName"
-            android:layout_weight="10" />
+            android:layout_weight="10"
+            android:background="#ff101010"
+            android:autoText="false"
+            android:textColor="#ffffffff" />
 
         <Button
             style="?android:attr/buttonStyleSmall"
@@ -30,8 +35,11 @@
             android:layout_height="match_parent"
             android:text="X"
             android:id="@+id/timerDelete"
+            android:textSize="30dp"
+            android:background="#ffbe1419"
             android:layout_weight="20"
-            android:textSize="30dp" />
+            android:layout_margin="10dp" />
+
     </LinearLayout>
 
 </LinearLayout>

@@ -3,7 +3,8 @@
     android:layout_height="match_parent" android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    android:paddingBottom="@dimen/activity_vertical_margin" tools:context=".MainMenu">
+    android:paddingBottom="@dimen/activity_vertical_margin" tools:context=".MainMenu"
+    android:background="#ff000000">
 
     <LinearLayout
         android:orientation="vertical"
@@ -21,9 +22,9 @@
             android:layout_alignParentStart="true"
             android:layout_weight="0"
             android:textSize="30dp"
-            android:background="#93e28d24"
             android:autoText="true"
-            android:textIsSelectable="false" />
+            android:textIsSelectable="false"
+            android:textColor="#ffffffff" />
 
         <ListView
             android:layout_width="fill_parent"
@@ -32,7 +33,8 @@
             android:layout_alignParentRight="true"
             android:layout_alignParentEnd="true"
             android:fastScrollAlwaysVisible="false"
-            android:layout_weight="6" />
+            android:layout_weight="6"
+            android:background="#ff101010" />
 
         <TextView
             android:layout_width="match_parent"
@@ -41,14 +43,15 @@
             android:text="@string/timer_new"
             android:id="@+id/textView"
             android:layout_weight="0"
-            android:textColor="#ff000000"
-            android:background="#93e28d24" />
+            android:textColor="#ffffffff"
+            android:autoText="true" />
 
         <LinearLayout
             android:orientation="horizontal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="0">
+            android:layout_weight="0"
+            android:background="#ff101010">
 
             <EditText
                 android:layout_width="match_parent"
@@ -74,8 +77,10 @@
                 android:layout_height="fill_parent"
                 android:text="@string/timer_new_button"
                 android:id="@+id/button"
-                android:layout_weight="20"
-                android:onClick="callAddTimer" />
+                android:layout_weight="22"
+                android:onClick="callAddTimer"
+                android:background="#ff19961e"
+                android:textSize="@dimen/abc_text_size_large_material" />
         </LinearLayout>
     </LinearLayout>
 </RelativeLayout>
