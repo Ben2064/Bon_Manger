@@ -14,7 +14,7 @@
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceLarge"
-            android:text="                Timers"
+            android:text="@string/timer_title"
             android:id="@+id/timerTitle"
             android:layout_above="@+id/timerList"
             android:layout_alignParentLeft="true"
@@ -22,7 +22,8 @@
             android:layout_weight="0"
             android:textSize="30dp"
             android:background="#93e28d24"
-            android:autoText="true" />
+            android:autoText="true"
+            android:textIsSelectable="false" />
 
         <ListView
             android:layout_width="fill_parent"
@@ -37,7 +38,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceMedium"
-            android:text="Create New Timer"
+            android:text="@string/timer_new"
             android:id="@+id/textView"
             android:layout_weight="0"
             android:textColor="#ff000000"
@@ -56,7 +57,7 @@
                 android:ems="10"
                 android:id="@+id/editTimerTime"
                 android:layout_weight="20"
-                android:text="10:25"
+                android:text="@string/timer_greyout_time"
                 android:textColor="#ffafafaf" />
 
             <EditText
@@ -64,14 +65,14 @@
                 android:layout_height="wrap_content"
                 android:id="@+id/editTimerName"
                 android:layout_weight="10"
-                android:text="Timer Name"
+                android:text="@string/timer_greyout_name"
                 android:textColor="#ffafafaf" />
 
             <Button
                 style="?android:attr/buttonStyleSmall"
                 android:layout_width="fill_parent"
                 android:layout_height="fill_parent"
-                android:text="New Button"
+                android:text="@string/timer_new_button"
                 android:id="@+id/button"
                 android:layout_weight="20"
                 android:onClick="callAddTimer" />
