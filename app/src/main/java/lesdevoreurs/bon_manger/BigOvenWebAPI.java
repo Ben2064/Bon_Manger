@@ -68,25 +68,33 @@ public class BigOvenWebAPI {
             final Element racineNoeudsNoeuds = (Element) racineNoeuds.item(0);
             final NodeList resultNoeuds = racineNoeudsNoeuds.getElementsByTagName("RecipeInfo");
             final int nbResultNoeuds = resultNoeuds.getLength();
-            Log.d("Racine",resultNoeuds.item(0).getNodeName());
-            Log.d("WEB", "Nombre de recettes: " + nbResultNoeuds);
+            if(nbResultNoeuds != 0) {
+                Log.d("Racine", resultNoeuds.item(0).getNodeName());
+                Log.d("WEB", "Nombre de recettes: " + nbResultNoeuds);
 
-            for(int i =0; i<nbResultNoeuds; i++){
-                if(resultNoeuds.item(i).getNodeType() == Node.ELEMENT_NODE) {
-                    final Element recette = (Element) resultNoeuds.item(i);
-                    //Etape 6 : récupération du nom et du prénom
-                    final Element title = (Element) recette.getElementsByTagName("Title").item(0);
-                    final Element cuisine = (Element) recette.getElementsByTagName("Cuisine").item(0);
-                    final Element categorie = (Element) recette.getElementsByTagName("Category").item(0);
-                    final Element souscategorie = (Element) recette.getElementsByTagName("Subcategory").item(0);
-                    titres.add(title.getTextContent());
-                    if(cuisine!=null)
-                        cuisines.add(cuisine.getTextContent());
-                    else
-                        cuisines.add("");
-                    categories.add(categorie.getTextContent());
-                    sousCategories.add(souscategorie.getTextContent());
+                for (int i = 0; i < nbResultNoeuds; i++) {
+                    if (resultNoeuds.item(i).getNodeType() == Node.ELEMENT_NODE) {
+                        final Element recette = (Element) resultNoeuds.item(i);
+                        //Etape 6 : récupération du nom et du prénom
+                        final Element title = (Element) recette.getElementsByTagName("Title").item(0);
+                        final Element cuisine = (Element) recette.getElementsByTagName("Cuisine").item(0);
+                        final Element categorie = (Element) recette.getElementsByTagName("Category").item(0);
+                        final Element souscategorie = (Element) recette.getElementsByTagName("Subcategory").item(0);
+                        titres.add(title.getTextContent());
+                        if (cuisine != null)
+                            cuisines.add(cuisine.getTextContent());
+                        else
+                            cuisines.add("");
+                        categories.add(categorie.getTextContent());
+                        sousCategories.add(souscategorie.getTextContent());
+                    }
                 }
+            }
+            else {
+                titres.add("Nothing found");
+                cuisines.add("");
+                categories.add("");
+                sousCategories.add("");
             }
         } catch (IOException e) {
             Log.d("Web ", "Erreur: "+e.getMessage());
@@ -110,5 +118,3 @@ public class BigOvenWebAPI {
         return d;
     }
 }
-
-
