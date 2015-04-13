@@ -10,7 +10,7 @@
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:text="Large Text"
         android:id="@+id/activity_title"
-        android:background="#ffffb773"
+        android:background="#ffe4ecff"
         android:padding="10dp" />
 
     <ListView
@@ -44,7 +44,7 @@
     <Button
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:text="CHARGEMENT"
+        android:text="Sert à rien"
         android:id="@+id/button"
         android:padding="10dp"
         android:layout_weight="0.29" />

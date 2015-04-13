@@ -27,7 +27,6 @@ import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.DefaultHttpClient;
 
 import java.io.InputStream;
-import java.net.URL;
 import java.util.ArrayList;
 
 
@@ -96,11 +95,17 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
             String query = edR.getText().toString().replace(" ", "%20");
             BigOvenWebAPI web = new BigOvenWebAPI(query);
 
+            //preload pas d'image
+            String urlNoImage = "http://redirect.bigoven.com/pics/rs/120/recipe-no-image.jpg";
+            Bitmap noImage = downloadBitmap(urlNoImage);
+
             images = web.images;
             bitImages = new ArrayList<Bitmap>();
-            URL url;
             for(int position=0; position<images.size(); position++) {
-                bitImages.add(downloadBitmap(images.get(position)));
+                if(images.get(position).equals(urlNoImage))
+                    bitImages.add(noImage);
+                else
+                    bitImages.add(downloadBitmap(images.get(position)));
             }
             return web;
         }
@@ -185,7 +190,7 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
             return v;
         }
 
-        private Bitmap downloadBitmap(String url) {
+        /*private Bitmap downloadBitmap(String url) {
             Log.d("Download",url);
             Bitmap image = null ;
             // initilize the default HTTP client object
@@ -233,7 +238,7 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
             }
 
             return image;
-        }
+        }*/
     }
 
     //http://stackoverflow.com/questions/17120230/android-set-imageview-to-url
