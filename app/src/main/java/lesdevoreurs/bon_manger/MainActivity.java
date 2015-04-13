@@ -28,7 +28,7 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.main_layout);
+        setContentView(R.layout.recherche);
 
         btn = (Button)findViewById(R.id.docherche);
         edR = (EditText)findViewById(R.id.cherche);

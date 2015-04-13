@@ -30,17 +30,19 @@ import javax.xml.parsers.ParserConfigurationException;
  * Created by Nicolas on 2015-02-19.
  */
 public class BigOvenWebAPI {
+    ArrayList<String> IDS;
     ArrayList<String> titres;
     ArrayList<String> cuisines;
     ArrayList<String> categories;
     ArrayList<String> sousCategories;
-    ArrayList<Drawable> images;
+    ArrayList<String> images;
 
     public BigOvenWebAPI(String query){
 
         String url = "http://api.bigoven.com/recipes?title_kw="+query+"&pg=1&rpp=100&api_key=dvxRg7vK4t5RBlTap04zYHqbu08e374G";
+        IDS = new ArrayList<String>();
         titres = new ArrayList<String>();
-        images = new ArrayList<Drawable>();
+        images = new ArrayList<String>();
         cuisines = new ArrayList<String>();
         categories = new ArrayList<String>();
         sousCategories = new ArrayList<String>();
@@ -64,7 +66,7 @@ public class BigOvenWebAPI {
             //final NodeList racineNoeuds = racine.getChildNodes();
             //final int nbRacineNoeuds = racineNoeuds.getLength();
             final NodeList racineNoeuds = racine.getElementsByTagName("Results");
-            final int nbRacineNoeuds = racineNoeuds.getLength();
+            //final int nbRacineNoeuds = racineNoeuds.getLength();
             final Element racineNoeudsNoeuds = (Element) racineNoeuds.item(0);
             final NodeList resultNoeuds = racineNoeudsNoeuds.getElementsByTagName("RecipeInfo");
             final int nbResultNoeuds = resultNoeuds.getLength();
@@ -76,10 +78,13 @@ public class BigOvenWebAPI {
                     if (resultNoeuds.item(i).getNodeType() == Node.ELEMENT_NODE) {
                         final Element recette = (Element) resultNoeuds.item(i);
                         //Etape 6 : récupération du nom et du prénom
+                        final Element id = (Element) recette.getElementsByTagName("RecipeID").item(0);
                         final Element title = (Element) recette.getElementsByTagName("Title").item(0);
                         final Element cuisine = (Element) recette.getElementsByTagName("Cuisine").item(0);
                         final Element categorie = (Element) recette.getElementsByTagName("Category").item(0);
                         final Element souscategorie = (Element) recette.getElementsByTagName("Subcategory").item(0);
+                        final Element image = (Element) recette.getElementsByTagName("ImageURL").item(0);
+                        IDS.add(id.getTextContent());
                         titres.add(title.getTextContent());
                         if (cuisine != null)
                             cuisines.add(cuisine.getTextContent());
@@ -87,10 +92,12 @@ public class BigOvenWebAPI {
                             cuisines.add("");
                         categories.add(categorie.getTextContent());
                         sousCategories.add(souscategorie.getTextContent());
+                        images.add(image.getTextContent());
                     }
                 }
             }
             else {
+                IDS.add("");
                 titres.add("Nothing found");
                 cuisines.add("");
                 categories.add("");

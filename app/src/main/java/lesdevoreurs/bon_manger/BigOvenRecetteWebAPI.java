@@ -30,6 +30,7 @@ import javax.xml.parsers.ParserConfigurationException;
  * Created by Nicolas on 2015-04-12.
  */
 public class BigOvenRecetteWebAPI {
+    String image = "";
     String ID = "";
     String titre = "";
     String description = "";
@@ -79,6 +80,8 @@ public class BigOvenRecetteWebAPI {
             sousCategorie = scat.getTextContent();
             final Element prim = (Element) racine.getElementsByTagName("PrimaryIngredients");
             ingredientPrimaire = prim.getTextContent();
+            final Element im = (Element) racine.getElementsByTagName("ImageURL");
+            image = im.getTextContent();
 
             final NodeList racineNoeuds = racine.getElementsByTagName("Ingredients");
             final Element racineNoeudsNoeuds = (Element) racineNoeuds.item(0);
