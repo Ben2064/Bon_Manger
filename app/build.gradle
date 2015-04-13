@@ -5,8 +5,8 @@ android {
     buildToolsVersion "21.1.2"
 
     defaultConfig {
-        applicationId "lesdevoreurs.bon_manger"
-        minSdkVersion 10
+        applicationId "com.example.nicolas.testbonmanger"
+        minSdkVersion 15
         targetSdkVersion 21
         versionCode 1
         versionName "1.0"
