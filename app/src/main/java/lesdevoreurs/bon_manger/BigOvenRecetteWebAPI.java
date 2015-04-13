@@ -38,6 +38,7 @@ public class BigOvenRecetteWebAPI {
     String categorie = "";
     String sousCategorie = "";
     String ingredientPrimaire = "";
+    String instructions = "";
     ArrayList<String> ingredientsNom;
     ArrayList<String> ingredientsQuantite;
     Drawable images;
@@ -82,6 +83,8 @@ public class BigOvenRecetteWebAPI {
             ingredientPrimaire = prim.getTextContent();
             final Element im = (Element) racine.getElementsByTagName("ImageURL");
             image = im.getTextContent();
+            final Element inst = (Element) racine.getElementsByTagName("Instructions");
+            instructions = inst.getTextContent();
 
             final NodeList racineNoeuds = racine.getElementsByTagName("Ingredients");
             final Element racineNoeudsNoeuds = (Element) racineNoeuds.item(0);

@@ -83,7 +83,7 @@ public class BigOvenWebAPI {
                         final Element cuisine = (Element) recette.getElementsByTagName("Cuisine").item(0);
                         final Element categorie = (Element) recette.getElementsByTagName("Category").item(0);
                         final Element souscategorie = (Element) recette.getElementsByTagName("Subcategory").item(0);
-                        final Element image = (Element) recette.getElementsByTagName("ImageURL").item(0);
+                        final Element image = (Element) recette.getElementsByTagName("ImageURL120").item(0);
                         IDS.add(id.getTextContent());
                         titres.add(title.getTextContent());
                         if (cuisine != null)
@@ -93,6 +93,7 @@ public class BigOvenWebAPI {
                         categories.add(categorie.getTextContent());
                         sousCategories.add(souscategorie.getTextContent());
                         images.add(image.getTextContent());
+                        Log.d("API",image.getTextContent());
                     }
                 }
             }
