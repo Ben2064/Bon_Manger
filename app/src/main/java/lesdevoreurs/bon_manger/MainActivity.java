@@ -52,6 +52,11 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
 
         titre.setText("Recherche");
         btn.setOnClickListener(this);
+        btnEff.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                edR.setText("");
+            }
+        });
     }
 
 
@@ -150,9 +155,7 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
             String nomResultats = "Résultat : ";
             if(nbResultats > 0)
                 nomResultats = "Résultats : ";
-            titre.setText(nomResultats+ nbResultats);
-            btn.setVisibility(View.INVISIBLE);
-            btnEff.setVisibility(View.VISIBLE);
+            titre.setText(nomResultats + nbResultats);
         }
     }
 
