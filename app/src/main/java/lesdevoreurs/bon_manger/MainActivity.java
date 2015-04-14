@@ -105,6 +105,7 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
 
             images = web.images;
             bitImages = new ArrayList<Bitmap>();
+            progressDialog.setMax(images.size());
             for(int position=0; position<images.size(); position++) {
                 if(images.get(position).equals(urlNoImage))
                     bitImages.add(noImage);
@@ -115,6 +116,7 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
                     else
                         bitImages.add(noImage);
                 }
+                progressDialog.setProgress(position);
             }
 
             return web;
@@ -124,9 +126,12 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
         protected void onPreExecute() {
             super.onPreExecute();
             progressDialog = new ProgressDialog(context);
+            progressDialog.setTitle("Downloading Image ...");
             progressDialog.setMessage("Loading. Please Wait");
             progressDialog.setIndeterminate(false);
-            progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+            progressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
+            //progressDialog.setProgress(0);
+            //progressDialog.setMax(20);
             progressDialog.setCancelable(true);
             progressDialog.show();
         }
