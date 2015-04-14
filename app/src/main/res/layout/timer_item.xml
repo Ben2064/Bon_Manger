@@ -27,7 +27,8 @@
             android:layout_weight="10"
             android:background="#ff101010"
             android:autoText="false"
-            android:textColor="#ffffffff" />
+            android:textColor="#ffffffff"
+            android:textAlignment="center" />
 
         <Button
             style="?android:attr/buttonStyleSmall"
