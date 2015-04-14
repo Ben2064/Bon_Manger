@@ -36,6 +36,7 @@ public class BigOvenWebAPI {
     ArrayList<String> categories;
     ArrayList<String> sousCategories;
     ArrayList<String> images;
+    int nbResultats;
 
     public BigOvenWebAPI(String query){
 
@@ -46,6 +47,7 @@ public class BigOvenWebAPI {
         cuisines = new ArrayList<String>();
         categories = new ArrayList<String>();
         sousCategories = new ArrayList<String>();
+        nbResultats = 0;
 
         //http://openclassrooms.com/courses/structurez-vos-donnees-avec-xml/dom-exemple-d-utilisation-en-java
         //Etape 1 : récupération d'une instance de la classe "DocumentBuilderFactory"
@@ -70,6 +72,8 @@ public class BigOvenWebAPI {
             final Element racineNoeudsNoeuds = (Element) racineNoeuds.item(0);
             final NodeList resultNoeuds = racineNoeudsNoeuds.getElementsByTagName("RecipeInfo");
             final int nbResultNoeuds = resultNoeuds.getLength();
+            nbResultats = nbResultNoeuds;
+
             if(nbResultNoeuds != 0) {
                 Log.d("Racine", resultNoeuds.item(0).getNodeName());
                 Log.d("WEB", "Nombre de recettes: " + nbResultNoeuds);
