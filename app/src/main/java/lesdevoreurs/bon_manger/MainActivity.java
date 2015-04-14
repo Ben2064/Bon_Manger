@@ -33,6 +33,7 @@ import java.util.ArrayList;
 
 public class MainActivity extends ActionBarActivity implements View.OnClickListener {
     Button btn;
+    Button btnEff;
     EditText edR;
     ListView listv;
     TextView titre;
@@ -44,12 +45,18 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
         setContentView(R.layout.recherche);
 
         btn = (Button)findViewById(R.id.docherche);
+        btnEff = (Button)findViewById(R.id.doefface);
         edR = (EditText)findViewById(R.id.cherche);
         listv = (ListView)findViewById(R.id.activity_list);
         titre = (TextView)findViewById(R.id.activity_title);
 
         titre.setText("Recherche");
         btn.setOnClickListener(this);
+        btnEff.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                edR.setText("");
+            }
+        });
     }
 
 
@@ -143,6 +150,12 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
             MyAdapter adapter = new MyAdapter(titres, cuisines, categories, sousCategories, bitImages);
             listv.setAdapter(adapter);
             progressDialog.dismiss();
+
+            int nbResultats = bigovenwebapi.nbResultats;
+            String nomResultats = "Résultat : ";
+            if(nbResultats > 0)
+                nomResultats = "Résultats : ";
+            titre.setText(nomResultats + nbResultats);
         }
     }
 

@@ -42,6 +42,14 @@
         <Button
             android:layout_width="50dp"
             android:layout_height="50dp"
+            android:id="@+id/doefface"
+            android:layout_weight="0"
+            android:background="@android:drawable/ic_menu_close_clear_cancel"
+            android:visibility="visible" />
+
+        <Button
+            android:layout_width="50dp"
+            android:layout_height="50dp"
             android:id="@+id/docherche"
             android:layout_weight="0"
             android:background="@android:drawable/ic_menu_search" />
