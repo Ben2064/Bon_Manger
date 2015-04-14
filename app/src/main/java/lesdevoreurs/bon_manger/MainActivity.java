@@ -1,5 +1,6 @@
 package lesdevoreurs.bon_manger;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -38,6 +39,7 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
     TextView cuisine;
     TextView categorie;
     TextView sousCategorie;
+    Context context = this;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -89,7 +91,7 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
 
         ArrayList<String> images;
         ArrayList<Bitmap> bitImages;
-        //ProgressDialog progressDialog;
+        ProgressDialog progressDialog;
         //Context context;
 
         @Override
@@ -121,12 +123,12 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            /*progressDialog = new ProgressDialog(context);
+            progressDialog = new ProgressDialog(context);
             progressDialog.setMessage("Loading. Please Wait");
             progressDialog.setIndeterminate(false);
             progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
             progressDialog.setCancelable(true);
-            progressDialog.show();*/
+            progressDialog.show();
         }
 
         @Override
@@ -138,7 +140,7 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
 
             MyAdapter adapter = new MyAdapter(titres, cuisines, categories, sousCategories, bitImages);
             listv.setAdapter(adapter);
-            //progressDialog.dismiss();
+            progressDialog.dismiss();
         }
     }
 
