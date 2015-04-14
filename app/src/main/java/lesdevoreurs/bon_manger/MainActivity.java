@@ -142,6 +142,7 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
                         drawImages.add(noImage);
                 }
                 progressDialog.setProgress(position);
+                //test
             }
 
             return web;
