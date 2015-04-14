@@ -103,6 +103,7 @@ public class BigOvenWebAPI {
                 cuisines.add("");
                 categories.add("");
                 sousCategories.add("");
+                images.add("");
             }
         } catch (IOException e) {
             Log.d("Web ", "Erreur: "+e.getMessage());

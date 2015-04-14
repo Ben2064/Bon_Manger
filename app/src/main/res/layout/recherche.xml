@@ -2,7 +2,8 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:weightSum="1">
+    android:weightSum="1"
+    android:background="#ff000000">
 
     <TextView
         android:layout_width="match_parent"
@@ -10,8 +11,8 @@
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:text="Large Text"
         android:id="@+id/activity_title"
-        android:background="#ffe4ecff"
-        android:padding="10dp" />
+        android:padding="10dp"
+        android:textColor="#ffffffff" />
 
     <ListView
         android:layout_width="match_parent"
@@ -25,7 +26,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:padding="10dp"
-        android:background="#ffe4ecff"
         android:layout_weight="1">
 
         <EditText
@@ -33,14 +33,16 @@
             android:layout_height="50dp"
             android:id="@+id/cherche"
             android:hint="Entrez un mot cle"
-            android:layout_weight="1" />
+            android:layout_weight="1"
+            android:textColor="#ffffffff"
+            android:textColorHint="#ffffffff" />
 
         <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Go!"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
             android:id="@+id/docherche"
-            android:layout_weight="0" />
+            android:layout_weight="0"
+            android:background="@android:drawable/ic_menu_search" />
 
     </LinearLayout>
 

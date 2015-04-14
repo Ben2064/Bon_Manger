@@ -49,7 +49,7 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
         listv = (ListView)findViewById(R.id.activity_list);
         titre = (TextView)findViewById(R.id.activity_title);
 
-        titre.setText("Recherche de recettes");
+        titre.setText("Recherche");
         btn.setOnClickListener(this);
     }
 
@@ -89,6 +89,8 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
 
         ArrayList<String> images;
         ArrayList<Bitmap> bitImages;
+        //ProgressDialog progressDialog;
+        //Context context;
 
         @Override
         protected BigOvenWebAPI doInBackground(Void... params) {
@@ -104,15 +106,27 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
             for(int position=0; position<images.size(); position++) {
                 if(images.get(position).equals(urlNoImage))
                     bitImages.add(noImage);
-                else
-                    bitImages.add(downloadBitmap(images.get(position)));
+                else {
+                    Bitmap imageTemp = downloadBitmap(images.get(position));
+                    if(imageTemp!=null)
+                        bitImages.add(imageTemp);
+                    else
+                        bitImages.add(noImage);
+                }
             }
+
             return web;
         }
 
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
+            /*progressDialog = new ProgressDialog(context);
+            progressDialog.setMessage("Loading. Please Wait");
+            progressDialog.setIndeterminate(false);
+            progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+            progressDialog.setCancelable(true);
+            progressDialog.show();*/
         }
 
         @Override
@@ -121,16 +135,10 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
             ArrayList<String> cuisines = bigovenwebapi.cuisines;
             ArrayList<String> categories = bigovenwebapi.categories;
             ArrayList<String> sousCategories = bigovenwebapi.sousCategories;
-            //ArrayList<String> images = bigovenwebapi.images;
-            //ArrayList<Bitmap> bitImages = new ArrayList<Bitmap>();
-
-            //URL url;
-            //for(int position=0; position<images.size(); position++) {
-            //  bitImages.add(downloadBitmap(images.get(position)));
-            //}
 
             MyAdapter adapter = new MyAdapter(titres, cuisines, categories, sousCategories, bitImages);
             listv.setAdapter(adapter);
+            //progressDialog.dismiss();
         }
     }
 
@@ -185,60 +193,11 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
             TextView sousCategorie = (TextView)v.findViewById(R.id.subcategorieRechRecette);
             sousCategorie.setText(sousCategories.get(position));
             ImageView imageView = (ImageView)v.findViewById(R.id.imageRechRecette);
-            imageView.setImageBitmap(images.get(position));
+            if(images.get(position)!=null)
+                imageView.setImageBitmap(images.get(position));
 
             return v;
         }
-
-        /*private Bitmap downloadBitmap(String url) {
-            Log.d("Download",url);
-            Bitmap image = null ;
-            // initilize the default HTTP client object
-            final DefaultHttpClient client = new DefaultHttpClient();
-
-            //forming a HttoGet request
-            final HttpGet getRequest = new HttpGet(url);
-            try {
-
-                HttpResponse response = client.execute(getRequest);
-
-                //check 200 OK for success
-                final int statusCode = response.getStatusLine().getStatusCode();
-
-                if (statusCode != HttpStatus.SC_OK) {
-                    Log.w("ImageDownloader", "Error " + statusCode +
-                            " while retrieving bitmap from " + url);
-                    return null;
-
-                }
-
-                final HttpEntity entity = response.getEntity();
-                if (entity != null) {
-                    InputStream inputStream = null;
-                    try {
-                        // getting contents from the stream
-                        inputStream = entity.getContent();
-
-                        // decoding stream data back into image Bitmap that android understands
-                        image = BitmapFactory.decodeStream(inputStream);
-
-
-                    } finally {
-                        if (inputStream != null) {
-                            inputStream.close();
-                        }
-                        entity.consumeContent();
-                    }
-                }
-            } catch (Exception e) {
-                // You Could provide a more explicit error message for IOException
-                getRequest.abort();
-                Log.e("ImageDownloader", "Something went wrong while" +
-                        " retrieving bitmap from " + url + e.toString());
-            }
-
-            return image;
-        }*/
     }
 
     //http://stackoverflow.com/questions/17120230/android-set-imageview-to-url
