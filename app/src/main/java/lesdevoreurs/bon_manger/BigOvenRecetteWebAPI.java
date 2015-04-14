@@ -41,7 +41,7 @@ public class BigOvenRecetteWebAPI {
     String instructions = "";
     ArrayList<String> ingredientsNom;
     ArrayList<String> ingredientsQuantite;
-    Drawable images;
+    //Drawable images;
 
     public BigOvenRecetteWebAPI(String query) {
 

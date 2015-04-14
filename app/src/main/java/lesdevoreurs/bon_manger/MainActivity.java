@@ -36,9 +36,6 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
     EditText edR;
     ListView listv;
     TextView titre;
-    TextView cuisine;
-    TextView categorie;
-    TextView sousCategorie;
     Context context = this;
 
     @Override
@@ -126,7 +123,7 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
         protected void onPreExecute() {
             super.onPreExecute();
             progressDialog = new ProgressDialog(context);
-            progressDialog.setTitle("Downloading Image ...");
+            progressDialog.setTitle("Downloading Recipes ...");
             progressDialog.setMessage("Loading. Please Wait");
             progressDialog.setIndeterminate(false);
             progressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
