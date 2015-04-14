@@ -36,13 +36,15 @@ public class BigOvenWebAPI {
     ArrayList<String> categories;
     ArrayList<String> sousCategories;
     ArrayList<String> images;
+    //ArrayList<Drawable> images;
     int nbResultats;
 
     public BigOvenWebAPI(String query){
 
-        String url = "http://api.bigoven.com/recipes?title_kw="+query+"&pg=1&rpp=100&api_key=dvxRg7vK4t5RBlTap04zYHqbu08e374G";
+        String url = "http://api.bigoven.com/recipes?any_kw="+query+"&pg=1&rpp=100&api_key=dvxRg7vK4t5RBlTap04zYHqbu08e374G";
         IDS = new ArrayList<String>();
         titres = new ArrayList<String>();
+        //images = new ArrayList<Drawable>();
         images = new ArrayList<String>();
         cuisines = new ArrayList<String>();
         categories = new ArrayList<String>();
@@ -73,6 +75,7 @@ public class BigOvenWebAPI {
             final NodeList resultNoeuds = racineNoeudsNoeuds.getElementsByTagName("RecipeInfo");
             final int nbResultNoeuds = resultNoeuds.getLength();
             nbResultats = nbResultNoeuds;
+            //MainActivity.progressDialog.setMax(this.nbResultats);
 
             if(nbResultNoeuds != 0) {
                 Log.d("Racine", resultNoeuds.item(0).getNodeName());
@@ -97,7 +100,10 @@ public class BigOvenWebAPI {
                         categories.add(categorie.getTextContent());
                         sousCategories.add(souscategorie.getTextContent());
                         images.add(image.getTextContent());
+                        //InputStream is = (InputStream) new URL(image.getTextContent().replace("http://redirect.bigoven.com/pics/rs/120/", "http://images.bigoven.com/image/upload/t_recipe-120/")).getContent();
+                        //images.add(Drawable.createFromStream(is, "src name"));
                         Log.d("API",image.getTextContent());
+                        //MainActivity.progressDialog.setProgress(i);
                     }
                 }
             }
@@ -108,6 +114,8 @@ public class BigOvenWebAPI {
                 categories.add("");
                 sousCategories.add("");
                 images.add("");
+                //InputStream is = (InputStream) new URL("http://images.bigoven.com/image/upload/recipe-no-image.jpg").getContent();
+                //images.add(Drawable.createFromStream(is, "src name"));
             }
         } catch (IOException e) {
             Log.d("Web ", "Erreur: "+e.getMessage());

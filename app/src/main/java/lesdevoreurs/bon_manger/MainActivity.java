@@ -4,6 +4,7 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
@@ -27,7 +28,10 @@ import org.apache.http.HttpStatus;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.DefaultHttpClient;
 
+import java.io.IOException;
 import java.io.InputStream;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
 
 
@@ -38,6 +42,7 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
     ListView listv;
     TextView titre;
     Context context = this;
+    static ProgressDialog progressDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -94,8 +99,7 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
     public class DownloadWebTask extends AsyncTask<Void, Void, BigOvenWebAPI>{
 
         ArrayList<String> images;
-        ArrayList<Bitmap> bitImages;
-        ProgressDialog progressDialog;
+        ArrayList<Drawable> drawImages;
         //Context context;
 
         @Override
@@ -104,21 +108,38 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
             BigOvenWebAPI web = new BigOvenWebAPI(query);
 
             //preload pas d'image
-            String urlNoImage = "http://redirect.bigoven.com/pics/rs/120/recipe-no-image.jpg";
-            Bitmap noImage = downloadBitmap(urlNoImage);
+            InputStream is = null;
+            String urlNoImage = "http://images.bigoven.com/image/upload/recipe-no-image.jpg";
+            Drawable noImage = null;
+            try {
+                is = (InputStream) new URL(urlNoImage).getContent();
+                noImage = (Drawable.createFromStream(is, "src name"));
+            } catch (MalformedURLException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            //Bitmap noImage = downloadBitmap(urlNoImage);
 
             images = web.images;
-            bitImages = new ArrayList<Bitmap>();
+            drawImages = new ArrayList<Drawable>();
             progressDialog.setMax(images.size());
-            for(int position=0; position<images.size(); position++) {
-                if(images.get(position).equals(urlNoImage))
-                    bitImages.add(noImage);
-                else {
-                    Bitmap imageTemp = downloadBitmap(images.get(position));
-                    if(imageTemp!=null)
-                        bitImages.add(imageTemp);
-                    else
-                        bitImages.add(noImage);
+            for(int position=0; position<images.size(); position++) {   //images.size()
+                if(images.get(position).equals(urlNoImage)) //si l'image est nulle
+                    drawImages.add(noImage);
+                else {  //image pas nulle
+                    InputStream is2 = null;
+                    try {
+                        is2 = (InputStream) new URL(images.get(position).replace("http://redirect.bigoven.com/pics/rs/120/", "http://images.bigoven.com/image/upload/t_recipe-120/")).getContent();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                    //drawImages.add(Drawable.createFromStream(is2, "src name"));
+                    Drawable imageTemp = Drawable.createFromStream(is2, "src name");
+                    if(imageTemp!=null) //tout est beau
+                        drawImages.add(imageTemp);
+                    else    //si accent dans l'adresse
+                        drawImages.add(noImage);
                 }
                 progressDialog.setProgress(position);
             }
@@ -146,8 +167,9 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
             ArrayList<String> cuisines = bigovenwebapi.cuisines;
             ArrayList<String> categories = bigovenwebapi.categories;
             ArrayList<String> sousCategories = bigovenwebapi.sousCategories;
+            ArrayList<String> images = bigovenwebapi.images;
 
-            MyAdapter adapter = new MyAdapter(titres, cuisines, categories, sousCategories, bitImages);
+            MyAdapter adapter = new MyAdapter(titres, cuisines, categories, sousCategories, drawImages);
             listv.setAdapter(adapter);
             progressDialog.dismiss();
 
@@ -156,6 +178,8 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
             if(nbResultats > 0)
                 nomResultats = "Résultats : ";
             titre.setText(nomResultats + nbResultats);
+
+
         }
     }
 
@@ -164,18 +188,17 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
         ArrayList<String> cuisines;
         ArrayList<String> categories;
         ArrayList<String> sousCategories;
-        ArrayList<Bitmap> images;
+        ArrayList<Drawable> images;
 
         LayoutInflater inflater;
 
-        public MyAdapter(ArrayList<String> titres, ArrayList<String> cuisines, ArrayList<String> categories, ArrayList<String> sousCategories, ArrayList<Bitmap> images){
+        public MyAdapter(ArrayList<String> titres, ArrayList<String> cuisines, ArrayList<String> categories, ArrayList<String> sousCategories, ArrayList<Drawable> images){
             inflater = (LayoutInflater)getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             this.titres = titres;
             this.cuisines = cuisines;
             this.categories = categories;
             this.sousCategories = sousCategories;
             this.images = images;
-
         }
 
         @Override
@@ -210,8 +233,8 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
             TextView sousCategorie = (TextView)v.findViewById(R.id.subcategorieRechRecette);
             sousCategorie.setText(sousCategories.get(position));
             ImageView imageView = (ImageView)v.findViewById(R.id.imageRechRecette);
-            if(images.get(position)!=null)
-                imageView.setImageBitmap(images.get(position));
+            //if(images.get(position)!=null)
+            imageView.setImageDrawable(images.get(position));
 
             return v;
         }
@@ -220,6 +243,7 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
     //http://stackoverflow.com/questions/17120230/android-set-imageview-to-url
     private Bitmap downloadBitmap(String url) {
         Bitmap image = null;
+
         // initilize the default HTTP client object
         final DefaultHttpClient client = new DefaultHttpClient();
 
