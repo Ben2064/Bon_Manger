@@ -67,7 +67,8 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
             @Override
             public void onClick(View arg0) {
                 // Starting a new async task
-                numPage=0;
+                //numPage=0;
+                numPage++;
                 new DownloadWebTask().execute();
             }
         });
@@ -109,6 +110,7 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
         String recherche = edR.getText().toString();
         if (!recherche.matches("")) {
             Toast.makeText(this, "Chargement des donnees du Web", Toast.LENGTH_SHORT).show();
+            numPage = 1;
             new DownloadWebTask().execute();
         }
         InputMethodManager inputManager = (InputMethodManager)
@@ -126,7 +128,7 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
 
         @Override
         protected BigOvenWebAPI doInBackground(Void... params) {
-            numPage++;
+            //numPage++;
             String query = edR.getText().toString().replace(" ", "%20");
             String numByPage = String.valueOf(spin.getSelectedItem());
             BigOvenWebAPI web = new BigOvenWebAPI(query, numPage, numByPage);
