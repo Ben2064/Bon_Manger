@@ -21,12 +21,20 @@
             android:textColor="#ffffffff"
             android:layout_weight="2" />
 
-        <Spinner
-            android:layout_width="35dp"
+        <RelativeLayout
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/nbp"
-            android:entries="@array/element_nbp"
-            android:background="@android:color/darker_gray" />
+            android:background="#ffffffff"
+            android:layout_weight="5">
+            <Spinner
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:id="@+id/nbp"
+                android:entries="@array/element_nbp"
+                android:layout_below="@+id/textView"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true" />
+        </RelativeLayout>
 
         <TextView
             android:layout_width="wrap_content"
