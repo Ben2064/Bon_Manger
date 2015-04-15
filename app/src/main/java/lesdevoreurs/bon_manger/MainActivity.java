@@ -12,6 +12,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -50,6 +51,7 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
         edR = (EditText)findViewById(R.id.cherche);
         //edN = (EditText)findViewById(R.id.numPage);
         spin = (Spinner)findViewById((R.id.nbp));
+        spin.setSelection(3);
         listv = (ListView)findViewById(R.id.activity_list);
         titre = (TextView)findViewById(R.id.activity_title);
         titre.setText("Research");
@@ -105,6 +107,11 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
             Toast.makeText(this, "Chargement des donnees du Web", Toast.LENGTH_SHORT).show();
             new DownloadWebTask().execute();
         }
+        InputMethodManager inputManager = (InputMethodManager)
+                getSystemService(Context.INPUT_METHOD_SERVICE);
+
+        inputManager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(),
+                InputMethodManager.HIDE_NOT_ALWAYS);
     }
 
     public class DownloadWebTask extends AsyncTask<Void, Void, BigOvenWebAPI>{
