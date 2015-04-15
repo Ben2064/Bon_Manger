@@ -30,28 +30,29 @@ import java.util.ArrayList;
 
 
 public class MainActivity extends ActionBarActivity implements View.OnClickListener {
-    Button btn;
+
+    //UI elements
+    Button btnSearch;
     Button btnEff;
-    EditText edR;
-    //EditText edN;
-    ListView listv;
     Button btnLoad;
-    TextView titre;
-    Spinner spin;
-    Context context = this;
+    EditText edR;
+    ListView listv;
     RatingBar rate;
+    Spinner spin;
+    TextView titre;
+
+    Context context = this;
     static ProgressDialog progressDialog;
-    static int numPage = 0;
+    static int numPage;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.recherche);
 
-        btn = (Button)findViewById(R.id.docherche);
+        btnSearch = (Button)findViewById(R.id.docherche);
         btnEff = (Button)findViewById(R.id.doefface);
         edR = (EditText)findViewById(R.id.cherche);
-        //edN = (EditText)findViewById(R.id.numPage);
         spin = (Spinner)findViewById((R.id.nbp));
         spin.setSelection(3);
         rate = (RatingBar)findViewById(R.id.myRatingBar);
@@ -66,15 +67,14 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
         btnLoad.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View arg0) {
-                // Starting a new async task
-                //numPage=0;
+                // Starting new async task
                 numPage++;
                 new DownloadWebTask().execute();
             }
         });
 
         //Erase research text
-        btn.setOnClickListener(this);
+        btnSearch.setOnClickListener(this);
         btnEff.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 edR.setText("");
@@ -105,14 +105,20 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
         return super.onOptionsItemSelected(item);
     }
 
+    //Perform search
     @Override
     public void onClick(View v) {
+
         String recherche = edR.getText().toString();
+
+        //If search field isn't empty, we perform the search
         if (!recherche.matches("")) {
             Toast.makeText(this, "Chargement des donnees du Web", Toast.LENGTH_SHORT).show();
             numPage = 1;
             new DownloadWebTask().execute();
         }
+
+        //Hide keyboard after hit the button
         InputMethodManager inputManager = (InputMethodManager)
                 getSystemService(Context.INPUT_METHOD_SERVICE);
 
@@ -120,52 +126,59 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
                 InputMethodManager.HIDE_NOT_ALWAYS);
     }
 
+    //Search in BigOvenWebAPI
     public class DownloadWebTask extends AsyncTask<Void, Void, BigOvenWebAPI>{
 
+        //To convert the images
         ArrayList<String> images;
         ArrayList<Drawable> drawImages;
-        //Context context;
 
         @Override
         protected BigOvenWebAPI doInBackground(Void... params) {
-            //numPage++;
-            String query = edR.getText().toString().replace(" ", "%20");
+
+            //Make query
+            String query = edR.getText().toString().replace(" ", "%20"); //Fill the space
             String numByPage = String.valueOf(spin.getSelectedItem());
             BigOvenWebAPI web = new BigOvenWebAPI(query, numPage, numByPage);
 
-            //preload pas d'image
-            InputStream is = null;
-            String urlNoImage = "http://images.bigoven.com/image/upload/recipe-no-image.jpg";
+            //Preload the "noImage"
+            String urlNoImage = "http://images.bigoven.com/image/upload/recipe-no-image.jpg";   //The "noImage" URL
             Drawable noImage = null;
             try {
-                is = (InputStream) new URL(urlNoImage).getContent();
+                InputStream is = (InputStream) new URL(urlNoImage).getContent();
                 noImage = (Drawable.createFromStream(is, "src name"));
             } catch (IOException e) {
                 Log.d("Inputstream", "Erreur noImage "+e);
             }
-            //Bitmap noImage = downloadBitmap(urlNoImage);
 
+            //Load every images from website
             images = web.images;
             drawImages = new ArrayList<Drawable>();
-            progressDialog.setMax(images.size());
-            for(int position=0; position<images.size(); position++) {   //images.size()
-                if(images.get(position).equals(urlNoImage)) //si l'image est nulle
+
+            progressDialog.setMax(images.size()); //Put the number of pictures in progressbar
+
+            //Check every images URL, to look for recipe without images
+            for(int position=0; position<images.size(); position++) {
+                //If the recipe have no image
+                if(images.get(position).equals(urlNoImage))
                     drawImages.add(noImage);
-                else {  //image pas nulle
+                //If the recipe have an image
+                else {
                     InputStream is2 = null;
                     try {
                         is2 = (InputStream) new URL(images.get(position).replace("http://redirect.bigoven.com/pics/rs/120/", "http://images.bigoven.com/image/upload/t_recipe-120/")).getContent();
                     } catch (IOException e) {
                         Log.d("Inputstream", "Erreur Image "+e);
                     }
-                    //drawImages.add(Drawable.createFromStream(is2, "src name"));
-                    Drawable imageTemp = Drawable.createFromStream(is2, "src name");
-                    if(imageTemp!=null) //tout est beau
+                    Drawable imageTemp = Drawable.createFromStream(is2, "src name");    //Load the image
+                    //Check if there's a problem with the loaded images
+                    if(imageTemp!=null)
                         drawImages.add(imageTemp);
-                    else    //si accent dans l'adresse
+                    else
                         drawImages.add(noImage);
                 }
-                progressDialog.setProgress(position);
+
+                progressDialog.setProgress(position);   //Show loading progress
             }
 
             return web;
@@ -174,12 +187,12 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
+            //Window to see the progress of loading
             progressDialog = new ProgressDialog(context);
-            progressDialog.setTitle("Downloading Recipes ...");
+            progressDialog.setTitle("Showing Recipes ...");
             progressDialog.setMessage("Loading. Please Wait");
             progressDialog.setIndeterminate(false);
             progressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
-            //progressDialog.setProgress(0);
             progressDialog.setMax(50);
             progressDialog.setCancelable(true);
             progressDialog.show();
@@ -187,6 +200,8 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
 
         @Override
         protected void onPostExecute(BigOvenWebAPI bigovenwebapi) {
+
+            //Get from BigOvenWebAPI
             ArrayList<String> titres = bigovenwebapi.titres;
             ArrayList<String> cuisines = bigovenwebapi.cuisines;
             ArrayList<String> categories = bigovenwebapi.categories;
@@ -195,19 +210,19 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
 
             MyAdapter adapter = new MyAdapter(titres, cuisines, categories, sousCategories, drawImages, ratings);
             listv.setAdapter(adapter);
-            progressDialog.dismiss();
+            progressDialog.dismiss();   //End the progress window
 
+            //Showing the number of results. Here because it's not in the listview
             String nbResultats = bigovenwebapi.nbResultats;
             String nomResultats = "Results : ";
             if(nbResultats == "1" && nbResultats == "0")
                 nomResultats = "Result : ";
             titre.setText(nomResultats + nbResultats);
-
-
         }
     }
 
     public class MyAdapter extends BaseAdapter{
+
         ArrayList<String> titres;
         ArrayList<String> cuisines;
         ArrayList<String> categories;
@@ -245,26 +260,25 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
 
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
+
             View v = convertView;
 
             if(v==null){
                 v = inflater.inflate(R.layout.element_recherche, parent, false);
             }
 
-            TextView titre = (TextView)v.findViewById(R.id.nomRechRecette);
+            //Put everything in the listview
+            TextView titre = (TextView)v.findViewById(R.id.nomRechRecette); //Title
             titre.setText(titres.get(position));
-            TextView cuisine = (TextView)v.findViewById(R.id.cuisineRechRecette);
+            TextView cuisine = (TextView)v.findViewById(R.id.cuisineRechRecette);   //Cuisine
             cuisine.setText(cuisines.get(position));
-            TextView categorie = (TextView)v.findViewById(R.id.categorieRechRecette);
+            TextView categorie = (TextView)v.findViewById(R.id.categorieRechRecette);   //Categorie
             categorie.setText(categories.get(position));
-            TextView sousCategorie = (TextView)v.findViewById(R.id.subcategorieRechRecette);
+            TextView sousCategorie = (TextView)v.findViewById(R.id.subcategorieRechRecette);    //SubCategorie
             sousCategorie.setText(sousCategories.get(position));
-            ImageView imageView = (ImageView)v.findViewById(R.id.imageRechRecette);
-            //if(images.get(position)!=null)
+            ImageView imageView = (ImageView)v.findViewById(R.id.imageRechRecette); //Image
             imageView.setImageDrawable(images.get(position));
-
-            RatingBar rating = (RatingBar)v.findViewById(R.id.myRatingBar);
-            Log.d("Position",titres.get(position)+"position: "+position+" rang: "+ratings.get(position)+" numPage: "+numPage);
+            RatingBar rating = (RatingBar)v.findViewById(R.id.myRatingBar); //Rating
             double star = Double.parseDouble(ratings.get(position));
             rating.setRating((int)star);
 

@@ -27,7 +27,8 @@
             android:background="#ffffffff"
             android:layout_weight="5"
             android:layout_marginTop="10dp"
-            android:layout_marginBottom="10dp">
+            android:layout_marginBottom="10dp"
+            android:layout_marginRight="2dp">
             <Spinner
                 android:layout_width="fill_parent"
                 android:layout_height="30dp"
@@ -50,6 +51,12 @@
 
     </LinearLayout>
 
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="fill_parent"
+        android:layout_gravity="center_horizontal"
+        android:layout_weight="1">
+
     <ListView
         android:layout_width="match_parent"
         android:layout_height="fill_parent"
@@ -57,6 +64,7 @@
         android:layout_gravity="center_horizontal"
         android:layout_weight="1"
         android:stackFromBottom="false" />
+    </FrameLayout>
 
     <LinearLayout
         android:orientation="horizontal"
