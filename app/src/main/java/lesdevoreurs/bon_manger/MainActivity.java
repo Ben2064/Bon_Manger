@@ -18,6 +18,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.RatingBar;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -38,8 +39,9 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
     TextView titre;
     Spinner spin;
     Context context = this;
+    RatingBar rate;
     static ProgressDialog progressDialog;
-    static int numPage = 1;
+    static int numPage = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,6 +54,7 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
         //edN = (EditText)findViewById(R.id.numPage);
         spin = (Spinner)findViewById((R.id.nbp));
         spin.setSelection(3);
+        rate = (RatingBar)findViewById(R.id.myRatingBar);
         listv = (ListView)findViewById(R.id.activity_list);
         titre = (TextView)findViewById(R.id.activity_title);
         titre.setText("Research");
@@ -64,6 +67,7 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
             @Override
             public void onClick(View arg0) {
                 // Starting a new async task
+                numPage=0;
                 new DownloadWebTask().execute();
             }
         });
@@ -185,8 +189,9 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
             ArrayList<String> cuisines = bigovenwebapi.cuisines;
             ArrayList<String> categories = bigovenwebapi.categories;
             ArrayList<String> sousCategories = bigovenwebapi.sousCategories;
+            ArrayList<String> ratings = bigovenwebapi.ratings;
 
-            MyAdapter adapter = new MyAdapter(titres, cuisines, categories, sousCategories, drawImages);
+            MyAdapter adapter = new MyAdapter(titres, cuisines, categories, sousCategories, drawImages, ratings);
             listv.setAdapter(adapter);
             progressDialog.dismiss();
 
@@ -206,16 +211,19 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
         ArrayList<String> categories;
         ArrayList<String> sousCategories;
         ArrayList<Drawable> images;
+        ArrayList<String> ratings;
 
         LayoutInflater inflater;
 
-        public MyAdapter(ArrayList<String> titres, ArrayList<String> cuisines, ArrayList<String> categories, ArrayList<String> sousCategories, ArrayList<Drawable> images){
+        public MyAdapter(ArrayList<String> titres, ArrayList<String> cuisines, ArrayList<String> categories, ArrayList<String> sousCategories,
+                         ArrayList<Drawable> images, ArrayList<String> ratings){
             inflater = (LayoutInflater)getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             this.titres = titres;
             this.cuisines = cuisines;
             this.categories = categories;
             this.sousCategories = sousCategories;
             this.images = images;
+            this.ratings = ratings;
         }
 
         @Override
@@ -252,6 +260,11 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
             ImageView imageView = (ImageView)v.findViewById(R.id.imageRechRecette);
             //if(images.get(position)!=null)
             imageView.setImageDrawable(images.get(position));
+
+            RatingBar rating = (RatingBar)v.findViewById(R.id.myRatingBar);
+            Log.d("Position",titres.get(position)+"position: "+position+" rang: "+ratings.get(position)+" numPage: "+numPage);
+            double star = Double.parseDouble(ratings.get(position));
+            rating.setRating((int)star);
 
             return v;
         }
