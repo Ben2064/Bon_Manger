@@ -37,11 +37,11 @@ public class BigOvenWebAPI {
     ArrayList<String> sousCategories;
     ArrayList<String> images;
     //ArrayList<Drawable> images;
-    int nbResultats;
+    String nbResultats;
 
-    public BigOvenWebAPI(String query){
+    public BigOvenWebAPI(String query, int numPage, String numByPage){
 
-        String url = "http://api.bigoven.com/recipes?any_kw="+query+"&pg=1&rpp=100&api_key=dvxRg7vK4t5RBlTap04zYHqbu08e374G";
+        String url = "http://api.bigoven.com/recipes?any_kw="+query+"&pg="+numPage+"&rpp="+numByPage+"&api_key=dvxRg7vK4t5RBlTap04zYHqbu08e374G";
         IDS = new ArrayList<String>();
         titres = new ArrayList<String>();
         //images = new ArrayList<Drawable>();
@@ -49,7 +49,7 @@ public class BigOvenWebAPI {
         cuisines = new ArrayList<String>();
         categories = new ArrayList<String>();
         sousCategories = new ArrayList<String>();
-        nbResultats = 0;
+        nbResultats = "0";
 
         //http://openclassrooms.com/courses/structurez-vos-donnees-avec-xml/dom-exemple-d-utilisation-en-java
         //Etape 1 : récupération d'une instance de la classe "DocumentBuilderFactory"
@@ -69,12 +69,13 @@ public class BigOvenWebAPI {
             //Etape 5 : récupération des recettes
             //final NodeList racineNoeuds = racine.getChildNodes();
             //final int nbRacineNoeuds = racineNoeuds.getLength();
+            final Element nbResult = (Element) racine.getElementsByTagName("ResultCount").item(0);
+            nbResultats = nbResult.getTextContent();
             final NodeList racineNoeuds = racine.getElementsByTagName("Results");
             //final int nbRacineNoeuds = racineNoeuds.getLength();
             final Element racineNoeudsNoeuds = (Element) racineNoeuds.item(0);
             final NodeList resultNoeuds = racineNoeudsNoeuds.getElementsByTagName("RecipeInfo");
             final int nbResultNoeuds = resultNoeuds.getLength();
-            nbResultats = nbResultNoeuds;
             //MainActivity.progressDialog.setMax(this.nbResultats);
 
             if(nbResultNoeuds != 0) {

@@ -2,8 +2,6 @@ package lesdevoreurs.bon_manger;
 
 import android.app.ProgressDialog;
 import android.content.Context;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -19,18 +17,12 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import org.apache.http.HttpEntity;
-import org.apache.http.HttpResponse;
-import org.apache.http.HttpStatus;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.impl.client.DefaultHttpClient;
-
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 
@@ -39,10 +31,14 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
     Button btn;
     Button btnEff;
     EditText edR;
+    //EditText edN;
     ListView listv;
+    Button btnLoad;
     TextView titre;
+    Spinner spin;
     Context context = this;
     static ProgressDialog progressDialog;
+    static int numPage = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,10 +48,25 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
         btn = (Button)findViewById(R.id.docherche);
         btnEff = (Button)findViewById(R.id.doefface);
         edR = (EditText)findViewById(R.id.cherche);
+        //edN = (EditText)findViewById(R.id.numPage);
+        spin = (Spinner)findViewById((R.id.nbp));
         listv = (ListView)findViewById(R.id.activity_list);
         titre = (TextView)findViewById(R.id.activity_title);
+        titre.setText("Research");
 
-        titre.setText("Recherche");
+        //Load another page of result
+        btnLoad = new Button(this);
+        btnLoad.setText("Load More");
+        listv.addFooterView(btnLoad);
+        btnLoad.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View arg0) {
+                // Starting a new async task
+                new DownloadWebTask().execute();
+            }
+        });
+
+        //Erase research text
         btn.setOnClickListener(this);
         btnEff.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
@@ -104,8 +115,10 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
 
         @Override
         protected BigOvenWebAPI doInBackground(Void... params) {
+            numPage++;
             String query = edR.getText().toString().replace(" ", "%20");
-            BigOvenWebAPI web = new BigOvenWebAPI(query);
+            String numByPage = String.valueOf(spin.getSelectedItem());
+            BigOvenWebAPI web = new BigOvenWebAPI(query, numPage, numByPage);
 
             //preload pas d'image
             InputStream is = null;
@@ -114,10 +127,8 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
             try {
                 is = (InputStream) new URL(urlNoImage).getContent();
                 noImage = (Drawable.createFromStream(is, "src name"));
-            } catch (MalformedURLException e) {
-                e.printStackTrace();
             } catch (IOException e) {
-                e.printStackTrace();
+                Log.d("Inputstream", "Erreur noImage "+e);
             }
             //Bitmap noImage = downloadBitmap(urlNoImage);
 
@@ -132,7 +143,7 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
                     try {
                         is2 = (InputStream) new URL(images.get(position).replace("http://redirect.bigoven.com/pics/rs/120/", "http://images.bigoven.com/image/upload/t_recipe-120/")).getContent();
                     } catch (IOException e) {
-                        e.printStackTrace();
+                        Log.d("Inputstream", "Erreur Image "+e);
                     }
                     //drawImages.add(Drawable.createFromStream(is2, "src name"));
                     Drawable imageTemp = Drawable.createFromStream(is2, "src name");
@@ -156,7 +167,7 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
             progressDialog.setIndeterminate(false);
             progressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
             //progressDialog.setProgress(0);
-            //progressDialog.setMax(20);
+            progressDialog.setMax(50);
             progressDialog.setCancelable(true);
             progressDialog.show();
         }
@@ -167,16 +178,15 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
             ArrayList<String> cuisines = bigovenwebapi.cuisines;
             ArrayList<String> categories = bigovenwebapi.categories;
             ArrayList<String> sousCategories = bigovenwebapi.sousCategories;
-            ArrayList<String> images = bigovenwebapi.images;
 
             MyAdapter adapter = new MyAdapter(titres, cuisines, categories, sousCategories, drawImages);
             listv.setAdapter(adapter);
             progressDialog.dismiss();
 
-            int nbResultats = bigovenwebapi.nbResultats;
-            String nomResultats = "Résultat : ";
-            if(nbResultats > 0)
-                nomResultats = "Résultats : ";
+            String nbResultats = bigovenwebapi.nbResultats;
+            String nomResultats = "Results : ";
+            if(nbResultats == "1" && nbResultats == "0")
+                nomResultats = "Result : ";
             titre.setText(nomResultats + nbResultats);
 
 
@@ -238,56 +248,5 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
 
             return v;
         }
-    }
-
-    //http://stackoverflow.com/questions/17120230/android-set-imageview-to-url
-    private Bitmap downloadBitmap(String url) {
-        Bitmap image = null;
-
-        // initilize the default HTTP client object
-        final DefaultHttpClient client = new DefaultHttpClient();
-
-        //forming a HttoGet request
-        final HttpGet getRequest = new HttpGet(url);
-        try {
-
-            HttpResponse response = client.execute(getRequest);
-
-            //check 200 OK for success
-            final int statusCode = response.getStatusLine().getStatusCode();
-
-            if (statusCode != HttpStatus.SC_OK) {
-                Log.w("ImageDownloader", "Error " + statusCode +
-                        " while retrieving bitmap from " + url);
-                return null;
-
-            }
-
-            final HttpEntity entity = response.getEntity();
-            if (entity != null) {
-                InputStream inputStream = null;
-                try {
-                    // getting contents from the stream
-                    inputStream = entity.getContent();
-
-                    // decoding stream data back into image Bitmap that android understands
-                    image = BitmapFactory.decodeStream(inputStream);
-
-
-                } finally {
-                    if (inputStream != null) {
-                        inputStream.close();
-                    }
-                    entity.consumeContent();
-                }
-            }
-        } catch (Exception e) {
-            // You Could provide a more explicit error message for IOException
-            getRequest.abort();
-            Log.e("ImageDownloader", "Something went wrong while" +
-                    " retrieving bitmap from " + url + e.toString());
-        }
-
-        return image;
     }
 }

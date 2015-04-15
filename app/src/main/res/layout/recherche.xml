@@ -7,14 +7,37 @@
     android:weightSum="1"
     android:background="#ff000000">
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="Large Text"
-        android:id="@+id/activity_title"
-        android:padding="10dp"
-        android:textColor="#ffffffff" />
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="50dp">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="Large Text"
+            android:id="@+id/activity_title"
+            android:padding="10dp"
+            android:textColor="#ffffffff"
+            android:layout_weight="2" />
+
+        <Spinner
+            android:layout_width="35dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/nbp"
+            android:entries="@array/element_nbp"
+            android:background="@android:color/darker_gray" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="by page"
+            android:id="@+id/textView2"
+            android:textColor="#ffffffff"
+            android:layout_weight="0" />
+
+    </LinearLayout>
 
     <ListView
         android:layout_width="match_parent"
@@ -35,7 +58,7 @@
             android:layout_width="match_parent"
             android:layout_height="50dp"
             android:id="@+id/cherche"
-            android:hint="Entrez un mot cle"
+            android:hint="Enter keyword"
             android:layout_weight="1"
             android:textColor="#ffffffff"
             android:textColorHint="#ffffffff" />
