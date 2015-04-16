@@ -30,8 +30,6 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
         cherche = (Button)findViewById(R.id.gogogirl);
 
         cherche.setOnClickListener(this);
-        //adapter = new myAdapter();
-        //listv.setAdapter(adapter);
     }
 
 

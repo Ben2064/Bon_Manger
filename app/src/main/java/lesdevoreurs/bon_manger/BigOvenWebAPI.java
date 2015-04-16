@@ -37,6 +37,7 @@ public class BigOvenWebAPI {
     ArrayList<String> sousCategories;
     ArrayList<String> images;
     ArrayList<String> ratings;
+    ArrayList<Drawable> imagesDraw;
     String nbResultats;
 
     public BigOvenWebAPI(String query, int numPage, String numByPage){
@@ -100,7 +101,7 @@ public class BigOvenWebAPI {
                             cuisines.add("");
                         categories.add(categorie.getTextContent());
                         sousCategories.add(souscategorie.getTextContent());
-                        images.add(image.getTextContent());
+                        images.add(image.getTextContent().replace("http://redirect.bigoven.com/pics/rs/120/", "http://images.bigoven.com/image/upload/t_recipe-120/"));
                         ratings.add(rating.getTextContent());
                     }
                 }

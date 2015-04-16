@@ -142,10 +142,12 @@ public class RechercheActivity extends ActionBarActivity implements View.OnClick
             BigOvenWebAPI web = new BigOvenWebAPI(query, numPage, numByPage);
 
             //Preload the "noImage"
-            String urlNoImage = "http://images.bigoven.com/image/upload/recipe-no-image.jpg";   //The "noImage" URL
+            String urlNoImage = "http://images.bigoven.com/image/upload/t_recipe-120/recipe-no-image.jpg";   //The "noImage" URL
+            String urlSexy = "http://dnok91peocsw3.cloudfront.net/product/68709-original-1366930648-primary.png";   //FUNFUNFUN
             Drawable noImage = null;
             try {
-                InputStream is = (InputStream) new URL(urlNoImage).getContent();
+                InputStream is = (InputStream) new URL(urlSexy).getContent(); //FUNFUNFUN
+                //InputStream is = (InputStream) new URL(urlNoImage).getContent();
                 noImage = (Drawable.createFromStream(is, "src name"));
             } catch (IOException e) {
                 Log.d("Inputstream", "Erreur noImage "+e);
@@ -166,7 +168,7 @@ public class RechercheActivity extends ActionBarActivity implements View.OnClick
                 else {
                     InputStream is2 = null;
                     try {
-                        is2 = (InputStream) new URL(images.get(position).replace("http://redirect.bigoven.com/pics/rs/120/", "http://images.bigoven.com/image/upload/t_recipe-120/")).getContent();
+                        is2 = (InputStream) new URL(images.get(position)).getContent();
                     } catch (IOException e) {
                         Log.d("Inputstream", "Erreur Image "+e);
                     }
