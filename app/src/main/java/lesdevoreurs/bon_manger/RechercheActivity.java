@@ -24,6 +24,7 @@ import android.widget.RatingBar;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.app.Fragment;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -31,7 +32,7 @@ import java.net.URL;
 import java.util.ArrayList;
 
 
-public class RechercheActivity extends ActionBarActivity implements View.OnClickListener {
+public class RechercheActivity extends Fragment implements View.OnClickListener {
 
     //UI elements
     Button btnSearch;
@@ -46,29 +47,50 @@ public class RechercheActivity extends ActionBarActivity implements View.OnClick
 
     ArrayList<String> IDrecipe = new ArrayList<String>();
 
-    Context context = this;
+    //Context context = this;
+    Context context = getActivity();
     static ProgressDialog progressDialog;
     static int numPage;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,Bundle savedInstanceState )
+    {
 
-        setContentView(R.layout.research_pager);
-        pager = (ViewPager)findViewById(R.id.pager);
-        setContentView(R.layout.research);
-        btnSearch = (Button)findViewById(R.id.docherche);
-        btnEff = (Button)findViewById(R.id.doefface);
-        edR = (EditText)findViewById(R.id.cherche);
-        spin = (Spinner)findViewById((R.id.nbp));
+        View view = inflater.inflate(R.layout.research,container,false);
+        //btnSearch = (Button) view.findViewById(R.id.docherche);
+        //btnSearch.setOnClickListener(this);
+
+        return view;
+    }
+
+
+    @Override
+    //protected void onCreate(Bundle savedInstanceState) {
+    public void onActivityCreated (Bundle savedInstanceState){
+        //super.onStart();
+        super.onActivityCreated(savedInstanceState);
+
+        Toast.makeText(getActivity(), "ca marche tu tabarnak", Toast.LENGTH_LONG).show();
+        //System.out.println("yooooooooooooooooooolooooooooooooooo");
+
+        //getActivity().setContentView(R.layout.research_pager);
+        pager = (ViewPager)getView().findViewById(R.id.pager);
+        //getActivity().setContentView(R.layout.research);
+        btnSearch = (Button)getView().findViewById(R.id.docherche);
+        btnEff = (Button)getView().findViewById(R.id.doefface);
+        edR = (EditText)getView().findViewById(R.id.cherche);
+        spin = (Spinner)getView().findViewById((R.id.nbp));
         spin.setSelection(3);
-        rate = (RatingBar)findViewById(R.id.myRatingBar);
-        listv = (ListView)findViewById(R.id.activity_list);
-        titre = (TextView)findViewById(R.id.activity_title);
+        rate = (RatingBar)getView().findViewById(R.id.myRatingBar);
+        listv = (ListView)getView().findViewById(R.id.activity_list);
+        titre = (TextView)getView().findViewById(R.id.activity_title);
         titre.setText("Research");
 
+        Toast.makeText(getActivity(), "pi icite", Toast.LENGTH_LONG).show();
+
+
         //Load another page of result
-        btnLoad = new Button(this);
+        btnLoad = new Button(getActivity());
         btnLoad.setText("Load More");
         listv.addFooterView(btnLoad);
         btnLoad.setOnClickListener(new View.OnClickListener() {
@@ -81,21 +103,49 @@ public class RechercheActivity extends ActionBarActivity implements View.OnClick
         });
 
         //Erase research text
-        btnSearch.setOnClickListener(this);
+        btnSearch.setOnClickListener(new View.OnClickListener() {
+                                         @Override
+                                         public void onClick(View v) {
+
+                                         /*    String recherche = edR.getText().toString();
+
+                                             //If search field isn't empty, we perform the search
+                                             if (!recherche.matches("")) {
+                                                 numPage = 1;
+                                                 new DownloadWebTask().execute();
+                                             }
+
+                                             //Hide keyboard after hit the button
+                                             InputMethodManager inputManager = (InputMethodManager)
+                                                     getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+
+                                             inputManager.hideSoftInputFromWindow(getActivity().getCurrentFocus().getWindowToken(),
+                                                     InputMethodManager.HIDE_NOT_ALWAYS);*/
+
+                                             Toast.makeText(getActivity(), "Hello World", Toast.LENGTH_LONG).show();
+                                         }
+                                     });
+
+
         btnEff.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 edR.setText("");
             }
+           /*@Override
+               public void onClick(View v){
+               Toast.makeText(getActivity(), "Hello World", Toast.LENGTH_LONG).show();
+
+           }*/
         });
 
 
     }
 
 
-    @Override
+    //@Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_main, menu);
+        getActivity().getMenuInflater().inflate(R.menu.menu_main, menu);
         return true;
     }
 
@@ -118,20 +168,22 @@ public class RechercheActivity extends ActionBarActivity implements View.OnClick
     @Override
     public void onClick(View v) {
 
-        String recherche = edR.getText().toString();
+                String recherche = edR.getText().toString();
 
-        //If search field isn't empty, we perform the search
-        if (!recherche.matches("")) {
-            numPage = 1;
-            new DownloadWebTask().execute();
-        }
+                //If search field isn't empty, we perform the search
+                if (!recherche.matches("")) {
+                    numPage = 1;
+                    new DownloadWebTask().execute();
+                }
 
-        //Hide keyboard after hit the button
-        InputMethodManager inputManager = (InputMethodManager)
-                getSystemService(Context.INPUT_METHOD_SERVICE);
+                //Hide keyboard after hit the button
+                InputMethodManager inputManager = (InputMethodManager)
+                        getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
 
-        inputManager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(),
-                InputMethodManager.HIDE_NOT_ALWAYS);
+                inputManager.hideSoftInputFromWindow(getActivity().getCurrentFocus().getWindowToken(),
+                        InputMethodManager.HIDE_NOT_ALWAYS);
+
+
     }
 
     //Search in BigOvenWebAPI
@@ -237,7 +289,7 @@ public class RechercheActivity extends ActionBarActivity implements View.OnClick
                 @Override
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                     String item = adapter.titres.get(position);
-                    Toast.makeText(getBaseContext(), item, Toast.LENGTH_LONG).show();
+                    Toast.makeText(getActivity().getBaseContext(), item, Toast.LENGTH_LONG).show();
                 }
             });
         }
@@ -256,7 +308,7 @@ public class RechercheActivity extends ActionBarActivity implements View.OnClick
 
         public MyAdapter(ArrayList<String> titres, ArrayList<String> cuisines, ArrayList<String> categories, ArrayList<String> sousCategories,
                          ArrayList<Drawable> images, ArrayList<String> ratings){
-            inflater = (LayoutInflater)getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            inflater = (LayoutInflater)getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
             this.titres = titres;
             this.cuisines = cuisines;

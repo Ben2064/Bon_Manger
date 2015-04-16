@@ -1,5 +1,7 @@
 package lesdevoreurs.bon_manger;
 
+import android.app.Fragment;
+import android.app.FragmentManager;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -62,8 +64,13 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
     public void onClick(View v) {
         if(v.getId()==R.id.gogogirl) {
             Toast.makeText(this, "Switching to Search Activity!", Toast.LENGTH_LONG).show();
-            Intent i = new Intent(this, RechercheActivity.class);
-            startActivity(i);
+            /*Intent i = new Intent(this, RechercheActivity.class);
+            startActivity(i);*/
+            FragmentManager fragmentManager = getFragmentManager();
+            Fragment fragment = new RechercheActivity();
+            fragmentManager.beginTransaction()
+                    .replace(R.id.main_layout,fragment ).commit();
+
         }
         if(v.getId()==R.id.recette) {
             Toast.makeText(this, "Switching to Recette Activity!", Toast.LENGTH_LONG).show();
