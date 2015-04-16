@@ -107,7 +107,7 @@ public class RechercheActivity extends Fragment implements View.OnClickListener 
                                          @Override
                                          public void onClick(View v) {
 
-                                         /*    String recherche = edR.getText().toString();
+                                             String recherche = edR.getText().toString();
 
                                              //If search field isn't empty, we perform the search
                                              if (!recherche.matches("")) {
@@ -120,9 +120,9 @@ public class RechercheActivity extends Fragment implements View.OnClickListener 
                                                      getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
 
                                              inputManager.hideSoftInputFromWindow(getActivity().getCurrentFocus().getWindowToken(),
-                                                     InputMethodManager.HIDE_NOT_ALWAYS);*/
+                                                     InputMethodManager.HIDE_NOT_ALWAYS);
 
-                                             Toast.makeText(getActivity(), "Hello World", Toast.LENGTH_LONG).show();
+                                             //Toast.makeText(getActivity(), "Hello World", Toast.LENGTH_LONG).show();
                                          }
                                      });
 
@@ -253,7 +253,7 @@ public class RechercheActivity extends Fragment implements View.OnClickListener 
         protected void onPreExecute() {
             super.onPreExecute();
             //Window to see the progress of loading
-            progressDialog = new ProgressDialog(context);
+            progressDialog = new ProgressDialog(getActivity());
             progressDialog.setTitle("Showing Recipes ...");
             progressDialog.setMessage("Loading. Please Wait");
             progressDialog.setIndeterminate(false);

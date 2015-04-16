@@ -96,8 +96,7 @@
             android:id="@+id/docherche"
             android:layout_weight="0"
             android:background="@android:drawable/ic_menu_search"
-            android:enabled="false"
-            android:clickable="false" />
+             />
 
     </LinearLayout>
 
