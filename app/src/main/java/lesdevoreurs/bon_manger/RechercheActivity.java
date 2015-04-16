@@ -5,6 +5,7 @@ import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -13,6 +14,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -40,6 +42,9 @@ public class RechercheActivity extends ActionBarActivity implements View.OnClick
     RatingBar rate;
     Spinner spin;
     TextView titre;
+    ViewPager pager;
+
+    ArrayList<String> IDrecipe = new ArrayList<String>();
 
     Context context = this;
     static ProgressDialog progressDialog;
@@ -48,8 +53,10 @@ public class RechercheActivity extends ActionBarActivity implements View.OnClick
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.recherche);
 
+        setContentView(R.layout.research_pager);
+        pager = (ViewPager)findViewById(R.id.pager);
+        setContentView(R.layout.research);
         btnSearch = (Button)findViewById(R.id.docherche);
         btnEff = (Button)findViewById(R.id.doefface);
         edR = (EditText)findViewById(R.id.cherche);
@@ -80,6 +87,8 @@ public class RechercheActivity extends ActionBarActivity implements View.OnClick
                 edR.setText("");
             }
         });
+
+
     }
 
 
@@ -113,7 +122,6 @@ public class RechercheActivity extends ActionBarActivity implements View.OnClick
 
         //If search field isn't empty, we perform the search
         if (!recherche.matches("")) {
-            Toast.makeText(this, "Chargement des donnees du Web", Toast.LENGTH_SHORT).show();
             numPage = 1;
             new DownloadWebTask().execute();
         }
@@ -140,6 +148,9 @@ public class RechercheActivity extends ActionBarActivity implements View.OnClick
             String query = edR.getText().toString().replace(" ", "%20"); //Fill the space
             String numByPage = String.valueOf(spin.getSelectedItem());
             BigOvenWebAPI web = new BigOvenWebAPI(query, numPage, numByPage);
+
+            //Memorize ID
+            IDrecipe = web.IDS;
 
             //Preload the "noImage"
             String urlNoImage = "http://images.bigoven.com/image/upload/t_recipe-120/recipe-no-image.jpg";   //The "noImage" URL
@@ -210,7 +221,7 @@ public class RechercheActivity extends ActionBarActivity implements View.OnClick
             ArrayList<String> sousCategories = bigovenwebapi.sousCategories;
             ArrayList<String> ratings = bigovenwebapi.ratings;
 
-            MyAdapter adapter = new MyAdapter(titres, cuisines, categories, sousCategories, drawImages, ratings);
+            final MyAdapter adapter = new MyAdapter(titres, cuisines, categories, sousCategories, drawImages, ratings);
             listv.setAdapter(adapter);
             progressDialog.dismiss();   //End the progress window
 
@@ -220,6 +231,15 @@ public class RechercheActivity extends ActionBarActivity implements View.OnClick
             if(nbResultats == "1" && nbResultats == "0")
                 nomResultats = "Result : ";
             titre.setText(nomResultats + nbResultats);
+
+            //Open recipe onclick
+            listv.setOnItemClickListener(new AdapterView.OnItemClickListener(){
+                @Override
+                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                    String item = adapter.titres.get(position);
+                    Toast.makeText(getBaseContext(), item, Toast.LENGTH_LONG).show();
+                }
+            });
         }
     }
 
@@ -237,6 +257,7 @@ public class RechercheActivity extends ActionBarActivity implements View.OnClick
         public MyAdapter(ArrayList<String> titres, ArrayList<String> cuisines, ArrayList<String> categories, ArrayList<String> sousCategories,
                          ArrayList<Drawable> images, ArrayList<String> ratings){
             inflater = (LayoutInflater)getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+
             this.titres = titres;
             this.cuisines = cuisines;
             this.categories = categories;
@@ -266,7 +287,7 @@ public class RechercheActivity extends ActionBarActivity implements View.OnClick
             View v = convertView;
 
             if(v==null){
-                v = inflater.inflate(R.layout.element_recherche, parent, false);
+                v = inflater.inflate(R.layout.research_item, parent, false);
             }
 
             //Put everything in the listview

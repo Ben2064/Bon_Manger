@@ -18,6 +18,7 @@ import android.widget.Toast;
 public class MainActivity extends ActionBarActivity implements View.OnClickListener {
 
     Button cherche;
+    Button recette;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,11 +26,13 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
         myAdapter adapter;
 
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.accueil);
+        setContentView(R.layout.home);
 
         cherche = (Button)findViewById(R.id.gogogirl);
+        recette = (Button)findViewById(R.id.recette);
 
         cherche.setOnClickListener(this);
+        recette.setOnClickListener(this);
     }
 
 
@@ -57,9 +60,16 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
 
     @Override
     public void onClick(View v) {
-        Toast.makeText(this, "Switching to Search Activity!", Toast.LENGTH_LONG).show();
-        Intent i = new Intent(this, RechercheActivity.class);
-        startActivity(i);
+        if(v.getId()==R.id.gogogirl) {
+            Toast.makeText(this, "Switching to Search Activity!", Toast.LENGTH_LONG).show();
+            Intent i = new Intent(this, RechercheActivity.class);
+            startActivity(i);
+        }
+        if(v.getId()==R.id.recette) {
+            Toast.makeText(this, "Switching to Recette Activity!", Toast.LENGTH_LONG).show();
+            Intent i = new Intent(this, RecetteActivity.class);
+            startActivity(i);
+        }
     }
 
     private class myAdapter extends BaseAdapter{

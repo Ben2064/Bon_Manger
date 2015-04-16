@@ -22,6 +22,16 @@
             android:label="@string/app_name">
 
         </activity>
+        <activity
+            android:name = ".RecetteActivity"
+            android:label="@string/app_name">
+
+        </activity>
+        <activity
+            android:name = ".RecetteRechercheActivity"
+            android:label="@string/app_name">
+
+        </activity>
     </application>
 
 </manifest>
