@@ -97,33 +97,36 @@ public class RechercheActivity extends Fragment implements View.OnClickListener 
             public void onClick(View arg0) {
                 // Starting new async task
                 numPage++;
+
                 new DownloadWebTask().execute();
             }
         });
 
         //Erase research text
         btnSearch.setOnClickListener(new View.OnClickListener() {
-                                         @Override
-                                         public void onClick(View v) {
+             @Override
+             public void onClick(View v) {
 
-                                             String recherche = edR.getText().toString();
+                 String recherche = edR.getText().toString();
 
-                                             //If search field isn't empty, we perform the search
-                                             if (!recherche.matches("")) {
-                                                 numPage = 1;
-                                                 new DownloadWebTask().execute();
-                                             }
+                 //If search field isn't empty, we perform the search
+                 if (!recherche.matches("")) {
+                     numPage = 1;
+                     new DownloadWebTask().execute();
 
-                                             //Hide keyboard after hit the button
-                                             InputMethodManager inputManager = (InputMethodManager)
-                                                     getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+                     //Hide keyboard after hit the button
+                     InputMethodManager inputManager = (InputMethodManager)
+                             getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
 
-                                             inputManager.hideSoftInputFromWindow(getActivity().getCurrentFocus().getWindowToken(),
-                                                     InputMethodManager.HIDE_NOT_ALWAYS);
+                     inputManager.hideSoftInputFromWindow(getActivity().getCurrentFocus().getWindowToken(),
+                             InputMethodManager.HIDE_NOT_ALWAYS);
+                 }
 
-                                             //Toast.makeText(getActivity(), "Hello World", Toast.LENGTH_LONG).show();
-                                         }
-                                     });
+
+
+                 //Toast.makeText(getActivity(), "Hello World", Toast.LENGTH_LONG).show();
+             }
+         });
 
 
         btnEff.setOnClickListener(new View.OnClickListener() {
