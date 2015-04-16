@@ -1,12 +1,12 @@
 package lesdevoreurs.bon_manger;
 
+import android.app.Fragment;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
-import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -24,7 +24,6 @@ import android.widget.RatingBar;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
-import android.app.Fragment;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -354,8 +353,10 @@ public class RechercheActivity extends Fragment implements View.OnClickListener 
             ImageView imageView = (ImageView)v.findViewById(R.id.imageRechRecette); //Image
             imageView.setImageDrawable(images.get(position));
             RatingBar rating = (RatingBar)v.findViewById(R.id.myRatingBar); //Rating
-            double star = Double.parseDouble(ratings.get(position));
-            rating.setRating((int)star);
+            if(ratings.get(position) != "") {
+                double star = Double.parseDouble(ratings.get(position));
+                rating.setRating((int) star);
+            }
 
             return v;
         }
