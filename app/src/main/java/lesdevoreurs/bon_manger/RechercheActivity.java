@@ -1,6 +1,7 @@
 package lesdevoreurs.bon_manger;
 
 import android.app.Fragment;
+import android.app.FragmentManager;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.graphics.drawable.Drawable;
@@ -29,6 +30,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 import java.util.ArrayList;
+
+import Fragments.RecetteAffiche_Fragment;
 
 
 public class RechercheActivity extends Fragment {
@@ -309,6 +312,13 @@ public class RechercheActivity extends Fragment {
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                     String item = adapter.titres.get(position);
                     Toast.makeText(getActivity().getBaseContext(), item, Toast.LENGTH_LONG).show();
+                    FragmentManager fragmentManager = getFragmentManager();
+                    fragmentManager
+                            .beginTransaction()
+                            .replace(R.id.frame_container, RecetteAffiche_Fragment.newInstance(
+                                            "randomID-BITCHASSNIGGAYO")
+                            ).addToBackStack("rechercheBACK")
+                            .commit();
                 }
             });
         }

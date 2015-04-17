@@ -16,6 +16,8 @@ import android.content.Intent;
 import android.content.res.Configuration;
 import android.content.res.TypedArray;
 import android.os.Bundle;
+import android.support.v4.view.MenuItemCompat;
+import android.support.v7.widget.SearchView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -153,6 +155,8 @@ public class MainActivity extends Activity  {
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_main, menu);
+        MenuItem searchItem = menu.findItem(R.id.action_search);
+        SearchView searchView = (SearchView) MenuItemCompat.getActionView(searchItem);
         return true;
     }
     @Override
@@ -164,6 +168,10 @@ public class MainActivity extends Activity  {
         // Handle action bar actions click
         switch (item.getItemId()) {
             case R.id.action_settings:
+                return true;
+            case R.id.action_search:
+                //acttioooonnnnssss smooothhtthaaaffukcaa
+                //openSearch();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
@@ -227,30 +235,23 @@ public class MainActivity extends Activity  {
     private void displayView(int position) {
         // update the main content by replacing fragments
         Fragment fragment = null;
-        Intent intent = null;
         switch (position) {
             case 0: //home
                 fragment = new Home_Fragment();
-                // intent = new Intent(this,MainActivity.class);
                 break;
             case 1: //Recherche
-                // fragment = new FindPeopleFragment();
                 fragment = new RechercheActivity();
                 break;
             case 2: //Recette en cours
-                //  fragment = new PhotosFragment();
                fragment = new Recette_Fragment_PLACEHOLDER();
                 break;
             case 3: //Timers
-                //   fragment = new CommunityFragment();
                fragment = new Timer_Fragment_PLACEHOLDER();
                 break;
             case 4: //Liste d'epicerie
-                //   fragment = new PagesFragment();
                fragment = new Liste_Fragment_PLACEHOLDER();
                 break;
             case 5:// Menu
-                //  fragment = new WhatsHotFragment();
                 fragment = new Menu_Fragment_PLACEHOLDER();
                 break;
             case 6: //Livre
