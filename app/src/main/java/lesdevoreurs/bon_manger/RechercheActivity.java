@@ -94,6 +94,7 @@ public class RechercheActivity extends Fragment {
                         InputMethodManager.HIDE_NOT_ALWAYS);
             }
         });
+        listv.addFooterView(btnLoad);
 
         //Erase research text
         btnSearch.setOnClickListener(new View.OnClickListener() {
@@ -104,7 +105,8 @@ public class RechercheActivity extends Fragment {
 
                  //New search
                  rechPage="";
-                 listv.removeFooterView(btnLoad);
+                 //listv.removeFooterView(btnLoad);
+                 btnLoad.setVisibility(View.INVISIBLE);
 
                  //If search field isn't empty, we perform the search
                  if (!recherche.matches("")) {
@@ -249,10 +251,6 @@ public class RechercheActivity extends Fragment {
             ArrayList<String> sousCategories = bigovenwebapi.sousCategories;
             ArrayList<String> ratings = bigovenwebapi.ratings;
 
-            final MyAdapter adapter = new MyAdapter(titres, cuisines, categories, sousCategories, drawImages, ratings);
-            listv.setAdapter(adapter);
-            progressDialog.dismiss();   //End the progress window
-
             //Showing the number of results. Here because it's not in the listview
             String nbResultats = bigovenwebapi.nbResultats;
             String nomResultats = "Results : ";
@@ -269,10 +267,14 @@ public class RechercheActivity extends Fragment {
                 Log.d("TEST","Nbr : "+nbR+" nbResultPage : "+nbRP);
                 Log.d("TEST2","Nbr : "+nbR+" nbR/numPage "+( Math.ceil(nbR/nbRP) >= numPage+1)+" page? "+Math.ceil(nbR/nbRP) );
                 if( Math.ceil(nbR/nbRP) >= numPage+1)
-                    listv.addFooterView(btnLoad);
+                    btnLoad.setVisibility(View.VISIBLE);//listv.addFooterView(btnLoad);
                 else
-                    listv.removeFooterView(btnLoad);
+                    btnLoad.setVisibility(View.INVISIBLE);//listv.removeFooterView(btnLoad);
             }
+
+            final MyAdapter adapter = new MyAdapter(titres, cuisines, categories, sousCategories, drawImages, ratings);
+            listv.setAdapter(adapter);
+            progressDialog.dismiss();   //End the progress window
 
             //Open recipe onclick
             listv.setOnItemClickListener(new AdapterView.OnItemClickListener(){
