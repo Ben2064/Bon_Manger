@@ -9,6 +9,9 @@ import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import Fragments.SimplePagerFragment;
+import lesdevoreurs.bon_manger.R;
+
 
 public class RecetteActivity extends ActionBarActivity {
 

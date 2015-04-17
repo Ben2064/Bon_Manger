@@ -1,6 +1,12 @@
 package lesdevoreurs.bon_manger;
 
 import Adapter.NavDrawerListAdapter;
+import Fragments.Home_Fragment;
+import Fragments.Liste_Fragment_PLACEHOLDER;
+import Fragments.Livre_Fragment_PLACEHOLDER;
+import Fragments.Menu_Fragment_PLACEHOLDER;
+import Fragments.Recette_Fragment_PLACEHOLDER;
+import Fragments.Timer_Fragment_PLACEHOLDER;
 import SlidingMenu.NavDrawerItem;
 import android.app.Activity;
 import android.app.Fragment;
@@ -10,7 +16,6 @@ import android.content.Intent;
 import android.content.res.Configuration;
 import android.content.res.TypedArray;
 import android.os.Bundle;
-import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -19,10 +24,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
-import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v4.app.ActionBarDrawerToggle;
 
@@ -92,16 +95,18 @@ public class MainActivity extends Activity  {
         // adding nav drawer items to array
         // Home
         navDrawerItems.add(new NavDrawerItem(navMenuTitles[0], navMenuIcons.getResourceId(0, -1)));
-        // Find People
+        // Recherche
         navDrawerItems.add(new NavDrawerItem(navMenuTitles[1], navMenuIcons.getResourceId(1, -1)));
-        // Photos
+        // Recette en cours
         navDrawerItems.add(new NavDrawerItem(navMenuTitles[2], navMenuIcons.getResourceId(2, -1)));
-        // Communities, Will add a counter here
+        // Timers ----- le counter peut permettre d'afficher le nomber de timer qui sont actifs mettons
         navDrawerItems.add(new NavDrawerItem(navMenuTitles[3], navMenuIcons.getResourceId(3, -1), true, "22"));
-        // Pages
+        // Liste d'epicerie
         navDrawerItems.add(new NavDrawerItem(navMenuTitles[4], navMenuIcons.getResourceId(4, -1)));
-        // What's hot, We  will add a counter here
-        navDrawerItems.add(new NavDrawerItem(navMenuTitles[5], navMenuIcons.getResourceId(5, -1), true, "50+"));
+        // Menu
+        navDrawerItems.add(new NavDrawerItem(navMenuTitles[5], navMenuIcons.getResourceId(5, -1)));
+        //Livre de recettes
+        navDrawerItems.add(new NavDrawerItem(navMenuTitles[6], navMenuIcons.getResourceId(5, -1)));
 
 
         // Recycle the typed array
@@ -224,29 +229,32 @@ public class MainActivity extends Activity  {
         Fragment fragment = null;
         Intent intent = null;
         switch (position) {
-            case 0:
+            case 0: //home
                 fragment = new Home_Fragment();
                 // intent = new Intent(this,MainActivity.class);
                 break;
-            case 1:
+            case 1: //Recherche
                 // fragment = new FindPeopleFragment();
                 fragment = new RechercheActivity();
                 break;
-            case 2:
+            case 2: //Recette en cours
                 //  fragment = new PhotosFragment();
-               // fragment = new PlaceHolderRecettesFragment();
+               fragment = new Recette_Fragment_PLACEHOLDER();
                 break;
-            case 3:
+            case 3: //Timers
                 //   fragment = new CommunityFragment();
-              //  fragment = new HomeFragment();
+               fragment = new Timer_Fragment_PLACEHOLDER();
                 break;
-            case 4:
+            case 4: //Liste d'epicerie
                 //   fragment = new PagesFragment();
-               // fragment = new HomeFragment();
+               fragment = new Liste_Fragment_PLACEHOLDER();
                 break;
-            case 5:
+            case 5:// Menu
                 //  fragment = new WhatsHotFragment();
-               // fragment = new HomeFragment();
+                fragment = new Menu_Fragment_PLACEHOLDER();
+                break;
+            case 6: //Livre
+                fragment = new Livre_Fragment_PLACEHOLDER();
                 break;
 
             default:

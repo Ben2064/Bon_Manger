@@ -1,4 +1,4 @@
-package lesdevoreurs.bon_manger;
+package Fragments;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -6,6 +6,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+
+import lesdevoreurs.bon_manger.R;
 
 /**
  * Created by Nicolas on 2015-03-19.
