@@ -37,6 +37,7 @@ public class RechercheActivity extends Fragment {
     Button btnSearch;
     Button btnEff;
     Button btnLoad;
+    Button btnBack;
     EditText edR;
     ListView listv;
     RatingBar rate;
@@ -61,8 +62,7 @@ public class RechercheActivity extends Fragment {
 
     @Override
     //protected void onCreate(Bundle savedInstanceState) {
-    public void onActivityCreated (Bundle savedInstanceState){
-        //super.onStart();
+    public void onActivityCreated (final Bundle savedInstanceState){
         super.onActivityCreated(savedInstanceState);
 
         pager = (ViewPager)getView().findViewById(R.id.pager);
@@ -82,6 +82,7 @@ public class RechercheActivity extends Fragment {
         btnLoad.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View arg0) {
+
                 // Starting new async task
                 numPage++;
                 new DownloadWebTask().execute();
@@ -96,6 +97,28 @@ public class RechercheActivity extends Fragment {
         });
         listv.addFooterView(btnLoad);
 
+        //Load previous results
+        btnBack = new Button(getActivity());
+        btnBack.setText("Previous Results");
+        btnBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View arg0) {
+
+                // Starting new async task
+                numPage--;
+                new DownloadWebTask().execute();
+
+                //Hide keyboard after hit the button
+                InputMethodManager inputManager = (InputMethodManager)
+                        getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+
+                inputManager.hideSoftInputFromWindow(getActivity().getCurrentFocus().getWindowToken(),
+                        InputMethodManager.HIDE_NOT_ALWAYS);
+            }
+        });
+        listv.addHeaderView(btnBack);
+        btnBack.setVisibility(View.INVISIBLE);
+
         //Erase research text
         btnSearch.setOnClickListener(new View.OnClickListener() {
              @Override
@@ -105,8 +128,8 @@ public class RechercheActivity extends Fragment {
 
                  //New search
                  rechPage="";
-                 //listv.removeFooterView(btnLoad);
                  btnLoad.setVisibility(View.INVISIBLE);
+                 btnBack.setVisibility(View.INVISIBLE);
 
                  //If search field isn't empty, we perform the search
                  if (!recherche.matches("")) {
@@ -258,21 +281,25 @@ public class RechercheActivity extends Fragment {
                 nomResultats = "Result : ";
             research.setText(nomResultats + nbResultats);
 
-            //String numByPage = String.valueOf(spin.getSelectedItem());
             String nbResult = research.getText().toString().replace("Result : ", "").replace("Results : ","");
-            Log.d("TEST","Numpage : "+(numPage+1)+" nbResult : "+nbResult);
             if(nbResult!="Research") {
                 double nbR = Double.parseDouble(nbResult);
                 double nbRP = Double.parseDouble(numByPage);
-                Log.d("TEST","Nbr : "+nbR+" nbResultPage : "+nbRP);
-                Log.d("TEST2","Nbr : "+nbR+" nbR/numPage "+( Math.ceil(nbR/nbRP) >= numPage+1)+" page? "+Math.ceil(nbR/nbRP) );
+
+                //Check if there's a next page
                 if( Math.ceil(nbR/nbRP) >= numPage+1)
-                    btnLoad.setVisibility(View.VISIBLE);//listv.addFooterView(btnLoad);
+                    btnLoad.setVisibility(View.VISIBLE);
                 else
-                    btnLoad.setVisibility(View.INVISIBLE);//listv.removeFooterView(btnLoad);
+                    btnLoad.setVisibility(View.INVISIBLE);
+
+                //Check if there's a previous apge
+                if(numPage==1)
+                    btnBack.setVisibility(View.INVISIBLE);
+                else
+                    btnBack.setVisibility(View.VISIBLE);
             }
 
-            final MyAdapter adapter = new MyAdapter(titres, cuisines, categories, sousCategories, drawImages, ratings);
+            final MyAdapter adapter = new MyAdapter(titres, cuisines, categories, sousCategories, drawImages, ratings, numByPage);
             listv.setAdapter(adapter);
             progressDialog.dismiss();   //End the progress window
 
@@ -296,10 +323,11 @@ public class RechercheActivity extends Fragment {
         ArrayList<Drawable> images;
         ArrayList<String> ratings;
 
+        int numByPage;
         LayoutInflater inflater;
 
         public MyAdapter(ArrayList<String> titres, ArrayList<String> cuisines, ArrayList<String> categories, ArrayList<String> sousCategories,
-                         ArrayList<Drawable> images, ArrayList<String> ratings){
+                         ArrayList<Drawable> images, ArrayList<String> ratings, String numByPage){
             inflater = (LayoutInflater)getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
             this.titres = titres;
@@ -308,11 +336,12 @@ public class RechercheActivity extends Fragment {
             this.sousCategories = sousCategories;
             this.images = images;
             this.ratings = ratings;
+            this.numByPage = Integer.parseInt(numByPage);
         }
 
         @Override
         public int getCount() {
-            return titres.size();
+            return titres.size(); //numByPage*(numPage);
         }
 
         @Override
@@ -333,6 +362,7 @@ public class RechercheActivity extends Fragment {
             if(v==null){
                 v = inflater.inflate(R.layout.research_item, parent, false);
             }
+            //position = position + (numPage-1)*numByPage;
 
             //Put everything in the listview
             TextView titre = (TextView)v.findViewById(R.id.nomRechRecette); //Title
