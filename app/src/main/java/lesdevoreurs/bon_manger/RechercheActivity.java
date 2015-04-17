@@ -157,6 +157,7 @@ public class RechercheActivity extends Fragment {
     //Search in BigOvenWebAPI
     public class DownloadWebTask extends AsyncTask<Void, Void, BigOvenWebAPI>{
 
+        String numByPage = "20";
         //To convert the images
         ArrayList<String> images;
         ArrayList<Drawable> drawImages;
@@ -173,7 +174,7 @@ public class RechercheActivity extends Fragment {
             }
             else    //If load more
                 query = rechPage;
-            String numByPage = String.valueOf(spin.getSelectedItem());
+            numByPage = String.valueOf(spin.getSelectedItem());
             BigOvenWebAPI web = new BigOvenWebAPI(query, numPage, numByPage);
 
             //Memorize ID
@@ -259,12 +260,15 @@ public class RechercheActivity extends Fragment {
                 nomResultats = "Result : ";
             research.setText(nomResultats + nbResultats);
 
+            //String numByPage = String.valueOf(spin.getSelectedItem());
             String nbResult = research.getText().toString().replace("Result : ", "").replace("Results : ","");
-            Log.d("TEST","Numpage : "+numPage+" nbResult : "+nbResult);
+            Log.d("TEST","Numpage : "+(numPage+1)+" nbResult : "+nbResult);
             if(nbResult!="Research") {
-                int nbR = Integer.parseInt(nbResult);
-                Log.d("TEST2","Nbr : "+nbR+" nbR/20 "+(nbR/20>=numPage+1));
-                if(nbR/20 >= numPage + 1)
+                double nbR = Double.parseDouble(nbResult);
+                double nbRP = Double.parseDouble(numByPage);
+                Log.d("TEST","Nbr : "+nbR+" nbResultPage : "+nbRP);
+                Log.d("TEST2","Nbr : "+nbR+" nbR/numPage "+( Math.ceil(nbR/nbRP) >= numPage+1)+" page? "+Math.ceil(nbR/nbRP) );
+                if( Math.ceil(nbR/nbRP) >= numPage+1)
                     listv.addFooterView(btnLoad);
                 else
                     listv.removeFooterView(btnLoad);
