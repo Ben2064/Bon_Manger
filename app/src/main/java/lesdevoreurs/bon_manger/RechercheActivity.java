@@ -31,7 +31,7 @@ import java.net.URL;
 import java.util.ArrayList;
 
 
-public class RechercheActivity extends Fragment implements View.OnClickListener {
+public class RechercheActivity extends Fragment {
 
     //UI elements
     Button btnSearch;
@@ -41,24 +41,20 @@ public class RechercheActivity extends Fragment implements View.OnClickListener 
     ListView listv;
     RatingBar rate;
     Spinner spin;
-    TextView titre;
+    TextView research;
     ViewPager pager;
 
     ArrayList<String> IDrecipe = new ArrayList<String>();
 
-    //Context context = this;
     Context context = getActivity();
     static ProgressDialog progressDialog;
     static int numPage;
+    static String rechPage = "";
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,Bundle savedInstanceState )
     {
-
         View view = inflater.inflate(R.layout.research,container,false);
-        //btnSearch = (Button) view.findViewById(R.id.docherche);
-        //btnSearch.setOnClickListener(this);
-
         return view;
     }
 
@@ -69,12 +65,7 @@ public class RechercheActivity extends Fragment implements View.OnClickListener 
         //super.onStart();
         super.onActivityCreated(savedInstanceState);
 
-        Toast.makeText(getActivity(), "ca marche tu tabarnak", Toast.LENGTH_LONG).show();
-        //System.out.println("yooooooooooooooooooolooooooooooooooo");
-
-        //getActivity().setContentView(R.layout.research_pager);
         pager = (ViewPager)getView().findViewById(R.id.pager);
-        //getActivity().setContentView(R.layout.research);
         btnSearch = (Button)getView().findViewById(R.id.docherche);
         btnEff = (Button)getView().findViewById(R.id.doefface);
         edR = (EditText)getView().findViewById(R.id.cherche);
@@ -82,23 +73,25 @@ public class RechercheActivity extends Fragment implements View.OnClickListener 
         spin.setSelection(3);
         rate = (RatingBar)getView().findViewById(R.id.myRatingBar);
         listv = (ListView)getView().findViewById(R.id.activity_list);
-        titre = (TextView)getView().findViewById(R.id.activity_title);
-        titre.setText("Research");
-
-        Toast.makeText(getActivity(), "pi icite", Toast.LENGTH_LONG).show();
-
+        research = (TextView)getView().findViewById(R.id.activity_title);
+        research.setText("Research");
 
         //Load another page of result
         btnLoad = new Button(getActivity());
         btnLoad.setText("Load More");
-        listv.addFooterView(btnLoad);
         btnLoad.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View arg0) {
                 // Starting new async task
                 numPage++;
-
                 new DownloadWebTask().execute();
+
+                //Hide keyboard after hit the button
+                InputMethodManager inputManager = (InputMethodManager)
+                        getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+
+                inputManager.hideSoftInputFromWindow(getActivity().getCurrentFocus().getWindowToken(),
+                        InputMethodManager.HIDE_NOT_ALWAYS);
             }
         });
 
@@ -108,6 +101,10 @@ public class RechercheActivity extends Fragment implements View.OnClickListener 
              public void onClick(View v) {
 
                  String recherche = edR.getText().toString();
+
+                 //New search
+                 rechPage="";
+                 listv.removeFooterView(btnLoad);
 
                  //If search field isn't empty, we perform the search
                  if (!recherche.matches("")) {
@@ -121,23 +118,14 @@ public class RechercheActivity extends Fragment implements View.OnClickListener 
                      inputManager.hideSoftInputFromWindow(getActivity().getCurrentFocus().getWindowToken(),
                              InputMethodManager.HIDE_NOT_ALWAYS);
                  }
-
-
-
-                 //Toast.makeText(getActivity(), "Hello World", Toast.LENGTH_LONG).show();
              }
          });
 
-
+        //Erase the text in search field
         btnEff.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 edR.setText("");
             }
-           /*@Override
-               public void onClick(View v){
-               Toast.makeText(getActivity(), "Hello World", Toast.LENGTH_LONG).show();
-
-           }*/
         });
 
 
@@ -166,28 +154,6 @@ public class RechercheActivity extends Fragment implements View.OnClickListener 
         return super.onOptionsItemSelected(item);
     }
 
-    //Perform search
-    @Override
-    public void onClick(View v) {
-
-                String recherche = edR.getText().toString();
-
-                //If search field isn't empty, we perform the search
-                if (!recherche.matches("")) {
-                    numPage = 1;
-                    new DownloadWebTask().execute();
-                }
-
-                //Hide keyboard after hit the button
-                InputMethodManager inputManager = (InputMethodManager)
-                        getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
-
-                inputManager.hideSoftInputFromWindow(getActivity().getCurrentFocus().getWindowToken(),
-                        InputMethodManager.HIDE_NOT_ALWAYS);
-
-
-    }
-
     //Search in BigOvenWebAPI
     public class DownloadWebTask extends AsyncTask<Void, Void, BigOvenWebAPI>{
 
@@ -198,8 +164,15 @@ public class RechercheActivity extends Fragment implements View.OnClickListener 
         @Override
         protected BigOvenWebAPI doInBackground(Void... params) {
 
+            String query = rechPage;
+
             //Make query
-            String query = edR.getText().toString().replace(" ", "%20"); //Fill the space
+            if(rechPage=="") {  //If new search
+                query = edR.getText().toString().replace(" ", "%20"); //Fill the space
+                rechPage = query;
+            }
+            else    //If load more
+                query = rechPage;
             String numByPage = String.valueOf(spin.getSelectedItem());
             BigOvenWebAPI web = new BigOvenWebAPI(query, numPage, numByPage);
 
@@ -284,7 +257,18 @@ public class RechercheActivity extends Fragment implements View.OnClickListener 
             String nomResultats = "Results : ";
             if(nbResultats == "1" && nbResultats == "0")
                 nomResultats = "Result : ";
-            titre.setText(nomResultats + nbResultats);
+            research.setText(nomResultats + nbResultats);
+
+            String nbResult = research.getText().toString().replace("Result : ", "").replace("Results : ","");
+            Log.d("TEST","Numpage : "+numPage+" nbResult : "+nbResult);
+            if(nbResult!="Research") {
+                int nbR = Integer.parseInt(nbResult);
+                Log.d("TEST2","Nbr : "+nbR+" nbR/20 "+(nbR/20>=numPage+1));
+                if(nbR/20 >= numPage + 1)
+                    listv.addFooterView(btnLoad);
+                else
+                    listv.removeFooterView(btnLoad);
+            }
 
             //Open recipe onclick
             listv.setOnItemClickListener(new AdapterView.OnItemClickListener(){
@@ -356,11 +340,12 @@ public class RechercheActivity extends Fragment implements View.OnClickListener 
             ImageView imageView = (ImageView)v.findViewById(R.id.imageRechRecette); //Image
             imageView.setImageDrawable(images.get(position));
             RatingBar rating = (RatingBar)v.findViewById(R.id.myRatingBar); //Rating
-            if(ratings.get(position) != "") {
+            if(ratings.get(position) != "") {   //If Rating is empty
                 double star = Double.parseDouble(ratings.get(position));
                 rating.setRating((int) star);
             }
-
+            else
+                rating.setVisibility(View.INVISIBLE);
             return v;
         }
     }
