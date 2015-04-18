@@ -115,7 +115,7 @@ public class BigOvenRecipeWebAPI {
                         //Etape 6 : récupération du nom et du prénom
                         final Element nom = (Element) ingredient.getElementsByTagName("Name").item(0);
                         ingredientsNom.add(nom.getTextContent());
-                        final Element quantite = (Element) ingredient.getElementsByTagName("Title").item(0);
+                        final Element quantite = (Element) ingredient.getElementsByTagName("Quantity").item(0);
                         if(quantite != null)
                             ingredientsQuantite.add(quantite.getTextContent());
                     }

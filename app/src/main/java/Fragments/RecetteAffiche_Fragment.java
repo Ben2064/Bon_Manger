@@ -6,6 +6,7 @@ import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -71,8 +72,8 @@ public class RecetteAffiche_Fragment extends Fragment {
         titre.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ingredients.setVisibility(View.INVISIBLE);
-                scrollIns.setVisibility(View.INVISIBLE);
+                ingredients.setVisibility(View.GONE);
+                scrollIns.setVisibility(View.GONE);
                 image.setVisibility(View.VISIBLE);
                 description.setVisibility(View.VISIBLE);
                 temps.setVisibility(View.VISIBLE);
@@ -86,7 +87,7 @@ public class RecetteAffiche_Fragment extends Fragment {
             @Override
             public void onClick(View v) {
                 ingredients.setVisibility(View.VISIBLE);
-                scrollIns.setVisibility(View.INVISIBLE);
+                scrollIns.setVisibility(View.GONE);
                 image.setVisibility(View.GONE);
                 description.setVisibility(View.GONE);
                 temps.setVisibility(View.GONE);
@@ -99,7 +100,7 @@ public class RecetteAffiche_Fragment extends Fragment {
         btIns.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ingredients.setVisibility(View.INVISIBLE);
+                ingredients.setVisibility(View.GONE);
                 scrollIns.setVisibility(View.VISIBLE);
                 image.setVisibility(View.GONE);
                 description.setVisibility(View.GONE);
@@ -168,6 +169,7 @@ public class RecetteAffiche_Fragment extends Fragment {
             instructions.setText(instructionsR);
 
             final MyAdapter adapter = new MyAdapter(ingredientsN, ingredientsNb);
+            ingredients.setAdapter(adapter);
             progressDialog.dismiss();
         }
     }
@@ -185,6 +187,7 @@ public class RecetteAffiche_Fragment extends Fragment {
 
             this.nom = n;
             this.nombre = nb;
+            Log.d("Test",""+nombre.size()+" "+nom.size());
         }
 
         @Override
