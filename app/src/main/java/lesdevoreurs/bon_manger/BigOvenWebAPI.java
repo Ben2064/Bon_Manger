@@ -109,7 +109,7 @@ public class BigOvenWebAPI {
             //Si on n'a aucun résultat
             else {
                 IDS.add("");
-                titres.add("Nothing found");
+                titres.add("Nothing found for "+query.replace("%20"," "));
                 cuisines.add("");
                 categories.add("");
                 sousCategories.add("");

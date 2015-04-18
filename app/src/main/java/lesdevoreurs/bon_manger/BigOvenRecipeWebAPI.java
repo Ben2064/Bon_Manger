@@ -29,21 +29,22 @@ import javax.xml.parsers.ParserConfigurationException;
 /**
  * Created by Nicolas on 2015-04-12.
  */
-public class BigOvenRecetteWebAPI {
-    String image = "";
-    String ID = "";
-    String titre = "";
-    String description = "";
-    String cuisine = "";
-    String categorie = "";
-    String sousCategorie = "";
-    String ingredientPrimaire = "";
-    String instructions = "";
+public class BigOvenRecipeWebAPI {
+    public Drawable image = null;
+    public String titre = "";
+    public String description = "";
+    public String cuisine = "";
+    public String categorie = "";
+    public String sousCategorie = "";
+    public String ingredientPrimaire = "";
+    public String instructions = "";
+    public String tempsTotal = "0";
+    public String tempsCuisson = "0";
     ArrayList<String> ingredientsNom;
     ArrayList<String> ingredientsQuantite;
     //Drawable images;
 
-    public BigOvenRecetteWebAPI(String query) {
+    public BigOvenRecipeWebAPI(String query) {
 
         String url = "http://api.bigoven.com/recipe/" + query + "?api_key=dvxRg7vK4t5RBlTap04zYHqbu08e374G";
         ingredientsNom = new ArrayList<String>();
@@ -65,26 +66,42 @@ public class BigOvenRecetteWebAPI {
             //Etape 4 : récupération de l'Element racine
             final Element racine = document.getDocumentElement();
             //Etape 5 : récupération des recettes
-            final Element ident = (Element) racine.getElementsByTagName("RecipeID");
-            ID = ident.getTextContent();
-            final Element title = (Element) racine.getElementsByTagName("Title");
+            final Element title = (Element) racine.getElementsByTagName("Title").item(0);
             titre = title.getTextContent();
-            final Element desc = (Element) racine.getElementsByTagName("Description");
+            final Element desc = (Element) racine.getElementsByTagName("Description").item(0);
             if (desc != null)
                 description = desc.getTextContent();
-            final Element cuis = (Element) racine.getElementsByTagName("Cuisine");
+            if(description == "")
+                description = "No description";
+            final Element cuis = (Element) racine.getElementsByTagName("Cuisine").item(0);
             if (cuis != null)
                 cuisine = cuis.getTextContent();
-            final Element cat = (Element) racine.getElementsByTagName("Category");
-            categorie = cat.getTextContent();
-            final Element scat = (Element) racine.getElementsByTagName("Subcategory");
-            sousCategorie = scat.getTextContent();
-            final Element prim = (Element) racine.getElementsByTagName("PrimaryIngredients");
-            ingredientPrimaire = prim.getTextContent();
-            final Element im = (Element) racine.getElementsByTagName("ImageURL");
-            image = im.getTextContent();
-            final Element inst = (Element) racine.getElementsByTagName("Instructions");
-            instructions = inst.getTextContent();
+            final Element cat = (Element) racine.getElementsByTagName("Category").item(0);
+            if(cat != null)
+                categorie = cat.getTextContent();
+            final Element scat = (Element) racine.getElementsByTagName("Subcategory").item(0);
+            if(scat != null)
+                sousCategorie = scat.getTextContent();
+            final Element prim = (Element) racine.getElementsByTagName("PrimaryIngredients").item(0);
+            if(prim != null)
+                ingredientPrimaire = prim.getTextContent();
+            final Element im = (Element) racine.getElementsByTagName("ImageURL").item(0);
+            image = loadHttpImage(im.getTextContent().replace("http://redirect.bigoven.com/pics/rs/640/","http://images.bigoven.com/image/upload/t_recipe-120/"));
+            final Element inst = (Element) racine.getElementsByTagName("Instructions").item(0);
+            if(inst != null)
+                instructions = inst.getTextContent();
+            final Element tt = (Element) racine.getElementsByTagName("TotalMinutes").item(0);
+            if(tt != null) {
+                if (tt.getTextContent().length() > 0)  //For weird things in API
+                    tempsTotal = tt.getTextContent();
+            }
+            final Element tc = (Element) racine.getElementsByTagName("ActiveMinutes").item(0);
+            if(tc != null) {
+                if (tc.getTextContent().length() > 0)   //For weird things in API
+                    tempsCuisson = tc.getTextContent();
+            }
+            else
+                tempsCuisson = "0";
 
             final NodeList racineNoeuds = racine.getElementsByTagName("Ingredients");
             final Element racineNoeudsNoeuds = (Element) racineNoeuds.item(0);
@@ -99,7 +116,8 @@ public class BigOvenRecetteWebAPI {
                         final Element nom = (Element) ingredient.getElementsByTagName("Name").item(0);
                         ingredientsNom.add(nom.getTextContent());
                         final Element quantite = (Element) ingredient.getElementsByTagName("Title").item(0);
-                        ingredientsQuantite.add(quantite.getTextContent());
+                        if(quantite != null)
+                            ingredientsQuantite.add(quantite.getTextContent());
                     }
                 }
             } else {

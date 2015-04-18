@@ -7,7 +7,6 @@ import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.v4.view.ViewPager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -24,7 +23,6 @@ import android.widget.ListView;
 import android.widget.RatingBar;
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -46,11 +44,8 @@ public class RechercheActivity extends Fragment {
     RatingBar rate;
     Spinner spin;
     TextView research;
-    ViewPager pager;
 
-    ArrayList<String> IDrecipe = new ArrayList<String>();
-
-    Context context = getActivity();
+    View view;
     static ProgressDialog progressDialog;
     static int numPage;
     static String rechPage = "";
@@ -58,105 +53,106 @@ public class RechercheActivity extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,Bundle savedInstanceState )
     {
-        View view = inflater.inflate(R.layout.research,container,false);
+        //Reload the view in case of "back" or create a new one if it's the first time
+        if (view == null)
+            view = inflater.inflate(R.layout.research, container, false);
         return view;
     }
 
 
     @Override
-    //protected void onCreate(Bundle savedInstanceState) {
     public void onActivityCreated (final Bundle savedInstanceState){
         super.onActivityCreated(savedInstanceState);
 
-        pager = (ViewPager)getView().findViewById(R.id.pager);
-        btnSearch = (Button)getView().findViewById(R.id.docherche);
-        btnEff = (Button)getView().findViewById(R.id.doefface);
-        edR = (EditText)getView().findViewById(R.id.cherche);
-        spin = (Spinner)getView().findViewById((R.id.nbp));
-        spin.setSelection(3);
-        rate = (RatingBar)getView().findViewById(R.id.myRatingBar);
-        listv = (ListView)getView().findViewById(R.id.activity_list);
-        research = (TextView)getView().findViewById(R.id.activity_title);
-        research.setText("Research");
+        if(btnSearch==null) {
+            btnSearch = (Button) getView().findViewById(R.id.docherche);
+            btnEff = (Button) getView().findViewById(R.id.doefface);
+            edR = (EditText) getView().findViewById(R.id.cherche);
+            spin = (Spinner) getView().findViewById((R.id.nbp));
+            spin.setSelection(3);
+            rate = (RatingBar) getView().findViewById(R.id.myRatingBar);
+            listv = (ListView) getView().findViewById(R.id.activity_list);
+            research = (TextView) getView().findViewById(R.id.activity_title);
+            research.setText("Research");
 
-        //Load another page of result
-        btnLoad = new Button(getActivity());
-        btnLoad.setText("Load More");
-        btnLoad.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View arg0) {
+            //Load another page of result
+            btnLoad = new Button(getActivity());
+            btnLoad.setText("Load More");
+            btnLoad.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View arg0) {
 
-                // Starting new async task
-                numPage++;
-                new DownloadWebTask().execute();
+                    // Starting new async task
+                    numPage++;
+                    new DownloadWebTask().execute();
 
-                //Hide keyboard after hit the button
-                InputMethodManager inputManager = (InputMethodManager)
-                        getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+                    //Hide keyboard after hit the button
+                    InputMethodManager inputManager = (InputMethodManager)
+                            getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
 
-                inputManager.hideSoftInputFromWindow(getActivity().getCurrentFocus().getWindowToken(),
-                        InputMethodManager.HIDE_NOT_ALWAYS);
-            }
-        });
-        listv.addFooterView(btnLoad);
+                    inputManager.hideSoftInputFromWindow(getActivity().getCurrentFocus().getWindowToken(),
+                            InputMethodManager.HIDE_NOT_ALWAYS);
+                }
+            });
+            listv.addFooterView(btnLoad);
 
-        //Load previous results
-        btnBack = new Button(getActivity());
-        btnBack.setText("Previous Results");
-        btnBack.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View arg0) {
+            //Load previous results
+            btnBack = new Button(getActivity());
+            btnBack.setText("Previous Results");
+            btnBack.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View arg0) {
 
-                // Starting new async task
-                numPage--;
-                new DownloadWebTask().execute();
+                    // Starting new async task
+                    numPage--;
+                    new DownloadWebTask().execute();
 
-                //Hide keyboard after hit the button
-                InputMethodManager inputManager = (InputMethodManager)
-                        getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+                    //Hide keyboard after hit the button
+                    InputMethodManager inputManager = (InputMethodManager)
+                            getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
 
-                inputManager.hideSoftInputFromWindow(getActivity().getCurrentFocus().getWindowToken(),
-                        InputMethodManager.HIDE_NOT_ALWAYS);
-            }
-        });
-        listv.addHeaderView(btnBack);
-        btnBack.setVisibility(View.INVISIBLE);
+                    inputManager.hideSoftInputFromWindow(getActivity().getCurrentFocus().getWindowToken(),
+                            InputMethodManager.HIDE_NOT_ALWAYS);
+                }
+            });
+            listv.addHeaderView(btnBack);
+            btnBack.setVisibility(View.INVISIBLE);
 
-        //Erase research text
-        btnSearch.setOnClickListener(new View.OnClickListener() {
-             @Override
-             public void onClick(View v) {
+            //Erase research text
+            btnSearch.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
 
-                 String recherche = edR.getText().toString();
+                    String recherche = edR.getText().toString();
 
-                 //New search
-                 rechPage="";
-                 btnLoad.setVisibility(View.INVISIBLE);
-                 btnBack.setVisibility(View.INVISIBLE);
+                    //New search
+                    rechPage = "";
+                    btnLoad.setVisibility(View.INVISIBLE);
+                    btnBack.setVisibility(View.INVISIBLE);
 
-                 //If search field isn't empty, we perform the search
-                 if (!recherche.matches("")) {
-                     numPage = 1;
-                     new DownloadWebTask().execute();
+                    //If search field isn't empty, we perform the search
+                    if (!recherche.matches("")) {
+                        numPage = 1;
+                        new DownloadWebTask().execute();
 
-                     //Hide keyboard after hit the button
-                     InputMethodManager inputManager = (InputMethodManager)
-                             getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+                        //Hide keyboard after hit the button
+                        InputMethodManager inputManager = (InputMethodManager)
+                                getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
 
-                     inputManager.hideSoftInputFromWindow(getActivity().getCurrentFocus().getWindowToken(),
-                             InputMethodManager.HIDE_NOT_ALWAYS);
-                 }
-             }
-         });
+                        inputManager.hideSoftInputFromWindow(getActivity().getCurrentFocus().getWindowToken(),
+                                InputMethodManager.HIDE_NOT_ALWAYS);
+                    }
+                }
+            });
 
-        //Erase the text in search field
-        btnEff.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                edR.setText("");
-            }
-        });
+            //Erase the text in search field
+            btnEff.setOnClickListener(new View.OnClickListener() {
+                public void onClick(View v) {
+                    edR.setText("");
+                }
+            });
 
-
+        }
     }
 
 
@@ -204,9 +200,6 @@ public class RechercheActivity extends Fragment {
                 query = rechPage;
             numByPage = String.valueOf(spin.getSelectedItem());
             BigOvenWebAPI web = new BigOvenWebAPI(query, numPage, numByPage);
-
-            //Memorize ID
-            IDrecipe = web.IDS;
 
             //Preload the "noImage"
             String urlNoImage = "http://images.bigoven.com/image/upload/t_recipe-120/recipe-no-image.jpg";   //The "noImage" URL
@@ -268,10 +261,10 @@ public class RechercheActivity extends Fragment {
         }
 
         @Override
-        protected void onPostExecute(BigOvenWebAPI bigovenwebapi) {
+        protected void onPostExecute(final BigOvenWebAPI bigovenwebapi) {
 
             //Get from BigOvenWebAPI
-            ArrayList<String> titres = bigovenwebapi.titres;
+            final ArrayList<String> titres = bigovenwebapi.titres;
             ArrayList<String> cuisines = bigovenwebapi.cuisines;
             ArrayList<String> categories = bigovenwebapi.categories;
             ArrayList<String> sousCategories = bigovenwebapi.sousCategories;
@@ -310,15 +303,22 @@ public class RechercheActivity extends Fragment {
             listv.setOnItemClickListener(new AdapterView.OnItemClickListener(){
                 @Override
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                    String item = adapter.titres.get(position);
-                    Toast.makeText(getActivity().getBaseContext(), item, Toast.LENGTH_LONG).show();
-                    FragmentManager fragmentManager = getFragmentManager();
-                    fragmentManager
-                            .beginTransaction()
-                            .replace(R.id.frame_container, RecetteAffiche_Fragment.newInstance(
-                                            "randomID-BITCHASSNIGGAYO")
-                            ).addToBackStack("rechercheBACK")
-                            .commit();
+                    boolean chercheRecette = true;
+                    String titrecheck = titres.get(position-1);
+
+                    //Check if it's a recipe or a Nothing found before adding listener
+                    if(titrecheck.length()>=13) {
+                       Log.d("Test",""+titrecheck.substring(0, 13));
+                        if (titrecheck.substring(0, 13).equals("Nothing found")) {
+                            chercheRecette = false;
+                        }
+                    }
+                    if(chercheRecette){
+                        String idRecette = bigovenwebapi.IDS.get(position - 1);
+                        FragmentManager fragmentManager = getFragmentManager();
+                        fragmentManager.beginTransaction().replace(R.id.frame_container, RecetteAffiche_Fragment.newInstance(
+                                idRecette)).addToBackStack("rechercheBACK").commit();
+                    }
                 }
             });
         }
@@ -351,7 +351,7 @@ public class RechercheActivity extends Fragment {
 
         @Override
         public int getCount() {
-            return titres.size(); //numByPage*(numPage);
+            return titres.size();
         }
 
         @Override
@@ -372,7 +372,6 @@ public class RechercheActivity extends Fragment {
             if(v==null){
                 v = inflater.inflate(R.layout.research_item, parent, false);
             }
-            //position = position + (numPage-1)*numByPage;
 
             //Put everything in the listview
             TextView titre = (TextView)v.findViewById(R.id.nomRechRecette); //Title
