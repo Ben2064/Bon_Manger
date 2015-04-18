@@ -116,7 +116,7 @@ public class RechercheActivity extends Fragment {
                 }
             });
             listv.addHeaderView(btnBack);
-            btnBack.setVisibility(View.INVISIBLE);
+            btnBack.setVisibility(View.GONE);
 
             //Erase research text
             btnSearch.setOnClickListener(new View.OnClickListener() {
@@ -127,8 +127,8 @@ public class RechercheActivity extends Fragment {
 
                     //New search
                     rechPage = "";
-                    btnLoad.setVisibility(View.INVISIBLE);
-                    btnBack.setVisibility(View.INVISIBLE);
+                    btnLoad.setVisibility(View.GONE);
+                    btnBack.setVisibility(View.GONE);
 
                     //If search field isn't empty, we perform the search
                     if (!recherche.matches("")) {
@@ -286,11 +286,11 @@ public class RechercheActivity extends Fragment {
                 if( Math.ceil(nbR/nbRP) >= numPage+1)
                     btnLoad.setVisibility(View.VISIBLE);
                 else
-                    btnLoad.setVisibility(View.INVISIBLE);
+                    btnLoad.setVisibility(View.GONE);
 
                 //Check if there's a previous apge
                 if(numPage==1)
-                    btnBack.setVisibility(View.INVISIBLE);
+                    btnBack.setVisibility(View.GONE);
                 else
                     btnBack.setVisibility(View.VISIBLE);
             }

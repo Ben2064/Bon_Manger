@@ -3,6 +3,7 @@ package Fragments;
 import android.app.Fragment;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -12,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.ScrollView;
@@ -39,7 +41,13 @@ public class RecetteAffiche_Fragment extends Fragment {
     ListView ingredients;
     Button btIng;
     Button btIns;
+    Button addBtn;
     ScrollView scrollIns;
+
+    //To pass to list
+    public static ArrayList<String> nameIngredients = new ArrayList<String>();
+    public static ArrayList<String> numberIngredients = new ArrayList<String>();
+    public static boolean checkList[] = null;
 
     public RecetteAffiche_Fragment(){};
 
@@ -73,7 +81,9 @@ public class RecetteAffiche_Fragment extends Fragment {
             @Override
             public void onClick(View v) {
                 ingredients.setVisibility(View.GONE);
+                btIng.setBackgroundColor(Color.GRAY);
                 scrollIns.setVisibility(View.GONE);
+                btIns.setBackgroundColor(Color.GRAY);
                 image.setVisibility(View.VISIBLE);
                 description.setVisibility(View.VISIBLE);
                 temps.setVisibility(View.VISIBLE);
@@ -87,7 +97,9 @@ public class RecetteAffiche_Fragment extends Fragment {
             @Override
             public void onClick(View v) {
                 ingredients.setVisibility(View.VISIBLE);
+                btIng.setBackgroundColor(Color.DKGRAY);
                 scrollIns.setVisibility(View.GONE);
+                btIns.setBackgroundColor(Color.GRAY);
                 image.setVisibility(View.GONE);
                 description.setVisibility(View.GONE);
                 temps.setVisibility(View.GONE);
@@ -101,7 +113,9 @@ public class RecetteAffiche_Fragment extends Fragment {
             @Override
             public void onClick(View v) {
                 ingredients.setVisibility(View.GONE);
+                btIng.setBackgroundColor(Color.GRAY);
                 scrollIns.setVisibility(View.VISIBLE);
+                btIns.setBackgroundColor(Color.DKGRAY);
                 image.setVisibility(View.GONE);
                 description.setVisibility(View.GONE);
                 temps.setVisibility(View.GONE);
@@ -109,7 +123,13 @@ public class RecetteAffiche_Fragment extends Fragment {
             }
         });
 
+        addBtn = new Button(getActivity());
+        addBtn.setText("Add to my list");
+        ingredients.addFooterView(addBtn);
+
+        //Start searching API
         new DownloadWebTask().execute();
+
     }
 
     @Override
@@ -123,6 +143,7 @@ public class RecetteAffiche_Fragment extends Fragment {
     //Search in BigOvenRecipeWebAPI
     public class DownloadWebTask extends AsyncTask<Void, Void, BigOvenRecipeWebAPI> {
         ProgressDialog progressDialog;
+        boolean[] checkList;
 
         @Override
         protected BigOvenRecipeWebAPI doInBackground(Void... params) {
@@ -153,8 +174,8 @@ public class RecetteAffiche_Fragment extends Fragment {
             String cuissonR = bigovenrecipewebapi.tempsCuisson;
             String instructionsR = bigovenrecipewebapi.instructions;
             Drawable cuisineR = bigovenrecipewebapi.image;
-            ArrayList<String> ingredientsN = bigovenrecipewebapi.ingredientsNom;
-            ArrayList<String> ingredientsNb = bigovenrecipewebapi.ingredientsQuantite;
+            final ArrayList<String> ingredientsN = bigovenrecipewebapi.ingredientsNom;
+            final ArrayList<String> ingredientsNb = bigovenrecipewebapi.ingredientsQuantite;
 
             //Set text in UI
             titre.setText(titreR);
@@ -168,9 +189,39 @@ public class RecetteAffiche_Fragment extends Fragment {
             btIng.setVisibility(View.VISIBLE);
             instructions.setText(instructionsR);
 
+            //Create checklist with false
+            int size = ingredientsN.size();
+            setCheckList(size);
+
+            //Setup ingredient listview
             final MyAdapter adapter = new MyAdapter(ingredientsN, ingredientsNb);
             ingredients.setAdapter(adapter);
             progressDialog.dismiss();
+
+            //The button to add the ingredients to the list
+            addBtn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    boolean[] checktemp = getCheckList();
+                    String temp = ingredientsN.get(0);
+                    if (!temp.equals("Nothing found")) {
+                        for (int i = 0; i < checktemp.length; i++) {
+                            if (checktemp[i]) {
+                                getNameIngredients().add(ingredientsN.get(i));
+                                getNumberIngredients().add(ingredientsNb.get(i));
+                            }
+                        }
+
+                        //INSÉRER LE CODE POUR LIER AVEC LISTE RECETTE ICI, POUR L'INSTANT PRINT LA LISTE
+                        for (int j = 0; j < getNameIngredients().size(); j++) {
+                            Log.d("Liste", "" + getNameIngredients().get(j) + " "
+                                    + getNumberIngredients().get(j));
+                        }
+                       resetNameIngredients();
+                       resetNumberIngredients();
+                    }
+                }
+            });
         }
     }
 
@@ -178,16 +229,14 @@ public class RecetteAffiche_Fragment extends Fragment {
 
         ArrayList<String> nom;
         ArrayList<String> nombre;
-
-        int numByPage;
         LayoutInflater inflater;
+        CheckBox check;
 
         public MyAdapter(ArrayList<String> n, ArrayList<String> nb) {
             inflater = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
             this.nom = n;
             this.nombre = nb;
-            Log.d("Test",""+nombre.size()+" "+nom.size());
         }
 
         @Override
@@ -206,7 +255,7 @@ public class RecetteAffiche_Fragment extends Fragment {
         }
 
         @Override
-        public View getView(int position, View convertView, ViewGroup parent) {
+        public View getView(final int position, View convertView, ViewGroup parent) {
 
             View v = convertView;
 
@@ -217,7 +266,53 @@ public class RecetteAffiche_Fragment extends Fragment {
             //Put everything in the listview
             TextView titre = (TextView) v.findViewById(R.id.textI); //Name
             titre.setText(nombre.get(position) + " " + nom.get(position));
+
+            //Store if checkbox are checked or not in the position of the ingredient
+            check = (CheckBox) v.findViewById(R.id.checkI); //Name
+            check.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View arg0) {
+                    if(!checkList[position])
+                        checkList[position] = true;
+                    else
+                        checkList[position] = false;
+                }
+            });
+
+            //If nothing found
+            if(nom.get(position).equals("Nothing found"))
+                check.setTextIsSelectable(false);
             return v;
         }
+    }
+
+    //Create checklist with false
+    public void setCheckList(int size){
+        Log.d("Size",""+size);
+        checkList = new boolean[size];
+        for(int i=0; i<size; i++){
+            checkList[i]=false;
+            Log.d("Checklist",""+checkList[i]);
+        }
+    }
+
+    public boolean[] getCheckList(){
+        return checkList;
+    }
+
+    public ArrayList<String> getNameIngredients(){
+        return nameIngredients;
+    }
+
+    public ArrayList<String> getNumberIngredients(){
+        return numberIngredients;
+    }
+
+    public void resetNameIngredients(){
+        nameIngredients = new ArrayList<String>();
+    }
+
+    public void resetNumberIngredients(){
+        numberIngredients = new ArrayList<String>();
     }
 }
