@@ -57,7 +57,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:gravity="bottom"
-        android:paddingTop="5dp">
+        android:paddingTop="5dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:clickable="true">
 
         <Button
             android:layout_width="200dp"
@@ -65,7 +68,9 @@
             android:text="Ingredients"
             android:id="@+id/ingR"
             android:layout_weight="1"
-            android:visibility="invisible" />
+            android:visibility="invisible"
+            android:background="#ffc4c4c4"
+            android:clickable="true" />
 
         <Button
             android:layout_width="200dp"
@@ -73,6 +78,29 @@
             android:text="Instructions"
             android:id="@+id/insR"
             android:layout_weight="1"
-            android:visibility="invisible" />
+            android:visibility="invisible"
+            android:background="#ffc4c4c4"
+            android:clickable="true" />
     </LinearLayout>
+
+    <ScrollView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/scollR"
+        android:visibility="invisible">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/instR"
+            android:textColor="#ffffffff"
+            android:visibility="visible" />
+    </ScrollView>
+
+    <ListView
+        android:layout_width="match_parent"
+        android:layout_height="fill_parent"
+        android:id="@+id/ingreR"
+        android:visibility="invisible" />
+
 </LinearLayout>

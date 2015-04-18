@@ -2,16 +2,21 @@ package Fragments;
 
 import android.app.Fragment;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.ListView;
+import android.widget.ScrollView;
 import android.widget.TextView;
+
+import java.util.ArrayList;
 
 import lesdevoreurs.bon_manger.BigOvenRecipeWebAPI;
 import lesdevoreurs.bon_manger.R;
@@ -29,11 +34,15 @@ public class RecetteAffiche_Fragment extends Fragment {
     TextView description;
     TextView temps;
     TextView cuisson;
+    TextView instructions;
+    ListView ingredients;
     Button btIng;
     Button btIns;
+    ScrollView scrollIns;
 
     public RecetteAffiche_Fragment(){};
 
+    //Constructor with the id of the recipe in parameters
     public static RecetteAffiche_Fragment newInstance(String id){
 
         RecetteAffiche_Fragment fragment= new RecetteAffiche_Fragment();
@@ -53,14 +62,55 @@ public class RecetteAffiche_Fragment extends Fragment {
         description = (TextView)getView().findViewById(R.id.descR);
         temps = (TextView)getView().findViewById(R.id.ttR);
         cuisson = (TextView)getView().findViewById(R.id.tcR);
+        instructions = (TextView)getView().findViewById(R.id.instR);
+        ingredients = (ListView)getView().findViewById(R.id.ingreR);
         image = (ImageView)getView().findViewById(R.id.imgR);
+        scrollIns = (ScrollView)getView().findViewById(R.id.scollR);
+
+        //Show images, descriptions and temps when clicking on title
+        titre.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ingredients.setVisibility(View.INVISIBLE);
+                scrollIns.setVisibility(View.INVISIBLE);
+                image.setVisibility(View.VISIBLE);
+                description.setVisibility(View.VISIBLE);
+                temps.setVisibility(View.VISIBLE);
+                cuisson.setVisibility(View.VISIBLE);
+            }
+        });
+
+        //Show only title and ingredients
         btIng = (Button)getView().findViewById(R.id.ingR);
+        btIng.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ingredients.setVisibility(View.VISIBLE);
+                scrollIns.setVisibility(View.INVISIBLE);
+                image.setVisibility(View.GONE);
+                description.setVisibility(View.GONE);
+                temps.setVisibility(View.GONE);
+                cuisson.setVisibility(View.GONE);
+            }
+        });
+
+        //Show only title and instructions
         btIns = (Button)getView().findViewById(R.id.insR);
+        btIns.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ingredients.setVisibility(View.INVISIBLE);
+                scrollIns.setVisibility(View.VISIBLE);
+                image.setVisibility(View.GONE);
+                description.setVisibility(View.GONE);
+                temps.setVisibility(View.GONE);
+                cuisson.setVisibility(View.GONE);
+            }
+        });
 
         new DownloadWebTask().execute();
     }
 
-    @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
@@ -100,8 +150,12 @@ public class RecetteAffiche_Fragment extends Fragment {
             String descriptionR = bigovenrecipewebapi.description;
             String tempsR = bigovenrecipewebapi.tempsTotal;
             String cuissonR = bigovenrecipewebapi.tempsCuisson;
+            String instructionsR = bigovenrecipewebapi.instructions;
             Drawable cuisineR = bigovenrecipewebapi.image;
+            ArrayList<String> ingredientsN = bigovenrecipewebapi.ingredientsNom;
+            ArrayList<String> ingredientsNb = bigovenrecipewebapi.ingredientsQuantite;
 
+            //Set text in UI
             titre.setText(titreR);
             image.setImageDrawable(cuisineR);
             description.setText(descriptionR);
@@ -111,7 +165,56 @@ public class RecetteAffiche_Fragment extends Fragment {
                 cuisson.setText("Cooking time: "+cuissonR);
             btIns.setVisibility(View.VISIBLE);
             btIng.setVisibility(View.VISIBLE);
+            instructions.setText(instructionsR);
+
+            final MyAdapter adapter = new MyAdapter(ingredientsN, ingredientsNb);
             progressDialog.dismiss();
+        }
+    }
+
+    public class MyAdapter extends BaseAdapter {
+
+        ArrayList<String> nom;
+        ArrayList<String> nombre;
+
+        int numByPage;
+        LayoutInflater inflater;
+
+        public MyAdapter(ArrayList<String> n, ArrayList<String> nb) {
+            inflater = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+
+            this.nom = n;
+            this.nombre = nb;
+        }
+
+        @Override
+        public int getCount() {
+            return nom.size();
+        }
+
+        @Override
+        public Object getItem(int position) {
+            return null;
+        }
+
+        @Override
+        public long getItemId(int position) {
+            return position;
+        }
+
+        @Override
+        public View getView(int position, View convertView, ViewGroup parent) {
+
+            View v = convertView;
+
+            if (v == null) {
+                v = inflater.inflate(R.layout.research_recipe_item, parent, false);
+            }
+
+            //Put everything in the listview
+            TextView titre = (TextView) v.findViewById(R.id.textI); //Name
+            titre.setText(nombre.get(position) + " " + nom.get(position));
+            return v;
         }
     }
 }

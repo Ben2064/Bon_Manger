@@ -40,8 +40,8 @@ public class BigOvenRecipeWebAPI {
     public String instructions = "";
     public String tempsTotal = "0";
     public String tempsCuisson = "0";
-    ArrayList<String> ingredientsNom;
-    ArrayList<String> ingredientsQuantite;
+    public ArrayList<String> ingredientsNom;
+    public ArrayList<String> ingredientsQuantite;
     //Drawable images;
 
     public BigOvenRecipeWebAPI(String query) {
