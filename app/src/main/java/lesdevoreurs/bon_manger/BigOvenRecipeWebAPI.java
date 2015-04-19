@@ -86,7 +86,10 @@ public class BigOvenRecipeWebAPI {
             if(prim != null)
                 ingredientPrimaire = prim.getTextContent();
             final Element im = (Element) racine.getElementsByTagName("ImageURL").item(0);
-            image = loadHttpImage(im.getTextContent().replace("http://redirect.bigoven.com/pics/rs/640/","http://images.bigoven.com/image/upload/t_recipe-120/"));
+            if(im!=null)
+                image = loadHttpImage(im.getTextContent().replace("http://redirect.bigoven.com/pics/rs/640/","http://images.bigoven.com/image/upload/t_recipe-120/").replace("http://images.bigoven.com/image/upload/t_recipe-120/","http://images.bigoven.com/image/upload/t_recipe-120/"));
+            else
+                image = loadHttpImage("http://images.bigoven.com/image/upload/t_recipe-120/recipe-no-image.jpg");
             final Element inst = (Element) racine.getElementsByTagName("Instructions").item(0);
             if(inst != null)
                 instructions = inst.getTextContent();
