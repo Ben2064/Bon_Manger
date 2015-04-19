@@ -125,6 +125,7 @@ public class RecetteAffiche_Fragment extends Fragment {
 
         addBtn = new Button(getActivity());
         addBtn.setText("Add to my list");
+        addBtn.setBackgroundColor(Color.GRAY);
         ingredients.addFooterView(addBtn);
 
         //Start searching API

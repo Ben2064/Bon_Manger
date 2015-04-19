@@ -4,6 +4,7 @@ import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -78,6 +79,7 @@ public class RechercheActivity extends Fragment {
             //Load another page of result
             btnLoad = new Button(getActivity());
             btnLoad.setText("Load More");
+            btnLoad.setTextColor(Color.LTGRAY);
             btnLoad.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View arg0) {
@@ -99,6 +101,7 @@ public class RechercheActivity extends Fragment {
             //Load previous results
             btnBack = new Button(getActivity());
             btnBack.setText("Previous Results");
+            btnBack.setTextColor(Color.LTGRAY);
             btnBack.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View arg0) {
