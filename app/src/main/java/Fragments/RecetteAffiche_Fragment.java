@@ -134,11 +134,27 @@ public class RecetteAffiche_Fragment extends Fragment {
             addBtn.setBackgroundColor(Color.GRAY);
             ingredients.addFooterView(addBtn);
 
+            //Start searching API
+            final DownloadWebTask web = new DownloadWebTask();
+            web.execute();
+
             btnFav = (Button)getView().findViewById(R.id.btnFav);
             btnFav.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     Toast.makeText(getActivity(), "Criss ça dans les favoris", Toast.LENGTH_LONG).show();
+                    //Getting info
+                    final String titre = web.getTitre();
+                    final Drawable image = web.getImage();
+                    final String description = web.getDesc();
+                    final String tempsCuisson = web.getCuisson();
+                    final String tempsTotal = web.getTemps();
+                    final String instructions = web.getInstructions();
+                    final ArrayList<String> ingreNom = web.getIname();
+                    final ArrayList<String> ingreNum = web.getInumber();
+                    Toast.makeText(getActivity(), titre, Toast.LENGTH_LONG).show();
+                    Livre_Fragment_PLACEHOLDER.receiveRecipe(titre, image, description, tempsCuisson, tempsTotal,
+                    instructions, ingreNom, ingreNum);
                 }
             });
 
@@ -147,11 +163,20 @@ public class RecetteAffiche_Fragment extends Fragment {
                 @Override
                 public void onClick(View v) {
                     Toast.makeText(getActivity(), "Criss ça dans recette en cours", Toast.LENGTH_LONG).show();
+                    //Getting info
+                    final String titre = web.getTitre();
+                    final Drawable image = web.getImage();
+                    final String description = web.getDesc();
+                    final String tempsCuisson = web.getCuisson();
+                    final String tempsTotal = web.getTemps();
+                    final String instructions = web.getInstructions();
+                    final ArrayList<String> ingreNom = web.getIname();
+                    final ArrayList<String> ingreNum = web.getInumber();
+                    Toast.makeText(getActivity(), titre, Toast.LENGTH_LONG).show();
+                    Recette_Fragment_PLACEHOLDER.receiveRecipe(titre, image, description, tempsCuisson, tempsTotal,
+                            instructions, ingreNom, ingreNum);
                 }
             });
-
-            //Start searching API
-            new DownloadWebTask().execute();
         }
     }
 
@@ -167,7 +192,50 @@ public class RecetteAffiche_Fragment extends Fragment {
     //Search in BigOvenRecipeWebAPI
     public class DownloadWebTask extends AsyncTask<Void, Void, BigOvenRecipeWebAPI> {
         ProgressDialog progressDialog;
+        String titreR;
+        String descriptionR;
+        String tempsR;
+        String cuissonR;
+        String instructionsR;
+        Drawable cuisineR;
+        ArrayList<String> ingredientsN = new ArrayList<String>();
+        ArrayList<String> ingredientsNb = new ArrayList<String>();
         boolean[] checkList;
+
+        public DownloadWebTask() {
+        }
+
+        protected String getTitre(){
+            return titreR;
+        }
+
+        protected String getDesc(){
+            return descriptionR;
+        }
+
+        protected String getTemps(){
+            return tempsR;
+        }
+
+        protected String getCuisson(){
+            return cuissonR;
+        }
+
+        protected String getInstructions(){
+            return instructionsR;
+        }
+
+        protected Drawable getImage(){
+            return cuisineR;
+        }
+
+        protected ArrayList<String> getInumber(){
+            return numberIngredients;
+        }
+
+        protected ArrayList<String> getIname(){
+            return nameIngredients;
+        }
 
         @Override
         protected BigOvenRecipeWebAPI doInBackground(Void... params) {
@@ -192,14 +260,14 @@ public class RecetteAffiche_Fragment extends Fragment {
         protected void onPostExecute(final BigOvenRecipeWebAPI bigovenrecipewebapi) {
 
             //Get from BigOvenRecipeWebAPI
-            String titreR = bigovenrecipewebapi.titre;
-            String descriptionR = bigovenrecipewebapi.description;
-            String tempsR = bigovenrecipewebapi.tempsTotal;
-            String cuissonR = bigovenrecipewebapi.tempsCuisson;
-            String instructionsR = bigovenrecipewebapi.instructions;
-            Drawable cuisineR = bigovenrecipewebapi.image;
-            final ArrayList<String> ingredientsN = bigovenrecipewebapi.ingredientsNom;
-            final ArrayList<String> ingredientsNb = bigovenrecipewebapi.ingredientsQuantite;
+            titreR = bigovenrecipewebapi.titre;
+            descriptionR = bigovenrecipewebapi.description;
+            tempsR = bigovenrecipewebapi.tempsTotal;
+            cuissonR = bigovenrecipewebapi.tempsCuisson;
+            instructionsR = bigovenrecipewebapi.instructions;
+            cuisineR = bigovenrecipewebapi.image;
+            ingredientsN = bigovenrecipewebapi.ingredientsNom;
+            ingredientsNb = bigovenrecipewebapi.ingredientsQuantite;
 
             //Set text in UI
             titre.setText(titreR);
@@ -228,19 +296,25 @@ public class RecetteAffiche_Fragment extends Fragment {
                 public void onClick(View v) {
                     boolean[] checktemp = getCheckList();
                     String temp = ingredientsN.get(0);
+
+                    //Store temporary
+                    ArrayList<String> tempName = getNameIngredients();
+                    ArrayList<String> tempNum = getNumberIngredients();
+
                     if (!temp.equals("Nothing found")) {
                         for (int i = 0; i < checktemp.length; i++) {
                             if (checktemp[i]) {
-                                getNameIngredients().add(ingredientsN.get(i));
-                                getNumberIngredients().add(ingredientsNb.get(i));
+                                tempName.add(ingredientsN.get(i));
+                                tempNum.add(ingredientsNb.get(i));
                             }
                         }
 
                         //INSÉRER LE CODE POUR LIER AVEC LISTE RECETTE ICI, POUR L'INSTANT PRINT LA LISTE
                         for (int j = 0; j < getNameIngredients().size(); j++) {
-                            Log.d("Liste", "" + getNameIngredients().get(j) + " "
-                                    + getNumberIngredients().get(j));
+                            Log.d("Liste", "" + tempName.get(j) + " "
+                                    + tempNum.get(j));
                         }
+                        Liste_Fragment_PLACEHOLDER.setListe(tempName, tempNum);
                        resetNameIngredients();
                        resetNumberIngredients();
                     }

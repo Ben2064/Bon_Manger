@@ -7,6 +7,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import java.util.ArrayList;
+
 import lesdevoreurs.bon_manger.R;
 
 /**
@@ -23,5 +25,10 @@ public class Liste_Fragment_PLACEHOLDER extends Fragment {
         View rootView = inflater.inflate(R.layout.liste_layout_placeholder, container, false);
 
         return rootView;
+    }
+
+    public static void setListe(ArrayList<String> tempName, ArrayList<String> tempNum){
+        //We receive the informations of the ingredients list to add
+        //Here we add it to memory
     }
 }
