@@ -45,6 +45,7 @@ public class RecetteAffiche_Fragment extends Fragment {
     Button addBtn;
     Button btnFav;
     Button btnMake;
+    Button btnMenu;
     ScrollView scrollIns;
     View view;
 
@@ -142,7 +143,7 @@ public class RecetteAffiche_Fragment extends Fragment {
             btnFav.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Toast.makeText(getActivity(), "Criss ça dans les favoris", Toast.LENGTH_LONG).show();
+                    Toast.makeText(getActivity(), "Added to my list", Toast.LENGTH_LONG).show();
                     //Getting info
                     final String titre = web.getTitre();
                     final Drawable image = web.getImage();
@@ -152,7 +153,6 @@ public class RecetteAffiche_Fragment extends Fragment {
                     final String instructions = web.getInstructions();
                     final ArrayList<String> ingreNom = web.getIname();
                     final ArrayList<String> ingreNum = web.getInumber();
-                    Toast.makeText(getActivity(), titre, Toast.LENGTH_LONG).show();
                     Livre_Fragment_PLACEHOLDER.receiveRecipe(titre, image, description, tempsCuisson, tempsTotal,
                     instructions, ingreNom, ingreNum);
                 }
@@ -162,7 +162,7 @@ public class RecetteAffiche_Fragment extends Fragment {
             btnMake.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Toast.makeText(getActivity(), "Criss ça dans recette en cours", Toast.LENGTH_LONG).show();
+                    Toast.makeText(getActivity(), "Added to current recipe", Toast.LENGTH_LONG).show();
                     //Getting info
                     final String titre = web.getTitre();
                     final Drawable image = web.getImage();
@@ -172,8 +172,26 @@ public class RecetteAffiche_Fragment extends Fragment {
                     final String instructions = web.getInstructions();
                     final ArrayList<String> ingreNom = web.getIname();
                     final ArrayList<String> ingreNum = web.getInumber();
-                    Toast.makeText(getActivity(), titre, Toast.LENGTH_LONG).show();
                     Recette_Fragment_PLACEHOLDER.receiveRecipe(titre, image, description, tempsCuisson, tempsTotal,
+                            instructions, ingreNom, ingreNum);
+                }
+            });
+
+            btnMenu = (Button)getView().findViewById(R.id.btnMenu);
+            btnMenu.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Toast.makeText(getActivity(), "Add to menu", Toast.LENGTH_LONG).show();
+                    //Getting info
+                    final String titre = web.getTitre();
+                    final Drawable image = web.getImage();
+                    final String description = web.getDesc();
+                    final String tempsCuisson = web.getCuisson();
+                    final String tempsTotal = web.getTemps();
+                    final String instructions = web.getInstructions();
+                    final ArrayList<String> ingreNom = web.getIname();
+                    final ArrayList<String> ingreNum = web.getInumber();
+                    Menu_Fragment_PLACEHOLDER.receiveRecipe(titre, image, description, tempsCuisson, tempsTotal,
                             instructions, ingreNom, ingreNum);
                 }
             });
@@ -323,6 +341,7 @@ public class RecetteAffiche_Fragment extends Fragment {
 
             btnFav.setVisibility(View.VISIBLE);
             btnMake.setVisibility(View.VISIBLE);
+            btnMenu.setVisibility(View.VISIBLE);
         }
     }
 

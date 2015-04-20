@@ -130,7 +130,8 @@
                     android:layout_height="wrap_content"
                     android:id="@+id/btnMake"
                     android:background="@android:drawable/ic_menu_view"
-                    android:visibility="invisible" />
+                    android:visibility="invisible"
+                    android:layout_marginRight="10dp" />
 
                 <Button
                     style="?android:attr/buttonStyleSmall"
@@ -138,6 +139,15 @@
                     android:layout_height="wrap_content"
                     android:id="@+id/btnFav"
                     android:background="@android:drawable/btn_star_big_off"
+                    android:visibility="invisible"
+                    android:layout_marginRight="10dp" />
+
+                <Button
+                    style="?android:attr/buttonStyleSmall"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/btnMenu"
+                    android:background="@android:drawable/ic_menu_today"
                     android:visibility="invisible" />
             </LinearLayout>
 
