@@ -43,6 +43,8 @@ public class MainActivity extends Activity  {
     private ListView mDrawerList;
     private ActionBarDrawerToggle mDrawerToggle;
 
+    private boolean first_fragment;
+
 
     // nav drawer title
     private CharSequence mDrawerTitle;
@@ -81,6 +83,8 @@ public class MainActivity extends Activity  {
         setContentView(R.layout.activity_main);
 
         mTitle = mDrawerTitle = getTitle();
+
+        first_fragment=true;
 
         // load slide menu items
         navMenuTitles = getResources().getStringArray(R.array.nav_drawer_items);
@@ -263,17 +267,31 @@ public class MainActivity extends Activity  {
         }
 
         if (fragment != null) {
-            FragmentManager fragmentManager = getFragmentManager();
-            fragmentManager.beginTransaction()
-                    .replace(R.id.frame_container, fragment).addToBackStack("back").commit();
+            if (!first_fragment) {
+                FragmentManager fragmentManager = getFragmentManager();
+                fragmentManager.beginTransaction()
+                        .replace(R.id.frame_container, fragment).addToBackStack("back").commit();
 
-            // update selected item and title, then close the drawer
-            mDrawerList.setItemChecked(position, true);
-            mDrawerList.setSelection(position);
-            setTitle(navMenuTitles[position]);
-            mDrawerLayout.closeDrawer(mDrawerList);
-       /* if (intent !=null) {
-            startActivity(intent);*/
+                // update selected item and title, then close the drawer
+                mDrawerList.setItemChecked(position, true);
+                mDrawerList.setSelection(position);
+                setTitle(navMenuTitles[position]);
+                mDrawerLayout.closeDrawer(mDrawerList);
+           /* if (intent !=null) {
+                startActivity(intent);*/
+            }else {
+                FragmentManager fragmentManager = getFragmentManager();
+                fragmentManager.beginTransaction()
+                        .replace(R.id.frame_container, fragment).commit();
+
+                // update selected item and title, then close the drawer
+                mDrawerList.setItemChecked(position, true);
+                mDrawerList.setSelection(position);
+                setTitle(navMenuTitles[position]);
+                mDrawerLayout.closeDrawer(mDrawerList);
+                first_fragment=false;
+            }
+
         } else {
             // error in creating fragment
             Log.e("MainActivity", "Error in creating fragment");
