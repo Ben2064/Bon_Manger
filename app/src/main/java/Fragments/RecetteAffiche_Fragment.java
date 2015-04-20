@@ -18,6 +18,7 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.ScrollView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 
@@ -42,6 +43,8 @@ public class RecetteAffiche_Fragment extends Fragment {
     Button btIng;
     Button btIns;
     Button addBtn;
+    Button btnFav;
+    Button btnMake;
     ScrollView scrollIns;
     View view;
 
@@ -130,6 +133,22 @@ public class RecetteAffiche_Fragment extends Fragment {
             addBtn.setText("Add to my list");
             addBtn.setBackgroundColor(Color.GRAY);
             ingredients.addFooterView(addBtn);
+
+            btnFav = (Button)getView().findViewById(R.id.btnFav);
+            btnFav.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Toast.makeText(getActivity(), "Criss ça dans les favoris", Toast.LENGTH_LONG).show();
+                }
+            });
+
+            btnMake = (Button)getView().findViewById(R.id.btnMake);
+            btnMake.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Toast.makeText(getActivity(), "Criss ça dans recette en cours", Toast.LENGTH_LONG).show();
+                }
+            });
 
             //Start searching API
             new DownloadWebTask().execute();
@@ -227,6 +246,9 @@ public class RecetteAffiche_Fragment extends Fragment {
                     }
                 }
             });
+
+            btnFav.setVisibility(View.VISIBLE);
+            btnMake.setVisibility(View.VISIBLE);
         }
     }
 
@@ -287,6 +309,7 @@ public class RecetteAffiche_Fragment extends Fragment {
             //If nothing found
             if(nom.get(position).equals("Nothing found"))
                 check.setTextIsSelectable(false);
+
             return v;
         }
     }

@@ -1,110 +1,147 @@
 <?xml version="1.0" encoding="utf-8"?>
+
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#ff000000"
     android:weightSum="1">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:id="@+id/titreR"
-        android:layout_gravity="center_horizontal"
-        android:textColor="#ffffffff"
-        android:paddingBottom="5dp" />
-
-    <ImageView
-        android:layout_width="120dp"
-        android:layout_height="120dp"
-        android:id="@+id/imgR"
-        android:layout_gravity="center_horizontal"
-        android:background="#ff000000" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/descR"
-        android:layout_gravity="center_horizontal"
-        android:textColor="#ffffffff"
-        android:paddingTop="5dp"
-        android:paddingBottom="5dp"
-        android:layout_marginBottom="5dp" />
-
-    <LinearLayout
-        android:orientation="horizontal"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content">
-
-        <TextView
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:id="@+id/ttR"
-            android:layout_weight="1"
-            android:textColor="#ffffffff" />
-
-        <TextView
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:id="@+id/tcR"
-            android:layout_weight="1"
-            android:textColor="#ffffffff" />
-    </LinearLayout>
-
-    <LinearLayout
-        android:orientation="horizontal"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:gravity="bottom"
-        android:paddingTop="5dp"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
-        android:clickable="true"
-        android:layout_marginBottom="10dp">
-
-        <Button
-            android:layout_width="200dp"
-            android:layout_height="wrap_content"
-            android:text="Ingredients"
-            android:id="@+id/ingR"
-            android:layout_weight="1"
-            android:visibility="invisible"
-            android:background="#ffc4c4c4"
-            android:clickable="true" />
-
-        <Button
-            android:layout_width="200dp"
-            android:layout_height="wrap_content"
-            android:text="Instructions"
-            android:id="@+id/insR"
-            android:layout_weight="1"
-            android:visibility="invisible"
-            android:background="#ffc4c4c4"
-            android:clickable="true" />
-    </LinearLayout>
-
     <ScrollView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/scollR"
-        android:visibility="invisible">
+        android:id="@+id/scrollView" >
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/instR"
-            android:textColor="#ffffffff"
-            android:visibility="visible" />
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:id="@+id/titreR"
+                android:layout_gravity="center_horizontal"
+                android:textColor="#ffffffff"
+                android:paddingBottom="5dp" />
+
+            <ImageView
+                android:layout_width="256dp"
+                android:layout_height="256dp"
+                android:id="@+id/imgR"
+                android:layout_gravity="center_horizontal"
+                android:background="#ff000000" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/descR"
+                android:layout_gravity="center_horizontal"
+                android:textColor="#ffffffff"
+                android:paddingTop="5dp"
+                android:paddingBottom="5dp"
+                android:layout_marginBottom="5dp" />
+
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:id="@+id/ttR"
+                    android:layout_weight="1"
+                    android:textColor="#ffffffff" />
+
+                <TextView
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:id="@+id/tcR"
+                    android:layout_weight="1"
+                    android:textColor="#ffffffff" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="bottom"
+                android:paddingTop="5dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:clickable="true"
+                android:layout_marginBottom="10dp">
+
+                <Button
+                    android:layout_width="200dp"
+                    android:layout_height="wrap_content"
+                    android:text="Ingredients"
+                    android:id="@+id/ingR"
+                    android:layout_weight="1"
+                    android:visibility="invisible"
+                    android:background="#ffc4c4c4"
+                    android:clickable="true" />
+
+                <Button
+                    android:layout_width="200dp"
+                    android:layout_height="wrap_content"
+                    android:text="Instructions"
+                    android:id="@+id/insR"
+                    android:layout_weight="1"
+                    android:visibility="invisible"
+                    android:background="#ffc4c4c4"
+                    android:clickable="true" />
+            </LinearLayout>
+
+            <ScrollView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/scollR"
+                android:visibility="gone">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/instR"
+                    android:textColor="#ffffffff"
+                    android:visibility="visible" />
+            </ScrollView>
+
+            <ListView
+                android:layout_width="match_parent"
+                android:layout_height="350dp"
+                android:id="@+id/ingreR"
+                android:visibility="gone"
+                android:clickable="true"
+                android:focusable="true" />
+
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal">
+
+                <Button
+                    style="?android:attr/buttonStyleSmall"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/btnMake"
+                    android:background="@android:drawable/ic_menu_view"
+                    android:visibility="invisible" />
+
+                <Button
+                    style="?android:attr/buttonStyleSmall"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/btnFav"
+                    android:background="@android:drawable/btn_star_big_off"
+                    android:visibility="invisible" />
+            </LinearLayout>
+
+        </LinearLayout>
     </ScrollView>
-
-    <ListView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/ingreR"
-        android:visibility="invisible"
-        android:clickable="true"
-        android:focusable="true" />
 
 </LinearLayout>

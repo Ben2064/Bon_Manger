@@ -154,6 +154,7 @@ public class RechercheActivity extends Fragment {
                     edR.setText("");
                 }
             });
+
         }
     }
 
