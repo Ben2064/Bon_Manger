@@ -43,6 +43,7 @@ public class RecetteAffiche_Fragment extends Fragment {
     Button btIns;
     Button addBtn;
     ScrollView scrollIns;
+    View view;
 
     //To pass to list
     public static ArrayList<String> nameIngredients = new ArrayList<String>();
@@ -66,79 +67,82 @@ public class RecetteAffiche_Fragment extends Fragment {
     @Override
     public void onActivityCreated (final Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
-        idRecette = getArguments().getString("ID_RECETTE");
-        titre = (TextView) getView().findViewById(R.id.titreR);
-        description = (TextView)getView().findViewById(R.id.descR);
-        temps = (TextView)getView().findViewById(R.id.ttR);
-        cuisson = (TextView)getView().findViewById(R.id.tcR);
-        instructions = (TextView)getView().findViewById(R.id.instR);
-        ingredients = (ListView)getView().findViewById(R.id.ingreR);
-        image = (ImageView)getView().findViewById(R.id.imgR);
-        scrollIns = (ScrollView)getView().findViewById(R.id.scollR);
 
-        //Show images, descriptions and temps when clicking on title
-        titre.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                ingredients.setVisibility(View.GONE);
-                btIng.setBackgroundColor(Color.GRAY);
-                scrollIns.setVisibility(View.GONE);
-                btIns.setBackgroundColor(Color.GRAY);
-                image.setVisibility(View.VISIBLE);
-                description.setVisibility(View.VISIBLE);
-                temps.setVisibility(View.VISIBLE);
-                cuisson.setVisibility(View.VISIBLE);
-            }
-        });
+        if(btIng==null) {
+            idRecette = getArguments().getString("ID_RECETTE");
+            titre = (TextView) getView().findViewById(R.id.titreR);
+            description = (TextView) getView().findViewById(R.id.descR);
+            temps = (TextView) getView().findViewById(R.id.ttR);
+            cuisson = (TextView) getView().findViewById(R.id.tcR);
+            instructions = (TextView) getView().findViewById(R.id.instR);
+            ingredients = (ListView) getView().findViewById(R.id.ingreR);
+            image = (ImageView) getView().findViewById(R.id.imgR);
+            scrollIns = (ScrollView) getView().findViewById(R.id.scollR);
 
-        //Show only title and ingredients
-        btIng = (Button)getView().findViewById(R.id.ingR);
-        btIng.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                ingredients.setVisibility(View.VISIBLE);
-                btIng.setBackgroundColor(Color.DKGRAY);
-                scrollIns.setVisibility(View.GONE);
-                btIns.setBackgroundColor(Color.GRAY);
-                image.setVisibility(View.GONE);
-                description.setVisibility(View.GONE);
-                temps.setVisibility(View.GONE);
-                cuisson.setVisibility(View.GONE);
-            }
-        });
+            //Show images, descriptions and temps when clicking on title
+            titre.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    ingredients.setVisibility(View.GONE);
+                    btIng.setBackgroundColor(Color.GRAY);
+                    scrollIns.setVisibility(View.GONE);
+                    btIns.setBackgroundColor(Color.GRAY);
+                    image.setVisibility(View.VISIBLE);
+                    description.setVisibility(View.VISIBLE);
+                    temps.setVisibility(View.VISIBLE);
+                    cuisson.setVisibility(View.VISIBLE);
+                }
+            });
 
-        //Show only title and instructions
-        btIns = (Button)getView().findViewById(R.id.insR);
-        btIns.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                ingredients.setVisibility(View.GONE);
-                btIng.setBackgroundColor(Color.GRAY);
-                scrollIns.setVisibility(View.VISIBLE);
-                btIns.setBackgroundColor(Color.DKGRAY);
-                image.setVisibility(View.GONE);
-                description.setVisibility(View.GONE);
-                temps.setVisibility(View.GONE);
-                cuisson.setVisibility(View.GONE);
-            }
-        });
+            //Show only title and ingredients
+            btIng = (Button) getView().findViewById(R.id.ingR);
+            btIng.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    ingredients.setVisibility(View.VISIBLE);
+                    btIng.setBackgroundColor(Color.DKGRAY);
+                    scrollIns.setVisibility(View.GONE);
+                    btIns.setBackgroundColor(Color.GRAY);
+                    image.setVisibility(View.GONE);
+                    description.setVisibility(View.GONE);
+                    temps.setVisibility(View.GONE);
+                    cuisson.setVisibility(View.GONE);
+                }
+            });
 
-        addBtn = new Button(getActivity());
-        addBtn.setText("Add to my list");
-        addBtn.setBackgroundColor(Color.GRAY);
-        ingredients.addFooterView(addBtn);
+            //Show only title and instructions
+            btIns = (Button) getView().findViewById(R.id.insR);
+            btIns.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    ingredients.setVisibility(View.GONE);
+                    btIng.setBackgroundColor(Color.GRAY);
+                    scrollIns.setVisibility(View.VISIBLE);
+                    btIns.setBackgroundColor(Color.DKGRAY);
+                    image.setVisibility(View.GONE);
+                    description.setVisibility(View.GONE);
+                    temps.setVisibility(View.GONE);
+                    cuisson.setVisibility(View.GONE);
+                }
+            });
 
-        //Start searching API
-        new DownloadWebTask().execute();
+            addBtn = new Button(getActivity());
+            addBtn.setText("Add to my list");
+            addBtn.setBackgroundColor(Color.GRAY);
+            ingredients.addFooterView(addBtn);
 
+            //Start searching API
+            new DownloadWebTask().execute();
+        }
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
-        View rootView = inflater.inflate(R.layout.research_recipe, container, false);
-
-        return rootView;
+        //Reload the view in case of "back" or create a new one if it's the first time
+        if (view == null)
+            view = inflater.inflate(R.layout.research_recipe, container, false);
+        return view;
     }
 
     //Search in BigOvenRecipeWebAPI

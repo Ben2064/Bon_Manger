@@ -1,22 +1,15 @@
 package lesdevoreurs.bon_manger;
 
-import Adapter.NavDrawerListAdapter;
-import Fragments.Home_Fragment;
-import Fragments.Liste_Fragment_PLACEHOLDER;
-import Fragments.Livre_Fragment_PLACEHOLDER;
-import Fragments.Menu_Fragment_PLACEHOLDER;
-import Fragments.Recette_Fragment_PLACEHOLDER;
-import Fragments.Timer_Fragment_PLACEHOLDER;
-import SlidingMenu.NavDrawerItem;
 import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.content.Context;
-import android.content.Intent;
 import android.content.res.Configuration;
 import android.content.res.TypedArray;
 import android.os.Bundle;
+import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.view.MenuItemCompat;
+import android.support.v4.widget.DrawerLayout;
 import android.support.v7.widget.SearchView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -28,10 +21,17 @@ import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.support.v4.widget.DrawerLayout;
-import android.support.v4.app.ActionBarDrawerToggle;
 
 import java.util.ArrayList;
+
+import Adapter.NavDrawerListAdapter;
+import Fragments.Home_Fragment;
+import Fragments.Liste_Fragment_PLACEHOLDER;
+import Fragments.Livre_Fragment_PLACEHOLDER;
+import Fragments.Menu_Fragment_PLACEHOLDER;
+import Fragments.Recette_Fragment_PLACEHOLDER;
+import Fragments.Timer_Fragment_PLACEHOLDER;
+import SlidingMenu.NavDrawerItem;
 
 
 public class MainActivity extends Activity  {
@@ -108,7 +108,7 @@ public class MainActivity extends Activity  {
         // Menu
         navDrawerItems.add(new NavDrawerItem(navMenuTitles[5], navMenuIcons.getResourceId(5, -1)));
         //Livre de recettes
-        navDrawerItems.add(new NavDrawerItem(navMenuTitles[6], navMenuIcons.getResourceId(5, -1)));
+        navDrawerItems.add(new NavDrawerItem(navMenuTitles[6], navMenuIcons.getResourceId(6, -1)));
 
 
         // Recycle the typed array

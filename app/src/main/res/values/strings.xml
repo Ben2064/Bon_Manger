@@ -15,23 +15,24 @@
     <!-- Nav Drawer Menu Items -->
     <string-array name="nav_drawer_items">
         <item >Home</item>
-        <item >Recherche</item>
-        <item >Placeholder Recette en cours</item>
-        <item >Placeholder Timer(s)</item>
-        <item >Placeholder Epicerie</item>
-        <item >Placeholder Menu</item>
-        <item >Placeholder Livre de recettes</item>
+        <item >Research</item>
+        <item >Current recipe</item>
+        <item >Timer(s)</item>
+        <item >Grocery list</item>
+        <item >Menu</item>
+        <item >Cookbook</item>
     </string-array>
 
     <!-- Nav Drawer List Item Icons -->
     <!-- Keep them in order as the titles are in -->
     <array name="nav_drawer_icons">
         <item>@drawable/ic_home</item>
-        <item>@drawable/ic_people</item>
-        <item>@drawable/ic_photos</item>
-        <item>@drawable/ic_communities</item>
-        <item>@drawable/ic_pages</item>
-        <item>@drawable/ic_whats_hot</item>
+        <item>@android:drawable/ic_menu_search</item>
+        <item>@android:drawable/ic_menu_view</item>
+        <item>@android:drawable/ic_menu_recent_history</item>
+        <item>@android:drawable/ic_menu_edit</item>
+        <item>@android:drawable/ic_menu_today</item>
+        <item>@android:drawable/sym_contact_card</item>
     </array>
 
     <!-- Content Description -->
