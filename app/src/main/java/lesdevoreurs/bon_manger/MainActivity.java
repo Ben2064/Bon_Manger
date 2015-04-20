@@ -267,7 +267,7 @@ public class MainActivity extends Activity  {
         }
 
         if (fragment != null) {
-            if (!first_fragment) {
+            if (!first_fragment) {  //addToBackStack
                 FragmentManager fragmentManager = getFragmentManager();
                 fragmentManager.beginTransaction()
                         .replace(R.id.frame_container, fragment).addToBackStack("back").commit();
@@ -279,7 +279,7 @@ public class MainActivity extends Activity  {
                 mDrawerLayout.closeDrawer(mDrawerList);
            /* if (intent !=null) {
                 startActivity(intent);*/
-            }else {
+            }else { //do not addToBackStack -> was causing blank page
                 FragmentManager fragmentManager = getFragmentManager();
                 fragmentManager.beginTransaction()
                         .replace(R.id.frame_container, fragment).commit();
