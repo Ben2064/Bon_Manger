@@ -8,10 +8,12 @@ import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.CursorAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
@@ -76,7 +78,7 @@ public class CurrentRecipe_Fragment extends Fragment{
         dbh = new DBHelper(getActivity());
         db = dbh.getWritableDatabase();
 
-        listI = (ListView) getView().findViewById(R.id.listI);
+        listI = (ListView) getView().findViewById(R.id.ingreC);
 
         //Entre des données test dans la db
         dbh.test(db);
@@ -180,8 +182,8 @@ public class CurrentRecipe_Fragment extends Fragment{
             @Override
             public void onClick(View v) {
                 Toast.makeText(getActivity(), "Added to my list", Toast.LENGTH_LONG).show();
-                Livre_Fragment_PLACEHOLDER.receiveRecipe(t, i, d, ct, tt,
-                        ins, ingreNom, ingreNum, id);
+                //Livre_Fragment_PLACEHOLDER.receiveRecipe(t, i, d, ct, tt,
+                //      ins, ingreNom, ingreNum, id);
             }
         });
 
@@ -191,15 +193,26 @@ public class CurrentRecipe_Fragment extends Fragment{
             @Override
             public void onClick(View v) {
                 Toast.makeText(getActivity(), "Add to menu", Toast.LENGTH_LONG).show();
-                Menu_Fragment_PLACEHOLDER.receiveRecipe(t, i, d, ct, tt,
-                        ins, ingreNom, ingreNum, id);
+                //Menu_Fragment_PLACEHOLDER.receiveRecipe(t, i, d, ct, tt,
+                //      ins, ingreNom, ingreNum, id);
             }
         });
+    }
+
+    //Create checklist with false
+    public void setCheckList(int size) {
+        Log.d("Size", "" + size);
+        checkList = new boolean[size];
+        for (int i = 0; i < size; i++) {
+            checkList[i] = false;
+            Log.d("Checklist", "" + checkList[i]);
+        }
     }
 
     public class MyAdapter extends CursorAdapter {
 
         LayoutInflater inflater;
+        CheckBox check;
 
         public MyAdapter(Context context, Cursor c) {
             super(context, c, true);
@@ -207,7 +220,7 @@ public class CurrentRecipe_Fragment extends Fragment{
         }
 
         @Override
-        public View getView(int position, View convertView, ViewGroup parent) {
+        public View getView(final int position, View convertView, ViewGroup parent) {
             View v = convertView;
 
             if (v == null) {
@@ -223,6 +236,22 @@ public class CurrentRecipe_Fragment extends Fragment{
 
             TextView titre = (TextView) v.findViewById(R.id.textCI);
             titre.setText(number + " " + name);
+
+            //Store if checkbox are checked or not in the position of the ingredient
+            check = (CheckBox) v.findViewById(R.id.checkCI); //Name
+            check.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View arg0) {
+                    if (!checkList[position])
+                        checkList[position] = true;
+                    else
+                        checkList[position] = false;
+                }
+            });
+
+            //If nothing found
+            if (name.equals("Nothing found"))
+                check.setTextIsSelectable(false);
 
             return v;
         }
