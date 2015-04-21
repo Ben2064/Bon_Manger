@@ -31,6 +31,7 @@ import javax.xml.parsers.ParserConfigurationException;
  */
 public class BigOvenRecipeWebAPI {
     public Drawable image = null;
+    public String ID = "";
     public String titre = "";
     public String description = "";
     public String cuisine = "";
@@ -66,6 +67,8 @@ public class BigOvenRecipeWebAPI {
             //Etape 4 : récupération de l'Element racine
             final Element racine = document.getDocumentElement();
             //Etape 5 : récupération des recettes
+            final Element id = (Element) racine.getElementsByTagName("RecipeID").item(0);
+            ID = id.getTextContent();
             final Element title = (Element) racine.getElementsByTagName("Title").item(0);
             titre = title.getTextContent();
             final Element desc = (Element) racine.getElementsByTagName("Description").item(0);

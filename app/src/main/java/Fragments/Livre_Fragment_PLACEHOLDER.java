@@ -28,7 +28,7 @@ public class Livre_Fragment_PLACEHOLDER extends Fragment {
     }
 
     public static void receiveRecipe(String titre, Drawable image, String description, String tempsCuisson, String tempsTotal,
-                                     String instructions, ArrayList<String> ingreNom, ArrayList<String> ingreNum){
+                                     String instructions, ArrayList<String> ingreNom, ArrayList<String> ingreNum, String id){
         //We receive the informations of the recipe to add
         //Here we add it to memory
     }

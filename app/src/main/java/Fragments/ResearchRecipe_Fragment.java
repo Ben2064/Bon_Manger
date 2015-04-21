@@ -16,7 +16,6 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.ListView;
-import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -28,7 +27,7 @@ import lesdevoreurs.bon_manger.R;
 /**
  * Created by virgile on 17/04/2015.
  */
-public class RecetteAffiche_Fragment extends Fragment {
+public class ResearchRecipe_Fragment extends Fragment {
 
     private String idRecette;   //The ID of the recipe to show
 
@@ -46,7 +45,6 @@ public class RecetteAffiche_Fragment extends Fragment {
     Button btnFav;
     Button btnMake;
     Button btnMenu;
-    ScrollView scrollIns;
     View view;
 
     //To pass to list
@@ -54,12 +52,12 @@ public class RecetteAffiche_Fragment extends Fragment {
     public static ArrayList<String> numberIngredients = new ArrayList<String>();
     public static boolean checkList[] = null;
 
-    public RecetteAffiche_Fragment(){};
+    public ResearchRecipe_Fragment(){};
 
     //Constructor with the id of the recipe in parameters
-    public static RecetteAffiche_Fragment newInstance(String id){
+    public static ResearchRecipe_Fragment newInstance(String id){
 
-        RecetteAffiche_Fragment fragment= new RecetteAffiche_Fragment();
+        ResearchRecipe_Fragment fragment= new ResearchRecipe_Fragment();
 
         Bundle args = new Bundle(1);
         args.putString("ID_RECETTE", id);
@@ -81,7 +79,6 @@ public class RecetteAffiche_Fragment extends Fragment {
             instructions = (TextView) getView().findViewById(R.id.instR);
             ingredients = (ListView) getView().findViewById(R.id.ingreR);
             image = (ImageView) getView().findViewById(R.id.imgR);
-            scrollIns = (ScrollView) getView().findViewById(R.id.scollR);
 
             //Show images, descriptions and temps when clicking on title
             titre.setOnClickListener(new View.OnClickListener() {
@@ -89,7 +86,7 @@ public class RecetteAffiche_Fragment extends Fragment {
                 public void onClick(View v) {
                     ingredients.setVisibility(View.GONE);
                     btIng.setBackgroundColor(Color.GRAY);
-                    scrollIns.setVisibility(View.GONE);
+                    instructions.setVisibility(View.GONE);
                     btIns.setBackgroundColor(Color.GRAY);
                     image.setVisibility(View.VISIBLE);
                     description.setVisibility(View.VISIBLE);
@@ -105,7 +102,7 @@ public class RecetteAffiche_Fragment extends Fragment {
                 public void onClick(View v) {
                     ingredients.setVisibility(View.VISIBLE);
                     btIng.setBackgroundColor(Color.DKGRAY);
-                    scrollIns.setVisibility(View.GONE);
+                    instructions.setVisibility(View.GONE);
                     btIns.setBackgroundColor(Color.GRAY);
                     image.setVisibility(View.GONE);
                     description.setVisibility(View.GONE);
@@ -121,7 +118,7 @@ public class RecetteAffiche_Fragment extends Fragment {
                 public void onClick(View v) {
                     ingredients.setVisibility(View.GONE);
                     btIng.setBackgroundColor(Color.GRAY);
-                    scrollIns.setVisibility(View.VISIBLE);
+                    instructions.setVisibility(View.VISIBLE);
                     btIns.setBackgroundColor(Color.DKGRAY);
                     image.setVisibility(View.GONE);
                     description.setVisibility(View.GONE);
@@ -139,6 +136,7 @@ public class RecetteAffiche_Fragment extends Fragment {
             final DownloadWebTask web = new DownloadWebTask();
             web.execute();
 
+            //Add to cookbook
             btnFav = (Button)getView().findViewById(R.id.btnFav);
             btnFav.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -153,11 +151,13 @@ public class RecetteAffiche_Fragment extends Fragment {
                     final String instructions = web.getInstructions();
                     final ArrayList<String> ingreNom = web.getIname();
                     final ArrayList<String> ingreNum = web.getInumber();
+                    final String id = web.getID();
                     Livre_Fragment_PLACEHOLDER.receiveRecipe(titre, image, description, tempsCuisson, tempsTotal,
-                    instructions, ingreNom, ingreNum);
+                    instructions, ingreNom, ingreNum, id);
                 }
             });
 
+            //Add to current recipe
             btnMake = (Button)getView().findViewById(R.id.btnMake);
             btnMake.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -172,11 +172,13 @@ public class RecetteAffiche_Fragment extends Fragment {
                     final String instructions = web.getInstructions();
                     final ArrayList<String> ingreNom = web.getIname();
                     final ArrayList<String> ingreNum = web.getInumber();
-                    Recette_Fragment_PLACEHOLDER.receiveRecipe(titre, image, description, tempsCuisson, tempsTotal,
-                            instructions, ingreNom, ingreNum);
+                    final String id = web.getID();
+                    CurrentRecipe_Fragment.receiveRecipe(titre, image, description, tempsCuisson, tempsTotal,
+                            instructions, ingreNom, ingreNum, id);
                 }
             });
 
+            //Add to menu
             btnMenu = (Button)getView().findViewById(R.id.btnMenu);
             btnMenu.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -191,8 +193,9 @@ public class RecetteAffiche_Fragment extends Fragment {
                     final String instructions = web.getInstructions();
                     final ArrayList<String> ingreNom = web.getIname();
                     final ArrayList<String> ingreNum = web.getInumber();
+                    final String id = web.getID();
                     Menu_Fragment_PLACEHOLDER.receiveRecipe(titre, image, description, tempsCuisson, tempsTotal,
-                            instructions, ingreNom, ingreNum);
+                            instructions, ingreNom, ingreNum, id);
                 }
             });
         }
@@ -210,6 +213,7 @@ public class RecetteAffiche_Fragment extends Fragment {
     //Search in BigOvenRecipeWebAPI
     public class DownloadWebTask extends AsyncTask<Void, Void, BigOvenRecipeWebAPI> {
         ProgressDialog progressDialog;
+        String ID;
         String titreR;
         String descriptionR;
         String tempsR;
@@ -221,6 +225,10 @@ public class RecetteAffiche_Fragment extends Fragment {
         boolean[] checkList;
 
         public DownloadWebTask() {
+        }
+
+        protected String getID() {
+            return ID;
         }
 
         protected String getTitre(){
@@ -286,6 +294,7 @@ public class RecetteAffiche_Fragment extends Fragment {
             cuisineR = bigovenrecipewebapi.image;
             ingredientsN = bigovenrecipewebapi.ingredientsNom;
             ingredientsNb = bigovenrecipewebapi.ingredientsQuantite;
+            ID = bigovenrecipewebapi.ID;
 
             //Set text in UI
             titre.setText(titreR);

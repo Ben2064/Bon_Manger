@@ -27,7 +27,9 @@ public class Menu_Fragment_PLACEHOLDER extends Fragment{
         return rootView;
     }
 
-    public static void receiveRecipe(String titre, Drawable image, String description, String tempsCuisson, String tempsTotal, String instructions, ArrayList<String> ingreNom, ArrayList<String> ingreNum) {
+    public static void receiveRecipe(String titre, Drawable image, String description, String tempsCuisson,
+                                     String tempsTotal, String instructions, ArrayList<String> ingreNom,
+                                     ArrayList<String> ingreNum, String id) {
         //We receive the informations of the recipe to add
         //Here we add it to memory
     }

@@ -3,7 +3,6 @@ package lesdevoreurs.bon_manger;
 import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentManager;
-import android.content.Context;
 import android.content.res.Configuration;
 import android.content.res.TypedArray;
 import android.os.Bundle;
@@ -12,15 +11,11 @@ import android.support.v4.view.MenuItemCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.widget.SearchView;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.BaseAdapter;
 import android.widget.ListView;
-import android.widget.TextView;
 
 import java.util.ArrayList;
 
@@ -29,17 +24,14 @@ import Fragments.Home_Fragment;
 import Fragments.Liste_Fragment_PLACEHOLDER;
 import Fragments.Livre_Fragment_PLACEHOLDER;
 import Fragments.Menu_Fragment_PLACEHOLDER;
-import Fragments.Recette_Fragment_PLACEHOLDER;
+import Fragments.CurrentRecipe_Fragment;
 import Fragments.Timer_Fragment_PLACEHOLDER;
 import SlidingMenu.NavDrawerItem;
 
 
-public class MainActivity extends Activity  {
+public class MainActivity extends Activity {
 
-    //Button cherche;
-    //Button recette;
-
-    private DrawerLayout mDrawerLayout;
+   private DrawerLayout mDrawerLayout;
     private ListView mDrawerList;
     private ActionBarDrawerToggle mDrawerToggle;
 
@@ -59,24 +51,6 @@ public class MainActivity extends Activity  {
     private ArrayList<NavDrawerItem> navDrawerItems;
     private NavDrawerListAdapter adapter;
 
-    /*@Override
-    protected void onCreate(Bundle savedInstanceState) {
-
-        myAdapter adapter;
-
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-
-        FragmentManager fragmentManager = getFragmentManager();
-        Fragment fragment = new Home_Fragment();
-        fragmentManager.beginTransaction().replace(R.id.frame_container, fragment).commit();
-
-        //cherche = (Button)findViewById(R.id.gogogirl);
-        //recette = (Button)findViewById(R.id.recette);
-
-       // cherche.setOnClickListener(this);
-        //recette.setOnClickListener(this);
-    }*/
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -84,7 +58,7 @@ public class MainActivity extends Activity  {
 
         mTitle = mDrawerTitle = getTitle();
 
-        first_fragment=true;
+        first_fragment = true;
 
         // load slide menu items
         navMenuTitles = getResources().getStringArray(R.array.nav_drawer_items);
@@ -163,6 +137,7 @@ public class MainActivity extends Activity  {
         SearchView searchView = (SearchView) MenuItemCompat.getActionView(searchItem);
         return true;
     }
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // toggle nav drawer on selecting action bar app icon/title
@@ -219,10 +194,9 @@ public class MainActivity extends Activity  {
     }
 
 
-
     /**
      * Slide menu item click listener
-     * */
+     */
     private class SlideMenuClickListener implements
             ListView.OnItemClickListener {
         @Override
@@ -235,7 +209,7 @@ public class MainActivity extends Activity  {
 
     /**
      * Diplaying fragment view for selected nav drawer list item
-     * */
+     */
     private void displayView(int position) {
         // update the main content by replacing fragments
         Fragment fragment = null;
@@ -244,16 +218,16 @@ public class MainActivity extends Activity  {
                 fragment = new Home_Fragment();
                 break;
             case 1: //Recherche
-                fragment = new RechercheActivity();
+                fragment = new Research_Fragment();
                 break;
             case 2: //Recette en cours
-               fragment = new Recette_Fragment_PLACEHOLDER();
+                fragment = new CurrentRecipe_Fragment();
                 break;
             case 3: //Timers
-               fragment = new Timer_Fragment_PLACEHOLDER();
+                fragment = new Timer_Fragment_PLACEHOLDER();
                 break;
             case 4: //Liste d'epicerie
-               fragment = new Liste_Fragment_PLACEHOLDER();
+                fragment = new Liste_Fragment_PLACEHOLDER();
                 break;
             case 5:// Menu
                 fragment = new Menu_Fragment_PLACEHOLDER();
@@ -279,7 +253,7 @@ public class MainActivity extends Activity  {
                 mDrawerLayout.closeDrawer(mDrawerList);
            /* if (intent !=null) {
                 startActivity(intent);*/
-            }else { //do not addToBackStack -> was causing blank page
+            } else { //do not addToBackStack -> was causing blank page
                 FragmentManager fragmentManager = getFragmentManager();
                 fragmentManager.beginTransaction()
                         .replace(R.id.frame_container, fragment).commit();
@@ -289,7 +263,7 @@ public class MainActivity extends Activity  {
                 mDrawerList.setSelection(position);
                 setTitle(navMenuTitles[position]);
                 mDrawerLayout.closeDrawer(mDrawerList);
-                first_fragment=false;
+                first_fragment = false;
             }
 
         } else {
@@ -297,75 +271,4 @@ public class MainActivity extends Activity  {
             Log.e("MainActivity", "Error in creating fragment");
         }
     }
-
-    /*@Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
-    }*/
-
-    /*@Override
-    public void onClick(View v) {
-        if(v.getId()==R.id.gogogirl) {
-            Toast.makeText(this, "Switching to Search Activity!", Toast.LENGTH_LONG).show();
-            Intent i = new Intent(this, RechercheActivity.class);
-            startActivity(i);
-            FragmentManager fragmentManager = getFragmentManager();
-            Fragment fragment = new RechercheActivity();
-            fragmentManager.beginTransaction()
-                    .replace(R.id.main_layout,fragment ).commit();
-
-        }
-        if(v.getId()==R.id.recette) {
-            Toast.makeText(this, "Switching to Recette Activity!", Toast.LENGTH_LONG).show();
-            Intent i = new Intent(this, RecetteActivity.class);
-            startActivity(i);
-        }
-    }*/
-
-    private class myAdapter extends BaseAdapter{
-
-        LayoutInflater inflater;
-        public myAdapter(){
-            inflater = (LayoutInflater)getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        }
-
-        @Override
-        public int getCount() {
-            return 40;
-        }
-
-        @Override
-        public Object getItem(int position) {
-            return null;
-        }
-
-        @Override
-        public long getItemId(int position) {
-            return position;
-        }
-
-        @Override
-        public View getView(int position, View recycleView, ViewGroup parent) {
-            View v = recycleView;
-            if(v == null){
-                v = inflater.inflate(android.R.layout.simple_list_item_1, parent, false);
-                v.setTag(" ("+position+")");
-            }
-
-            TextView tv = (TextView)v.findViewById(android.R.id.text1);
-            tv.setText("Item "+position+"  "+(String)v.getTag());
-
-            return v;
-        }
-    }
-}
+};

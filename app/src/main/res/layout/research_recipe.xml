@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#ff000000"
@@ -9,7 +9,14 @@
     <ScrollView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/scrollView" >
+        android:id="@+id/scrollView"
+        android:layout_alignParentLeft="true"
+        android:layout_marginLeft="0dp"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="0dp"
+        android:layout_alignParentBottom="false"
+        android:layout_alignWithParentIfMissing="false"
+        android:layout_marginBottom="40dp">
 
         <LinearLayout
             android:orientation="vertical"
@@ -96,62 +103,58 @@
                     android:clickable="true" />
             </LinearLayout>
 
-            <ScrollView
+            <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/scollR"
-                android:visibility="gone">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/instR"
-                    android:textColor="#ffffffff"
-                    android:visibility="visible" />
-            </ScrollView>
+                android:id="@+id/instR"
+                android:textColor="#ffffffff"
+                android:visibility="gone" />
 
             <ListView
                 android:layout_width="match_parent"
-                android:layout_height="360dp"
+                android:layout_height="380dp"
                 android:id="@+id/ingreR"
                 android:visibility="gone"
                 android:clickable="true"
                 android:focusable="true" />
 
-            <LinearLayout
-                android:orientation="horizontal"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center_horizontal">
-
-                <Button
-                    style="?android:attr/buttonStyleSmall"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/btnMake"
-                    android:background="@android:drawable/ic_menu_view"
-                    android:visibility="invisible"
-                    android:layout_marginRight="10dp" />
-
-                <Button
-                    style="?android:attr/buttonStyleSmall"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/btnFav"
-                    android:background="@android:drawable/btn_star_big_off"
-                    android:visibility="invisible"
-                    android:layout_marginRight="10dp" />
-
-                <Button
-                    style="?android:attr/buttonStyleSmall"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/btnMenu"
-                    android:background="@android:drawable/ic_menu_today"
-                    android:visibility="invisible" />
-            </LinearLayout>
-
         </LinearLayout>
     </ScrollView>
 
-</LinearLayout>
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
+        android:layout_alignParentLeft="false"
+        android:layout_alignParentTop="false"
+        android:layout_alignParentBottom="true">
+
+        <Button
+            style="?android:attr/buttonStyleSmall"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/btnMake"
+            android:background="@android:drawable/ic_menu_view"
+            android:visibility="invisible" />
+
+        <Button
+            style="?android:attr/buttonStyleSmall"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/btnFav"
+            android:background="@android:drawable/btn_star_big_off"
+            android:visibility="invisible"
+            android:layout_marginLeft="30dp"
+            android:layout_marginRight="30dp" />
+
+        <Button
+            style="?android:attr/buttonStyleSmall"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/btnMenu"
+            android:visibility="invisible"
+            android:background="@android:drawable/ic_menu_today" />
+    </LinearLayout>
+
+</RelativeLayout>
