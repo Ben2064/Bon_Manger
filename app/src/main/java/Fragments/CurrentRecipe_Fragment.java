@@ -110,37 +110,8 @@ public class CurrentRecipe_Fragment extends Fragment{
         adapter = new MyAdapter(getActivity(), c2);
         listI.setAdapter(adapter);
 
-        //Set text in UI
-        titre.setText(t);
-        //image.setImageDrawable(i);
-        description.setText(d);
-        if (!tt.equals("0"))
-            temps.setText("Ready in : " + tt);
-        if (!ct.equals("0"))
-            cuisson.setText("Cooking time: " + ct);
-        btIns.setVisibility(View.VISIBLE);
-        btIng.setVisibility(View.VISIBLE);
-        instructions.setText(ins);
-        btnFav.setVisibility(View.VISIBLE);
-        btnMenu.setVisibility(View.VISIBLE);
-
-        //Show images, descriptions and temps when clicking on title
-        titre.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                ingredients.setVisibility(View.GONE);
-                btIng.setBackgroundColor(Color.GRAY);
-                instructions.setVisibility(View.GONE);
-                btIns.setBackgroundColor(Color.GRAY);
-                image.setVisibility(View.VISIBLE);
-                description.setVisibility(View.VISIBLE);
-                temps.setVisibility(View.VISIBLE);
-                cuisson.setVisibility(View.VISIBLE);
-            }
-        });
-
         //Show only title and ingredients
-        btIng = (Button) getView().findViewById(R.id.ingR);
+        btIng = (Button) getView().findViewById(R.id.ingC);
         btIng.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -156,7 +127,7 @@ public class CurrentRecipe_Fragment extends Fragment{
         });
 
         //Show only title and instructions
-        btIns = (Button) getView().findViewById(R.id.insR);
+        btIns = (Button) getView().findViewById(R.id.insC);
         btIns.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -197,6 +168,35 @@ public class CurrentRecipe_Fragment extends Fragment{
                 //      ins, ingreNom, ingreNum, id);
             }
         });
+
+        //Show images, descriptions and temps when clicking on title
+        titre.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ingredients.setVisibility(View.GONE);
+                btIng.setBackgroundColor(Color.GRAY);
+                instructions.setVisibility(View.GONE);
+                btIns.setBackgroundColor(Color.GRAY);
+                image.setVisibility(View.VISIBLE);
+                description.setVisibility(View.VISIBLE);
+                temps.setVisibility(View.VISIBLE);
+                cuisson.setVisibility(View.VISIBLE);
+            }
+        });
+
+        //Set text in UI
+        titre.setText(t);
+        //image.setImageDrawable(i);
+        description.setText(d);
+        if (!tt.equals("0"))
+            temps.setText("Ready in : " + tt);
+        if (!ct.equals("0"))
+            cuisson.setText("Cooking time: " + ct);
+        btIns.setVisibility(View.VISIBLE);
+        btIng.setVisibility(View.VISIBLE);
+        instructions.setText(ins);
+        btnFav.setVisibility(View.VISIBLE);
+        btnMenu.setVisibility(View.VISIBLE);
     }
 
     //Create checklist with false
