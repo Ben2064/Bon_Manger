@@ -1,6 +1,7 @@
 package Fragments;
 
 import android.app.Fragment;
+import android.database.Cursor;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -16,7 +17,23 @@ import lesdevoreurs.bon_manger.R;
  * Created by virgile on 17/04/2015.
  */
 public class Livre_Fragment_PLACEHOLDER extends Fragment {
-    public Livre_Fragment_PLACEHOLDER(){};
+    public Livre_Fragment_PLACEHOLDER() {
+    }
+
+    ;
+
+    public static void receiveRecipe(String titre, Drawable image, String description, String tempsCuisson,
+                                     String tempsTotal, String instructions, ArrayList<String> ingreNom,
+                                     ArrayList<String> ingreNum, String id) {
+        //We receive the informations of the recipe to add from search
+        //Here we add it to memory
+    }
+
+    public static void receiveRecipe(String titre, Drawable image, String description, String tempsCuisson,
+                                     String tempsTotal, String instructions, Cursor c, String id) {
+        //We receive the informations of the recipe to add from current recipe
+        //Here we add it to memory
+    }
 
     @Nullable
     @Override
@@ -25,12 +42,6 @@ public class Livre_Fragment_PLACEHOLDER extends Fragment {
         View rootView = inflater.inflate(R.layout.livre_layout_placeholder, container, false);
 
         return rootView;
-    }
-
-    public static void receiveRecipe(String titre, Drawable image, String description, String tempsCuisson, String tempsTotal,
-                                     String instructions, ArrayList<String> ingreNom, ArrayList<String> ingreNum, String id){
-        //We receive the informations of the recipe to add
-        //Here we add it to memory
     }
 
 }

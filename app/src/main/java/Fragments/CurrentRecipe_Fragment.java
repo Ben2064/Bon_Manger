@@ -4,7 +4,10 @@ import android.app.Fragment;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
+import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -20,6 +23,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 
 import lesdevoreurs.bon_manger.DBHelper;
@@ -30,6 +34,8 @@ import lesdevoreurs.bon_manger.R;
  */
 public class CurrentRecipe_Fragment extends Fragment{
 
+    static SQLiteDatabase db;
+    //UI
     TextView titre;
     ImageView image;
     TextView description;
@@ -43,15 +49,10 @@ public class CurrentRecipe_Fragment extends Fragment{
     Button btnFav;
     Button btnMenu;
     View view;
-    ArrayList<String> ingredientsN = new ArrayList<String>();
-    ArrayList<String> ingredientsNb = new ArrayList<String>();
     boolean[] checkList;
     ListView listI;
     MyAdapter adapter;
     DBHelper dbh;
-    SQLiteDatabase db;
-    //UI
-    private String idRecette;
 
     public CurrentRecipe_Fragment(){};
 
@@ -59,6 +60,37 @@ public class CurrentRecipe_Fragment extends Fragment{
                                      String instructions, ArrayList<String> ingreNom, ArrayList<String> ingreNum, String id) {
         //We receive the informations of the recipe to add
         //Here we add it to memory
+
+        //Add recipe
+        byte[] imageDB = imageSQL(image);
+        DBHelper.addCurrent(db, id, titre, imageDB, description,
+                tempsCuisson, tempsTotal, instructions);
+
+        db.delete("ringredients", null, null);
+        //Add ingredients
+        for (int i = 0; i < ingreNom.size(); i++) {
+            DBHelper.addCurrentIngredient(db, ingreNom.get(i), ingreNum.get(i), i);
+        }
+    }
+
+    //Convert drawable to byte[] for DB
+    //http://stackoverflow.com/questions/6341977/convert-drawable-to-blob-datatype
+    public static byte[] imageSQL(Drawable d) {
+        BitmapDrawable bitDw = ((BitmapDrawable) d);
+        Bitmap bitmap = bitDw.getBitmap();
+        ByteArrayOutputStream stream = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, stream);
+        byte[] imageInByte = stream.toByteArray();
+
+        return imageInByte;
+    }
+
+    //Convert byte[] to bitmap
+    public static Bitmap convertByteArrayToBitmap(byte[] byteImage) {
+        Bitmap bitMapImage = BitmapFactory.decodeByteArray(
+                byteImage, 0,
+                byteImage.length);
+        return bitMapImage;
     }
 
     @Nullable
@@ -71,7 +103,7 @@ public class CurrentRecipe_Fragment extends Fragment{
         return view;
     }
 
-    public void onActivityCreated (final Bundle savedInstanceState) {
+    public void onActivityCreated(final Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
         //Open DB
@@ -80,7 +112,7 @@ public class CurrentRecipe_Fragment extends Fragment{
 
         listI = (ListView) getView().findViewById(R.id.ingreC);
 
-        //Entre des données test dans la db
+        //Test d'entrée des données test dans la db
         dbh.test(db);
 
         //Get recipe info
@@ -89,7 +121,7 @@ public class CurrentRecipe_Fragment extends Fragment{
         final String id = c.getString(c.getColumnIndex(DBHelper.R_ID));
         final String t = c.getString(c.getColumnIndex(DBHelper.R_TITRE));
         final String d = c.getString(c.getColumnIndex(DBHelper.R_DESCRIPTION));
-        final String i = c.getString(c.getColumnIndex(DBHelper.R_IMAGE));
+        final byte[] i = c.getBlob(c.getColumnIndex(DBHelper.R_IMAGE));
         final String ins = c.getString(c.getColumnIndex(DBHelper.R_INSTRUCTIONS));
         final String tt = c.getString(c.getColumnIndex(DBHelper.R_TOTALTIME));
         final String ct = c.getString(c.getColumnIndex(DBHelper.R_COOKTIME));
@@ -103,7 +135,7 @@ public class CurrentRecipe_Fragment extends Fragment{
         ingredients = (ListView) getView().findViewById(R.id.ingreC);
 
         //Get ingredients info, and pass to adapter to fit in the listview
-        Cursor c2 = dbh.currentRecipeIngredients(db);
+        final Cursor c2 = dbh.currentRecipeIngredients(db);
         //Create checklist with false
         int size = c2.getCount();
         setCheckList(size);
@@ -153,8 +185,7 @@ public class CurrentRecipe_Fragment extends Fragment{
             @Override
             public void onClick(View v) {
                 Toast.makeText(getActivity(), "Added to my list", Toast.LENGTH_LONG).show();
-                //Livre_Fragment_PLACEHOLDER.receiveRecipe(t, i, d, ct, tt,
-                //      ins, ingreNom, ingreNum, id);
+                //Livre_Fragment_PLACEHOLDER.receiveRecipe(t, i, d, ct, tt, ins, c2, id);
             }
         });
 
@@ -164,8 +195,7 @@ public class CurrentRecipe_Fragment extends Fragment{
             @Override
             public void onClick(View v) {
                 Toast.makeText(getActivity(), "Add to menu", Toast.LENGTH_LONG).show();
-                //Menu_Fragment_PLACEHOLDER.receiveRecipe(t, i, d, ct, tt,
-                //      ins, ingreNom, ingreNum, id);
+                //Menu_Fragment_PLACEHOLDER.receiveRecipe(t, i, d, ct, tt,ins, c2, id);
             }
         });
 
@@ -184,9 +214,12 @@ public class CurrentRecipe_Fragment extends Fragment{
             }
         });
 
+        //Put image
+        Bitmap imageBit = convertByteArrayToBitmap(i);
+        image.setImageBitmap(imageBit);
+
         //Set text in UI
         titre.setText(t);
-        //image.setImageDrawable(i);
         description.setText(d);
         if (!tt.equals("0"))
             temps.setText("Ready in : " + tt);

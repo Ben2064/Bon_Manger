@@ -33,6 +33,7 @@ public class ResearchRecipe_Fragment extends Fragment {
     public static ArrayList<String> nameIngredients = new ArrayList<String>();
     public static ArrayList<String> numberIngredients = new ArrayList<String>();
     public static boolean checkList[] = null;
+
     //UI
     TextView titre;
     ImageView image;
@@ -284,11 +285,11 @@ public class ResearchRecipe_Fragment extends Fragment {
         }
 
         protected ArrayList<String> getInumber() {
-            return numberIngredients;
+            return ingredientsNb;
         }
 
         protected ArrayList<String> getIname() {
-            return nameIngredients;
+            return ingredientsN;
         }
 
         @Override
