@@ -36,7 +36,7 @@ public class DBHelper extends SQLiteOpenHelper {
     public static final String CI_NAME = "name";
     public static final String CI_NUMBER = "number";
     static final String DB_NAME = "bonmanger.db";
-    static final int DB_VERSION = 6;    //******************METTRE À JOUR À CHAQUE FOIS!!!!!!!***********************//
+    static final int DB_VERSION = 13;    //******************METTRE À JOUR À CHAQUE FOIS!!!!!!!***********************//
     //CURRENT::table recipe for current recipe
     static final String TABLE_RECIPES = "recipes";
     //CURRENT::table ingredients for current recipe
@@ -208,6 +208,7 @@ public class DBHelper extends SQLiteOpenHelper {
                 + " VALUES(" + "'10'" + ", " + "'crotte'" + ", " + "'bella'" + ", " + "'desc'" + ", " + "'10min'" + ", " + "'5min'" + ", " + "'mettre au feu'" + ")";
         db.execSQL(sql);
 
+        //db.delete(TABLE_RINGREDIENTS, null, null);
         sql = "INSERT OR REPLACE INTO "
                 + TABLE_RINGREDIENTS
                 + " (" + RI_NAME + ", " + RI_NUMBER + ", " + RI_ID + ")"

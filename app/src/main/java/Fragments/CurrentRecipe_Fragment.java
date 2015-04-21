@@ -66,7 +66,7 @@ public class CurrentRecipe_Fragment extends Fragment{
         DBHelper.addCurrent(db, id, titre, imageDB, description,
                 tempsCuisson, tempsTotal, instructions);
 
-        db.delete("ringredients", null, null);
+        //db.delete("ringredients", null, null);
         //Add ingredients
         for (int i = 0; i < ingreNom.size(); i++) {
             DBHelper.addCurrentIngredient(db, ingreNom.get(i), ingreNum.get(i), i);

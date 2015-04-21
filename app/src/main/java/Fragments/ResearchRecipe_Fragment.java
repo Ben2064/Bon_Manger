@@ -33,7 +33,6 @@ public class ResearchRecipe_Fragment extends Fragment {
     public static ArrayList<String> nameIngredients = new ArrayList<String>();
     public static ArrayList<String> numberIngredients = new ArrayList<String>();
     public static boolean checkList[] = null;
-
     //UI
     TextView titre;
     ImageView image;
@@ -51,12 +50,15 @@ public class ResearchRecipe_Fragment extends Fragment {
     View view;
     private String idRecette;   //The ID of the recipe to show
 
-    public ResearchRecipe_Fragment(){};
+    public ResearchRecipe_Fragment() {
+    }
+
+    ;
 
     //Constructor with the id of the recipe in parameters
-    public static ResearchRecipe_Fragment newInstance(String id){
+    public static ResearchRecipe_Fragment newInstance(String id) {
 
-        ResearchRecipe_Fragment fragment= new ResearchRecipe_Fragment();
+        ResearchRecipe_Fragment fragment = new ResearchRecipe_Fragment();
 
         Bundle args = new Bundle(1);
         args.putString("ID_RECETTE", id);
@@ -66,10 +68,10 @@ public class ResearchRecipe_Fragment extends Fragment {
     }
 
     @Override
-    public void onActivityCreated (final Bundle savedInstanceState){
+    public void onActivityCreated(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        if(btIng==null) {
+        if (btIng == null) {
             idRecette = getArguments().getString("ID_RECETTE");
             titre = (TextView) getView().findViewById(R.id.titreR);
             description = (TextView) getView().findViewById(R.id.descR);
@@ -136,7 +138,7 @@ public class ResearchRecipe_Fragment extends Fragment {
             web.execute();
 
             //Add to cookbook
-            btnFav = (Button)getView().findViewById(R.id.btnFav);
+            btnFav = (Button) getView().findViewById(R.id.btnFav);
             btnFav.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -152,12 +154,12 @@ public class ResearchRecipe_Fragment extends Fragment {
                     final ArrayList<String> ingreNum = web.getInumber();
                     final String id = web.getID();
                     Livre_Fragment_PLACEHOLDER.receiveRecipe(titre, image, description, tempsCuisson, tempsTotal,
-                    instructions, ingreNom, ingreNum, id);
+                            instructions, ingreNom, ingreNum, id);
                 }
             });
 
             //Add to current recipe
-            btnMake = (Button)getView().findViewById(R.id.btnMake);
+            btnMake = (Button) getView().findViewById(R.id.btnMake);
             btnMake.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -178,7 +180,7 @@ public class ResearchRecipe_Fragment extends Fragment {
             });
 
             //Add to menu
-            btnMenu = (Button)getView().findViewById(R.id.btnMenu);
+            btnMenu = (Button) getView().findViewById(R.id.btnMenu);
             btnMenu.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -209,7 +211,7 @@ public class ResearchRecipe_Fragment extends Fragment {
         return view;
     }
 
-    public boolean[] getCheckList(){
+    public boolean[] getCheckList() {
         return checkList;
     }
 
