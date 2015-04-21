@@ -31,7 +31,7 @@ import java.util.ArrayList;
 import Fragments.ResearchRecipe_Fragment;
 
 
-public class Research_Fragment extends Fragment {
+public class Research_Fragment1 extends Fragment {
 
     static ProgressDialog progressDialog;
     static int numPage;

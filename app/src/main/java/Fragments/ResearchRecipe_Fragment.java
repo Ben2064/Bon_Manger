@@ -25,12 +25,14 @@ import lesdevoreurs.bon_manger.BigOvenRecipeWebAPI;
 import lesdevoreurs.bon_manger.R;
 
 /**
- * Created by virgile on 17/04/2015.
+ * Created by Ash Ketchum on 17/04/2015.
  */
 public class ResearchRecipe_Fragment extends Fragment {
 
-    private String idRecette;   //The ID of the recipe to show
-
+    //To pass to list
+    public static ArrayList<String> nameIngredients = new ArrayList<String>();
+    public static ArrayList<String> numberIngredients = new ArrayList<String>();
+    public static boolean checkList[] = null;
     //UI
     TextView titre;
     ImageView image;
@@ -46,11 +48,7 @@ public class ResearchRecipe_Fragment extends Fragment {
     Button btnMake;
     Button btnMenu;
     View view;
-
-    //To pass to list
-    public static ArrayList<String> nameIngredients = new ArrayList<String>();
-    public static ArrayList<String> numberIngredients = new ArrayList<String>();
-    public static boolean checkList[] = null;
+    private String idRecette;   //The ID of the recipe to show
 
     public ResearchRecipe_Fragment(){};
 
@@ -210,6 +208,36 @@ public class ResearchRecipe_Fragment extends Fragment {
         return view;
     }
 
+    public boolean[] getCheckList(){
+        return checkList;
+    }
+
+    //Create checklist with false
+    public void setCheckList(int size) {
+        Log.d("Size", "" + size);
+        checkList = new boolean[size];
+        for (int i = 0; i < size; i++) {
+            checkList[i] = false;
+            Log.d("Checklist", "" + checkList[i]);
+        }
+    }
+
+    public ArrayList<String> getNameIngredients() {
+        return nameIngredients;
+    }
+
+    public ArrayList<String> getNumberIngredients() {
+        return numberIngredients;
+    }
+
+    public void resetNameIngredients() {
+        nameIngredients = new ArrayList<String>();
+    }
+
+    public void resetNumberIngredients() {
+        numberIngredients = new ArrayList<String>();
+    }
+
     //Search in BigOvenRecipeWebAPI
     public class DownloadWebTask extends AsyncTask<Void, Void, BigOvenRecipeWebAPI> {
         ProgressDialog progressDialog;
@@ -231,35 +259,35 @@ public class ResearchRecipe_Fragment extends Fragment {
             return ID;
         }
 
-        protected String getTitre(){
+        protected String getTitre() {
             return titreR;
         }
 
-        protected String getDesc(){
+        protected String getDesc() {
             return descriptionR;
         }
 
-        protected String getTemps(){
+        protected String getTemps() {
             return tempsR;
         }
 
-        protected String getCuisson(){
+        protected String getCuisson() {
             return cuissonR;
         }
 
-        protected String getInstructions(){
+        protected String getInstructions() {
             return instructionsR;
         }
 
-        protected Drawable getImage(){
+        protected Drawable getImage() {
             return cuisineR;
         }
 
-        protected ArrayList<String> getInumber(){
+        protected ArrayList<String> getInumber() {
             return numberIngredients;
         }
 
-        protected ArrayList<String> getIname(){
+        protected ArrayList<String> getIname() {
             return nameIngredients;
         }
 
@@ -300,10 +328,10 @@ public class ResearchRecipe_Fragment extends Fragment {
             titre.setText(titreR);
             image.setImageDrawable(cuisineR);
             description.setText(descriptionR);
-            if(!tempsR.equals("0"))
-                temps.setText("Ready in : "+tempsR);
-            if(!cuissonR.equals("0"))
-                cuisson.setText("Cooking time: "+cuissonR);
+            if (!tempsR.equals("0"))
+                temps.setText("Ready in : " + tempsR);
+            if (!cuissonR.equals("0"))
+                cuisson.setText("Cooking time: " + cuissonR);
             btIns.setVisibility(View.VISIBLE);
             btIng.setVisibility(View.VISIBLE);
             instructions.setText(instructionsR);
@@ -342,8 +370,8 @@ public class ResearchRecipe_Fragment extends Fragment {
                                     + tempNum.get(j));
                         }
                         Liste_Fragment_PLACEHOLDER.setListe(tempName, tempNum);
-                       resetNameIngredients();
-                       resetNumberIngredients();
+                        resetNameIngredients();
+                        resetNumberIngredients();
                     }
                 }
             });
@@ -401,7 +429,7 @@ public class ResearchRecipe_Fragment extends Fragment {
             check.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View arg0) {
-                    if(!checkList[position])
+                    if (!checkList[position])
                         checkList[position] = true;
                     else
                         checkList[position] = false;
@@ -409,40 +437,10 @@ public class ResearchRecipe_Fragment extends Fragment {
             });
 
             //If nothing found
-            if(nom.get(position).equals("Nothing found"))
+            if (nom.get(position).equals("Nothing found"))
                 check.setTextIsSelectable(false);
 
             return v;
         }
-    }
-
-    //Create checklist with false
-    public void setCheckList(int size){
-        Log.d("Size",""+size);
-        checkList = new boolean[size];
-        for(int i=0; i<size; i++){
-            checkList[i]=false;
-            Log.d("Checklist",""+checkList[i]);
-        }
-    }
-
-    public boolean[] getCheckList(){
-        return checkList;
-    }
-
-    public ArrayList<String> getNameIngredients(){
-        return nameIngredients;
-    }
-
-    public ArrayList<String> getNumberIngredients(){
-        return numberIngredients;
-    }
-
-    public void resetNameIngredients(){
-        nameIngredients = new ArrayList<String>();
-    }
-
-    public void resetNumberIngredients(){
-        numberIngredients = new ArrayList<String>();
     }
 }

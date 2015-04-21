@@ -20,18 +20,18 @@ import android.widget.ListView;
 import java.util.ArrayList;
 
 import Adapter.NavDrawerListAdapter;
+import Fragments.CurrentRecipe_Fragment;
 import Fragments.Home_Fragment;
 import Fragments.Liste_Fragment_PLACEHOLDER;
 import Fragments.Livre_Fragment_PLACEHOLDER;
 import Fragments.Menu_Fragment_PLACEHOLDER;
-import Fragments.CurrentRecipe_Fragment;
 import Fragments.Timer_Fragment_PLACEHOLDER;
 import SlidingMenu.NavDrawerItem;
 
 
 public class MainActivity extends Activity {
 
-   private DrawerLayout mDrawerLayout;
+    private DrawerLayout mDrawerLayout;
     private ListView mDrawerList;
     private ActionBarDrawerToggle mDrawerToggle;
 
@@ -193,20 +193,6 @@ public class MainActivity extends Activity {
         mDrawerToggle.onConfigurationChanged(newConfig);
     }
 
-
-    /**
-     * Slide menu item click listener
-     */
-    private class SlideMenuClickListener implements
-            ListView.OnItemClickListener {
-        @Override
-        public void onItemClick(AdapterView<?> parent, View view, int position,
-                                long id) {
-            // display view for selected nav drawer item
-            displayView(position);
-        }
-    }
-
     /**
      * Diplaying fragment view for selected nav drawer list item
      */
@@ -218,7 +204,7 @@ public class MainActivity extends Activity {
                 fragment = new Home_Fragment();
                 break;
             case 1: //Recherche
-                fragment = new Research_Fragment();
+                fragment = new Research_Fragment1();
                 break;
             case 2: //Recette en cours
                 fragment = new CurrentRecipe_Fragment();
@@ -269,6 +255,19 @@ public class MainActivity extends Activity {
         } else {
             // error in creating fragment
             Log.e("MainActivity", "Error in creating fragment");
+        }
+    }
+
+    /**
+     * Slide menu item click listener
+     */
+    private class SlideMenuClickListener implements
+            ListView.OnItemClickListener {
+        @Override
+        public void onItemClick(AdapterView<?> parent, View view, int position,
+                                long id) {
+            // display view for selected nav drawer item
+            displayView(position);
         }
     }
 };
