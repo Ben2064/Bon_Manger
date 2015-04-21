@@ -36,7 +36,7 @@ public class DBHelper extends SQLiteOpenHelper {
     public static final String CI_NAME = "name";
     public static final String CI_NUMBER = "number";
     static final String DB_NAME = "bonmanger.db";
-    static final int DB_VERSION = 13;    //******************METTRE À JOUR À CHAQUE FOIS!!!!!!!***********************//
+    static final int DB_VERSION = 30;    //******************METTRE À JOUR À CHAQUE FOIS!!!!!!!***********************//
     //CURRENT::table recipe for current recipe
     static final String TABLE_RECIPES = "recipes";
     //CURRENT::table ingredients for current recipe
@@ -149,17 +149,18 @@ public class DBHelper extends SQLiteOpenHelper {
     //CURRENT::add recipe
     public static void addCurrent(SQLiteDatabase db, String ID, String name, byte[] image, String description,
                                   String cooktime, String totaltime, String instructions) {
-        db.delete(TABLE_RECIPES, null, null);
+        //db.delete(TABLE_RECIPES, null, null);
         String sql = "INSERT INTO "
                 + TABLE_RECIPES
                 + " (" + R_ID + ", " + R_TITRE + ", " + R_IMAGE + ", " + R_DESCRIPTION + ", " + R_COOKTIME
                 + ", " + R_TOTALTIME + ", " + R_INSTRUCTIONS + ")"
-                + " VALUES ('" + ID + "', '" + name + "', '" + image + "', '" + description.replace("'", "''") + "', '" + cooktime + "', '" + totaltime + "', '" + instructions.replace("'", "''") + "')";
+                + " VALUES ('" + ID + "', '" + name.replace("'", "''") + "', '" + image + "', '" + description.replace("'", "''") + "', '" + cooktime + "', '" + totaltime + "', '" + instructions.replace("'", "''") + "')";
         db.execSQL(sql);
     }
 
     //CURRENT::add ingredients
     public static void addCurrentIngredient(SQLiteDatabase db, String name, String number, int id) {
+        //db.execSQL("DELETE FROM "+TABLE_RINGREDIENTS+" WHERE "+RI_NAME+" = plxrrmpa)");
         String sql = "INSERT INTO "
                 + TABLE_RINGREDIENTS
                 + " (" + RI_ID + ", " + RI_NAME + ", " + RI_NUMBER + ")"
@@ -209,12 +210,12 @@ public class DBHelper extends SQLiteOpenHelper {
         db.execSQL(sql);
 
         //db.delete(TABLE_RINGREDIENTS, null, null);
-        sql = "INSERT OR REPLACE INTO "
+        /*sql = "INSERT OR REPLACE INTO "
                 + TABLE_RINGREDIENTS
                 + " (" + RI_NAME + ", " + RI_NUMBER + ", " + RI_ID + ")"
-                + " VALUES(" + "'patate'" + ", " + "'10'" + ", " + "'10'" + ")";
+                + " VALUES(" + "'plxrrmpa'" + ", " + "'10'" + ", " + "'10'" + ")";
         db.execSQL(sql);
-        Log.d("Test", "ici");
+        Log.d("Test", "ici");*/
     }
 
     @Override

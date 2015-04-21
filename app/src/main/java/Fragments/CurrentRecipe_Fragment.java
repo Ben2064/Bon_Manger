@@ -18,10 +18,8 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CursorAdapter;
-import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
@@ -37,7 +35,7 @@ public class CurrentRecipe_Fragment extends Fragment{
     static SQLiteDatabase db;
     //UI
     TextView titre;
-    ImageView image;
+    //ImageView image;
     TextView description;
     TextView temps;
     TextView cuisson;
@@ -61,12 +59,14 @@ public class CurrentRecipe_Fragment extends Fragment{
         //We receive the informations of the recipe to add
         //Here we add it to memory
 
+        //DBHelper.test(db);
+
         //Add recipe
         byte[] imageDB = imageSQL(image);
         DBHelper.addCurrent(db, id, titre, imageDB, description,
                 tempsCuisson, tempsTotal, instructions);
 
-        //db.delete("ringredients", null, null);
+        db.delete("ringredients", null, null);
         //Add ingredients
         for (int i = 0; i < ingreNom.size(); i++) {
             DBHelper.addCurrentIngredient(db, ingreNom.get(i), ingreNum.get(i), i);
@@ -128,7 +128,7 @@ public class CurrentRecipe_Fragment extends Fragment{
 
         titre = (TextView) getView().findViewById(R.id.titreC);
         description = (TextView) getView().findViewById(R.id.descC);
-        image = (ImageView) getView().findViewById(R.id.imgC);
+        //image = (ImageView) getView().findViewById(R.id.imgC);
         instructions = (TextView) getView().findViewById(R.id.instC);
         temps = (TextView) getView().findViewById(R.id.ttC);
         cuisson = (TextView) getView().findViewById(R.id.tcC);
@@ -151,7 +151,7 @@ public class CurrentRecipe_Fragment extends Fragment{
                 btIng.setBackgroundColor(Color.DKGRAY);
                 instructions.setVisibility(View.GONE);
                 btIns.setBackgroundColor(Color.GRAY);
-                image.setVisibility(View.GONE);
+                //image.setVisibility(View.GONE);
                 description.setVisibility(View.GONE);
                 temps.setVisibility(View.GONE);
                 cuisson.setVisibility(View.GONE);
@@ -167,7 +167,7 @@ public class CurrentRecipe_Fragment extends Fragment{
                 btIng.setBackgroundColor(Color.GRAY);
                 instructions.setVisibility(View.VISIBLE);
                 btIns.setBackgroundColor(Color.DKGRAY);
-                image.setVisibility(View.GONE);
+                //image.setVisibility(View.GONE);
                 description.setVisibility(View.GONE);
                 temps.setVisibility(View.GONE);
                 cuisson.setVisibility(View.GONE);
@@ -180,7 +180,7 @@ public class CurrentRecipe_Fragment extends Fragment{
         ingredients.addFooterView(addBtn);
 
         //Add to cookbook
-        btnFav = (Button) getView().findViewById(R.id.btnFav);
+        /*btnFav = (Button) getView().findViewById(R.id.btnFav);
         btnFav.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -197,7 +197,7 @@ public class CurrentRecipe_Fragment extends Fragment{
                 Toast.makeText(getActivity(), "Add to menu", Toast.LENGTH_LONG).show();
                 //Menu_Fragment_PLACEHOLDER.receiveRecipe(t, i, d, ct, tt,ins, c2, id);
             }
-        });
+        });*/
 
         //Show images, descriptions and temps when clicking on title
         titre.setOnClickListener(new View.OnClickListener() {
@@ -207,7 +207,7 @@ public class CurrentRecipe_Fragment extends Fragment{
                 btIng.setBackgroundColor(Color.GRAY);
                 instructions.setVisibility(View.GONE);
                 btIns.setBackgroundColor(Color.GRAY);
-                image.setVisibility(View.VISIBLE);
+                //image.setVisibility(View.VISIBLE);
                 description.setVisibility(View.VISIBLE);
                 temps.setVisibility(View.VISIBLE);
                 cuisson.setVisibility(View.VISIBLE);
@@ -216,7 +216,7 @@ public class CurrentRecipe_Fragment extends Fragment{
 
         //Put image
         Bitmap imageBit = convertByteArrayToBitmap(i);
-        image.setImageBitmap(imageBit);
+        //image.setImageBitmap(imageBit);
 
         //Set text in UI
         titre.setText(t);
@@ -228,8 +228,8 @@ public class CurrentRecipe_Fragment extends Fragment{
         btIns.setVisibility(View.VISIBLE);
         btIng.setVisibility(View.VISIBLE);
         instructions.setText(ins);
-        btnFav.setVisibility(View.VISIBLE);
-        btnMenu.setVisibility(View.VISIBLE);
+        //btnFav.setVisibility(View.VISIBLE);
+        //btnMenu.setVisibility(View.VISIBLE);
     }
 
     //Create checklist with false
