@@ -44,7 +44,6 @@ public class BigOvenRecipeWebAPI {
     public String tempsCuisson = "0";
     public ArrayList<String> ingredientsNom;
     public ArrayList<String> ingredientsQuantite;
-    //Drawable images;
 
     public BigOvenRecipeWebAPI(String query) {
 
@@ -94,7 +93,8 @@ public class BigOvenRecipeWebAPI {
                 imagePath = im.getTextContent().replace("http://redirect.bigoven.com/pics/rs/640/", "http://images.bigoven.com/image/upload/t_recipe-256/").replace("http://images.bigoven.com/image/upload/t_recipe-256/", "http://images.bigoven.com/image/upload/t_recipe-256/");
                 image = loadHttpImage(imagePath);
             } else
-                image = loadHttpImage("http://images.bigoven.com/image/upload/t_recipe-256/recipe-no-image.jpg");
+                imagePath = "http://images.bigoven.com/image/upload/t_recipe-256/recipe-no-image.jpg";
+            image = loadHttpImage(imagePath);
             final Element inst = (Element) racine.getElementsByTagName("Instructions").item(0);
             if (inst != null)
                 instructions = inst.getTextContent();

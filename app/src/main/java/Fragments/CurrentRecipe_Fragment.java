@@ -19,6 +19,7 @@ import android.widget.CursorAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
@@ -97,11 +98,11 @@ public class CurrentRecipe_Fragment extends Fragment{
         dbh = new DBHelper(getActivity());
         db = dbh.getWritableDatabase();
 
-        listI = (ListView) getView().findViewById(R.id.ingreC);
-
         //Test d'entrée des données test dans la db
         //dbh.test(db);
-        if (!dbh.isEmpty(db)) {
+        if (!dbh.isEmpty(db) && addBtn == null) {
+
+            listI = (ListView) getView().findViewById(R.id.ingreC);
 
             //Get recipe info
             Cursor c = dbh.currentRecipe(db);
@@ -169,24 +170,24 @@ public class CurrentRecipe_Fragment extends Fragment{
             ingredients.addFooterView(addBtn);
 
             //Add to cookbook
-        /*btnFav = (Button) getView().findViewById(R.id.btnFav);
-        btnFav.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Toast.makeText(getActivity(), "Added to my list", Toast.LENGTH_LONG).show();
-                //Livre_Fragment_PLACEHOLDER.receiveRecipe(t, i, d, ct, tt, ins, c2, id);
-            }
-        });
+            btnFav = (Button) getView().findViewById(R.id.btnFavC);
+            btnFav.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Toast.makeText(getActivity(), "Added to my list", Toast.LENGTH_LONG).show();
+                    Livre_Fragment_PLACEHOLDER.receiveRecipe(t, i, d, ct, tt, ins, c2, id);
+                }
+            });
 
-        //Add to menu
-        btnMenu = (Button) getView().findViewById(R.id.btnMenu);
-        btnMenu.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Toast.makeText(getActivity(), "Add to menu", Toast.LENGTH_LONG).show();
-                //Menu_Fragment_PLACEHOLDER.receiveRecipe(t, i, d, ct, tt,ins, c2, id);
-            }
-        });*/
+            //Add to menu
+            btnMenu = (Button) getView().findViewById(R.id.btnMenuC);
+            btnMenu.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Toast.makeText(getActivity(), "Add to menu", Toast.LENGTH_LONG).show();
+                    Menu_Fragment_PLACEHOLDER.receiveRecipe(t, i, d, ct, tt, ins, c2, id);
+                }
+            });
 
             //Show images, descriptions and temps when clicking on title
             titre.setOnClickListener(new View.OnClickListener() {
@@ -213,8 +214,8 @@ public class CurrentRecipe_Fragment extends Fragment{
             btIns.setVisibility(View.VISIBLE);
             btIng.setVisibility(View.VISIBLE);
             instructions.setText(ins);
-            //btnFav.setVisibility(View.VISIBLE);
-            //btnMenu.setVisibility(View.VISIBLE);
+            btnFav.setVisibility(View.VISIBLE);
+            btnMenu.setVisibility(View.VISIBLE);
 
             new DownloadImageTask(i).execute();
         }
@@ -289,7 +290,7 @@ public class CurrentRecipe_Fragment extends Fragment{
         }
     }
 
-    //Search in BigOvenRecipeWebAPI
+    //Load and put image
     public class DownloadImageTask extends AsyncTask<Void, Void, Drawable> {
 
         String imagePath;

@@ -54,8 +54,6 @@ public class ResearchRecipe_Fragment extends Fragment {
     public ResearchRecipe_Fragment() {
     }
 
-    ;
-
     //Constructor with the id of the recipe in parameters
     public static ResearchRecipe_Fragment newInstance(String id) {
 
@@ -311,13 +309,13 @@ public class ResearchRecipe_Fragment extends Fragment {
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            /*progressDialog = new ProgressDialog(getActivity());
+            progressDialog = new ProgressDialog(getActivity());
             progressDialog.setTitle("Showing Recipe ...");
             progressDialog.setMessage("Loading. Please Wait");
             progressDialog.setIndeterminate(false);
             progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
             progressDialog.setCancelable(false);
-            progressDialog.show();*/
+            progressDialog.show();
         }
 
         @Override
@@ -354,7 +352,7 @@ public class ResearchRecipe_Fragment extends Fragment {
             //Setup ingredient listview
             final MyAdapter adapter = new MyAdapter(ingredientsN, ingredientsNb);
             ingredients.setAdapter(adapter);
-            //progressDialog.dismiss();
+            progressDialog.dismiss();
 
             //The button to add the ingredients to the list
             addBtn.setOnClickListener(new View.OnClickListener() {
