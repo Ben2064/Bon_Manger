@@ -4,11 +4,9 @@ import android.app.Fragment;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Color;
-import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.util.Log;
@@ -22,9 +20,13 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import java.io.ByteArrayOutputStream;
-import java.io.DataOutputStream;
+import org.apache.http.HttpResponse;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.impl.client.DefaultHttpClient;
+
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 
 import lesdevoreurs.bon_manger.DBHelper;
@@ -58,7 +60,7 @@ public class CurrentRecipe_Fragment extends Fragment{
     public CurrentRecipe_Fragment() {
     }
 
-    public static void receiveRecipe(DBHelper dbh, String titre, Drawable image, String description, String tempsCuisson, String tempsTotal,
+    public static void receiveRecipe(DBHelper dbh, String titre, String imagePath, String description, String tempsCuisson, String tempsTotal,
                                      String instructions, ArrayList<String> ingreNom, ArrayList<String> ingreNum, String id) {
         //We receive the informations of the recipe to add
         //Here we add it to memory
@@ -67,8 +69,8 @@ public class CurrentRecipe_Fragment extends Fragment{
         db = dbh.getWritableDatabase();
 
         //Add recipe
-        byte[] imageDB = imageSQL(image);
-        DBHelper.addCurrent(db, id, titre, imageDB, description,
+        //byte[] imageDB = imageSQL(image);
+        DBHelper.addCurrent(db, id, titre, imagePath, description,
                 tempsCuisson, tempsTotal, instructions);
 
         db.delete("ringredients", null, null);
@@ -76,26 +78,6 @@ public class CurrentRecipe_Fragment extends Fragment{
         for (int i = 0; i < ingreNom.size(); i++) {
             DBHelper.addCurrentIngredient(db, ingreNom.get(i), ingreNum.get(i), i);
         }
-    }
-
-    //Convert drawable to byte[] for DB
-    //http://stackoverflow.com/questions/6341977/convert-drawable-to-blob-datatype
-    public static byte[] imageSQL(Drawable d) {
-        BitmapDrawable bitDw = ((BitmapDrawable) d);
-        Bitmap bitmap = bitDw.getBitmap();
-        ByteArrayOutputStream stream = new ByteArrayOutputStream();
-        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, stream);
-        byte[] imageInByte = stream.toByteArray();
-
-        return imageInByte;
-    }
-
-    //Convert byte[] to bitmap
-    public static Bitmap convertByteArrayToBitmap(byte[] byteImage) {
-        Bitmap bitMapImage = BitmapFactory.decodeByteArray(
-                byteImage, 0,
-                byteImage.length);
-        return bitMapImage;
     }
 
     @Nullable
@@ -126,26 +108,13 @@ public class CurrentRecipe_Fragment extends Fragment{
             c.moveToPosition(0);
             final String id = c.getString(c.getColumnIndex(DBHelper.R_ID));
             final String t = c.getString(c.getColumnIndex(DBHelper.R_TITRE));
+            final String i = c.getString(c.getColumnIndex(DBHelper.R_IMAGE));
             final String d = c.getString(c.getColumnIndex(DBHelper.R_DESCRIPTION));
             final String ins = c.getString(c.getColumnIndex(DBHelper.R_INSTRUCTIONS));
             final String tt = c.getString(c.getColumnIndex(DBHelper.R_TOTALTIME));
             final String ct = c.getString(c.getColumnIndex(DBHelper.R_COOKTIME));
 
-
-            ByteArrayOutputStream baos = new ByteArrayOutputStream();
-            final byte[] i = c.getBlob(c.getColumnIndex(DBHelper.R_IMAGE));
-            DataOutputStream w = new DataOutputStream(baos);
-            byte[] test = null;
-            try {
-                w.writeInt(100);
-                w.write(i);
-                w.flush();
-                //baos.write(i);
-                test = baos.toByteArray();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-
+            Log.d("Test", i);
             titre = (TextView) getView().findViewById(R.id.titreC);
             description = (TextView) getView().findViewById(R.id.descC);
             image = (ImageView) getView().findViewById(R.id.imgC);
@@ -227,16 +196,12 @@ public class CurrentRecipe_Fragment extends Fragment{
                     btIng.setBackgroundColor(Color.GRAY);
                     instructions.setVisibility(View.GONE);
                     btIns.setBackgroundColor(Color.GRAY);
-                    //image.setVisibility(View.VISIBLE);
+                    image.setVisibility(View.VISIBLE);
                     description.setVisibility(View.VISIBLE);
                     temps.setVisibility(View.VISIBLE);
                     cuisson.setVisibility(View.VISIBLE);
                 }
             });
-
-            //Put image
-            Bitmap imageBit = convertByteArrayToBitmap(test);
-            image.setImageBitmap(imageBit);
 
             //Set text in UI
             titre.setText(t);
@@ -250,6 +215,8 @@ public class CurrentRecipe_Fragment extends Fragment{
             instructions.setText(ins);
             //btnFav.setVisibility(View.VISIBLE);
             //btnMenu.setVisibility(View.VISIBLE);
+
+            new DownloadImageTask(i).execute();
         }
     }
 
@@ -319,6 +286,47 @@ public class CurrentRecipe_Fragment extends Fragment{
         @Override
         public void bindView(View view, Context context, Cursor cursor) {
 
+        }
+    }
+
+    //Search in BigOvenRecipeWebAPI
+    public class DownloadImageTask extends AsyncTask<Void, Void, Drawable> {
+
+        String imagePath;
+        Drawable imageDraw = null;
+
+        public DownloadImageTask() {
+        }
+
+        public DownloadImageTask(String imagePath) {
+            this.imagePath = imagePath;
+        }
+
+        @Override
+        protected Drawable doInBackground(Void... params) {
+            //Load image
+            HttpClient httpClient = new DefaultHttpClient();
+            HttpGet http = new HttpGet(imagePath);
+            HttpResponse response = null;
+            try {
+                response = httpClient.execute(http);
+                InputStream is = response.getEntity().getContent();
+                imageDraw = Drawable.createFromStream(is, "src");
+            } catch (IOException e) {
+                Log.d("Imageload", "Problème avec load d'image" + e);
+            }
+            return imageDraw;
+        }
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+        }
+
+        @Override
+        protected void onPostExecute(final Drawable imageDraw) {
+            //ImageView image = (ImageView) getView().findViewById(R.id.imgC);
+            image.setImageDrawable(imageDraw);
         }
     }
 }

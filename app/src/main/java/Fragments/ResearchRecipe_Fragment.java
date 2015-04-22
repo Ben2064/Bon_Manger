@@ -146,7 +146,7 @@ public class ResearchRecipe_Fragment extends Fragment {
                     Toast.makeText(getActivity(), "Added to my list", Toast.LENGTH_LONG).show();
                     //Getting info
                     final String titre = web.getTitre();
-                    final Drawable image = web.getImage();
+                    final String imagePath = web.getImagePath();
                     final String description = web.getDesc();
                     final String tempsCuisson = web.getCuisson();
                     final String tempsTotal = web.getTemps();
@@ -154,7 +154,7 @@ public class ResearchRecipe_Fragment extends Fragment {
                     final ArrayList<String> ingreNom = web.getIname();
                     final ArrayList<String> ingreNum = web.getInumber();
                     final String id = web.getID();
-                    Livre_Fragment_PLACEHOLDER.receiveRecipe(titre, image, description, tempsCuisson, tempsTotal,
+                    Livre_Fragment_PLACEHOLDER.receiveRecipe(titre, imagePath, description, tempsCuisson, tempsTotal,
                             instructions, ingreNom, ingreNum, id);
                 }
             });
@@ -167,7 +167,7 @@ public class ResearchRecipe_Fragment extends Fragment {
                     Toast.makeText(getActivity(), "Added to current recipe", Toast.LENGTH_LONG).show();
                     //Getting info
                     final String titre = web.getTitre();
-                    final Drawable image = web.getImage();
+                    final String imagePath = web.getImagePath();
                     final String description = web.getDesc();
                     final String tempsCuisson = web.getCuisson();
                     final String tempsTotal = web.getTemps();
@@ -176,7 +176,7 @@ public class ResearchRecipe_Fragment extends Fragment {
                     final ArrayList<String> ingreNum = web.getInumber();
                     final String id = web.getID();
                     DBHelper dbh = new DBHelper(getActivity());
-                    CurrentRecipe_Fragment.receiveRecipe(dbh, titre, image, description, tempsCuisson, tempsTotal,
+                    CurrentRecipe_Fragment.receiveRecipe(dbh, titre, imagePath, description, tempsCuisson, tempsTotal,
                             instructions, ingreNom, ingreNum, id);
                 }
             });
@@ -189,7 +189,7 @@ public class ResearchRecipe_Fragment extends Fragment {
                     Toast.makeText(getActivity(), "Add to menu", Toast.LENGTH_LONG).show();
                     //Getting info
                     final String titre = web.getTitre();
-                    final Drawable image = web.getImage();
+                    final String imagePath = web.getImagePath();
                     final String description = web.getDesc();
                     final String tempsCuisson = web.getCuisson();
                     final String tempsTotal = web.getTemps();
@@ -197,7 +197,7 @@ public class ResearchRecipe_Fragment extends Fragment {
                     final ArrayList<String> ingreNom = web.getIname();
                     final ArrayList<String> ingreNum = web.getInumber();
                     final String id = web.getID();
-                    Menu_Fragment_PLACEHOLDER.receiveRecipe(titre, image, description, tempsCuisson, tempsTotal,
+                    Menu_Fragment_PLACEHOLDER.receiveRecipe(titre, imagePath, description, tempsCuisson, tempsTotal,
                             instructions, ingreNom, ingreNum, id);
                 }
             });
@@ -252,6 +252,7 @@ public class ResearchRecipe_Fragment extends Fragment {
         String tempsR;
         String cuissonR;
         String instructionsR;
+        String imagePath;
         Drawable cuisineR;
         ArrayList<String> ingredientsN = new ArrayList<String>();
         ArrayList<String> ingredientsNb = new ArrayList<String>();
@@ -288,6 +289,10 @@ public class ResearchRecipe_Fragment extends Fragment {
             return cuisineR;
         }
 
+        protected String getImagePath() {
+            return imagePath;
+        }
+
         protected ArrayList<String> getInumber() {
             return ingredientsNb;
         }
@@ -306,13 +311,13 @@ public class ResearchRecipe_Fragment extends Fragment {
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            progressDialog = new ProgressDialog(getActivity());
+            /*progressDialog = new ProgressDialog(getActivity());
             progressDialog.setTitle("Showing Recipe ...");
             progressDialog.setMessage("Loading. Please Wait");
             progressDialog.setIndeterminate(false);
             progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
             progressDialog.setCancelable(false);
-            progressDialog.show();
+            progressDialog.show();*/
         }
 
         @Override
@@ -325,6 +330,7 @@ public class ResearchRecipe_Fragment extends Fragment {
             cuissonR = bigovenrecipewebapi.tempsCuisson;
             instructionsR = bigovenrecipewebapi.instructions;
             cuisineR = bigovenrecipewebapi.image;
+            imagePath = bigovenrecipewebapi.imagePath;
             ingredientsN = bigovenrecipewebapi.ingredientsNom;
             ingredientsNb = bigovenrecipewebapi.ingredientsQuantite;
             ID = bigovenrecipewebapi.ID;
@@ -348,7 +354,7 @@ public class ResearchRecipe_Fragment extends Fragment {
             //Setup ingredient listview
             final MyAdapter adapter = new MyAdapter(ingredientsN, ingredientsNb);
             ingredients.setAdapter(adapter);
-            progressDialog.dismiss();
+            //progressDialog.dismiss();
 
             //The button to add the ingredients to the list
             addBtn.setOnClickListener(new View.OnClickListener() {

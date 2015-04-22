@@ -2,7 +2,6 @@ package Fragments;
 
 import android.app.Fragment;
 import android.database.Cursor;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
@@ -22,14 +21,14 @@ public class Livre_Fragment_PLACEHOLDER extends Fragment {
 
     ;
 
-    public static void receiveRecipe(String titre, Drawable image, String description, String tempsCuisson,
+    public static void receiveRecipe(String titre, String image, String description, String tempsCuisson,
                                      String tempsTotal, String instructions, ArrayList<String> ingreNom,
                                      ArrayList<String> ingreNum, String id) {
         //We receive the informations of the recipe to add from search
         //Here we add it to memory
     }
 
-    public static void receiveRecipe(String titre, Drawable image, String description, String tempsCuisson,
+    public static void receiveRecipe(String titre, String image, String description, String tempsCuisson,
                                      String tempsTotal, String instructions, Cursor c, String id) {
         //We receive the informations of the recipe to add from current recipe
         //Here we add it to memory

@@ -31,6 +31,7 @@ import javax.xml.parsers.ParserConfigurationException;
  */
 public class BigOvenRecipeWebAPI {
     public Drawable image = null;
+    public String imagePath = "";
     public String ID = "";
     public String titre = "";
     public String description = "";
@@ -74,39 +75,39 @@ public class BigOvenRecipeWebAPI {
             final Element desc = (Element) racine.getElementsByTagName("Description").item(0);
             if (desc != null)
                 description = desc.getTextContent();
-            if(description == "")
+            if (description == "")
                 description = "No description";
             final Element cuis = (Element) racine.getElementsByTagName("Cuisine").item(0);
             if (cuis != null)
                 cuisine = cuis.getTextContent();
             final Element cat = (Element) racine.getElementsByTagName("Category").item(0);
-            if(cat != null)
+            if (cat != null)
                 categorie = cat.getTextContent();
             final Element scat = (Element) racine.getElementsByTagName("Subcategory").item(0);
-            if(scat != null)
+            if (scat != null)
                 sousCategorie = scat.getTextContent();
             final Element prim = (Element) racine.getElementsByTagName("PrimaryIngredients").item(0);
-            if(prim != null)
+            if (prim != null)
                 ingredientPrimaire = prim.getTextContent();
             final Element im = (Element) racine.getElementsByTagName("ImageURL").item(0);
-            if(im!=null)
-                image = loadHttpImage(im.getTextContent().replace("http://redirect.bigoven.com/pics/rs/640/","http://images.bigoven.com/image/upload/t_recipe-256/").replace("http://images.bigoven.com/image/upload/t_recipe-256/","http://images.bigoven.com/image/upload/t_recipe-256/"));
-            else
+            if (im != null) {
+                imagePath = im.getTextContent().replace("http://redirect.bigoven.com/pics/rs/640/", "http://images.bigoven.com/image/upload/t_recipe-256/").replace("http://images.bigoven.com/image/upload/t_recipe-256/", "http://images.bigoven.com/image/upload/t_recipe-256/");
+                image = loadHttpImage(imagePath);
+            } else
                 image = loadHttpImage("http://images.bigoven.com/image/upload/t_recipe-256/recipe-no-image.jpg");
             final Element inst = (Element) racine.getElementsByTagName("Instructions").item(0);
-            if(inst != null)
+            if (inst != null)
                 instructions = inst.getTextContent();
             final Element tt = (Element) racine.getElementsByTagName("TotalMinutes").item(0);
-            if(tt != null) {
+            if (tt != null) {
                 if (tt.getTextContent().length() > 0)  //For weird things in API
                     tempsTotal = tt.getTextContent();
             }
             final Element tc = (Element) racine.getElementsByTagName("ActiveMinutes").item(0);
-            if(tc != null) {
+            if (tc != null) {
                 if (tc.getTextContent().length() > 0)   //For weird things in API
                     tempsCuisson = tc.getTextContent();
-            }
-            else
+            } else
                 tempsCuisson = "0";
 
             final NodeList racineNoeuds = racine.getElementsByTagName("Ingredients");
@@ -122,7 +123,7 @@ public class BigOvenRecipeWebAPI {
                         final Element nom = (Element) ingredient.getElementsByTagName("Name").item(0);
                         ingredientsNom.add(nom.getTextContent());
                         final Element quantite = (Element) ingredient.getElementsByTagName("Quantity").item(0);
-                        if(quantite != null)
+                        if (quantite != null)
                             ingredientsQuantite.add(quantite.getTextContent());
                     }
                 }

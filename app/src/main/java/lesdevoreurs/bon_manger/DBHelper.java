@@ -12,6 +12,7 @@ import android.util.Log;
  */
 public class DBHelper extends SQLiteOpenHelper {
 
+
     public static final String R_ID = "_id";
     public static final String R_TITRE = "titre_recette";
     public static final String R_IMAGE = "image";
@@ -36,7 +37,7 @@ public class DBHelper extends SQLiteOpenHelper {
     public static final String CI_NAME = "name";
     public static final String CI_NUMBER = "number";
     static final String DB_NAME = "bonmanger.db";
-    static final int DB_VERSION = 34;    //******************METTRE À JOUR À CHAQUE FOIS!!!!!!!***********************//
+    static final int DB_VERSION = 35;    //******************METTRE À JOUR À CHAQUE FOIS!!!!!!!***********************//
     //CURRENT::table recipe for current recipe
     static final String TABLE_RECIPES = "recipes";
     //CURRENT::table ingredients for current recipe
@@ -147,14 +148,14 @@ public class DBHelper extends SQLiteOpenHelper {
     }
 
     //CURRENT::add recipe
-    public static void addCurrent(SQLiteDatabase db, String ID, String name, byte[] image, String description,
+    public static void addCurrent(SQLiteDatabase db, String ID, String name, String imagePath, String description,
                                   String cooktime, String totaltime, String instructions) {
         db.execSQL("DELETE FROM " + TABLE_RECIPES);
         String sql = "INSERT INTO "
                 + TABLE_RECIPES
                 + " (" + R_ID + ", " + R_TITRE + ", " + R_IMAGE + ", " + R_DESCRIPTION + ", " + R_COOKTIME
                 + ", " + R_TOTALTIME + ", " + R_INSTRUCTIONS + ")"
-                + " VALUES ('" + ID + "', '" + name.replace("'", "''") + "', '" + image + "', '" + description.replace("'", "''") + "', '" + cooktime + "', '" + totaltime + "', '" + instructions.replace("'", "''") + "')";
+                + " VALUES ('" + ID + "', '" + name.replace("'", "''") + "', '" + imagePath + "', '" + description.replace("'", "''") + "', '" + cooktime + "', '" + totaltime + "', '" + instructions.replace("'", "''") + "')";
         db.execSQL(sql);
     }
 
@@ -224,7 +225,7 @@ public class DBHelper extends SQLiteOpenHelper {
         String sql = "create table " + TABLE_RECIPES
                 + " (" + R_ID + " primary key, "
                 + R_TITRE + " text, "
-                + R_IMAGE + " BLOB, "
+                + R_IMAGE + " text, "
                 + R_DESCRIPTION + " text,"
                 + R_COOKTIME + " text, "
                 + R_TOTALTIME + " text, "
@@ -275,5 +276,4 @@ public class DBHelper extends SQLiteOpenHelper {
         db.execSQL("drop table if exists " + TABLE_CINGREDIENTS);
         onCreate(db);
     }
-
 }
