@@ -91,7 +91,10 @@ public class BigOvenRecipeWebAPI {
             final Element im = (Element) racine.getElementsByTagName("HeroPhotoUrl").item(0);
             if (im != null) {
                 Log.d("test", im.getTextContent());
-                imagePath = im.getTextContent().replace("http://redirect.bigoven.com/pics/rs/640/", "http://images.bigoven.com/image/upload/t_recipe-256/").replace("http://images.bigoven.com/image/upload/", "http://images.bigoven.com/image/upload/t_recipe-256/");
+                imagePath = im.getTextContent().replace("http://redirect.bigoven.com/pics/rs/640/",
+                        "http://images.bigoven.com/image/upload/t_recipe-256/")
+                        .replace("http://images.bigoven.com/image/upload/", "http://images.bigoven.com/image/upload/t_recipe-256/")
+                        .replace(" ", "");
                 Log.d("test", imagePath);
                 image = loadHttpImage(imagePath);
             } else
