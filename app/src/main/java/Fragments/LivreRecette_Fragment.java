@@ -3,6 +3,7 @@ package Fragments;
 import android.app.Fragment;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
@@ -38,6 +39,10 @@ public class LivreRecette_Fragment extends Fragment{
     public static ArrayList<String> nameIngredients = new ArrayList<String>();
     public static ArrayList<String> numberIngredients = new ArrayList<String>();
     public static boolean checkList[] = null;
+    static SQLiteDatabase db;
+    static DBHelper dbh;
+
+
     //UI
     TextView titre;
     ImageView image;
@@ -141,11 +146,11 @@ public class LivreRecette_Fragment extends Fragment{
             web.execute();
 
             //Add to cookbook
-            btnFav = (Button) getView().findViewById(R.id.btnFav);
-            btnFav.setOnClickListener(new View.OnClickListener() {
+            btnDelete = (Button) getView().findViewById(R.id.btnFav);
+            btnDelete.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Toast.makeText(getActivity(), "Added to my list", Toast.LENGTH_LONG).show();
+                    Toast.makeText(getActivity(), "Deleted from my cookbook", Toast.LENGTH_LONG).show();
                     //Getting info
                     final String titre = web.getTitre();
                     final String imagePath = web.getImagePath();
@@ -158,6 +163,7 @@ public class LivreRecette_Fragment extends Fragment{
                     final String id = web.getID();
                     Livre_Fragment_PLACEHOLDER.receiveRecipe(titre, imagePath, description, tempsCuisson, tempsTotal,
                             instructions, ingreNom, ingreNum, id);
+
                 }
             });
 
@@ -201,6 +207,9 @@ public class LivreRecette_Fragment extends Fragment{
                     final String id = web.getID();
                     Menu_Fragment_PLACEHOLDER.receiveRecipe(titre, imagePath, description, tempsCuisson, tempsTotal,
                             instructions, ingreNom, ingreNum, id);
+                    dbh = new DBHelper(getActivity());
+                    db = dbh.getWritableDatabase();
+                    DBHelper.deleteRecipe(db,id);
                 }
             });
         }
@@ -389,7 +398,7 @@ public class LivreRecette_Fragment extends Fragment{
                 }
             });
 
-            btnFav.setVisibility(View.VISIBLE);
+            btnDelete.setVisibility(View.VISIBLE);
             btnMake.setVisibility(View.VISIBLE);
             btnMenu.setVisibility(View.VISIBLE);
         }

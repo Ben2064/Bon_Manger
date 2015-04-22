@@ -5,6 +5,7 @@ import android.app.FragmentManager;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
@@ -31,6 +32,7 @@ import java.util.ArrayList;
 
 import Fragments.ResearchRecipe_Fragment;
 import lesdevoreurs.bon_manger.BigOvenWebAPI;
+import lesdevoreurs.bon_manger.DBHelper;
 import lesdevoreurs.bon_manger.R;
 
 /**
@@ -40,6 +42,10 @@ public class LivreListe_Fragment extends Fragment {
     static ProgressDialog progressDialog;
     static int numPage;
     static String rechPage = "";
+    static SQLiteDatabase db;
+    static DBHelper dbh;
+
+
     //UI elements
     //Button btnSearch;
     //Button btnEff;
@@ -49,7 +55,7 @@ public class LivreListe_Fragment extends Fragment {
     ListView listv;
     RatingBar rate;
     Spinner spin;
-    TextView research;
+    TextView cookbook;
     View view;
 
     public static void receiveRecipe(String titre, String image, String description, String tempsCuisson,
@@ -57,6 +63,19 @@ public class LivreListe_Fragment extends Fragment {
                                      ArrayList<String> ingreNum, String id) {
         //We receive the informations of the recipe to add from search
         //Here we add it to memory
+        //Open DB
+        db = dbh.getWritableDatabase();
+
+        //Add recipe
+        //byte[] imageDB = imageSQL(image);
+        DBHelper.addRecipe(db, id, titre, image, description,
+                tempsCuisson, tempsTotal, instructions);
+
+        //db.delete("ringredients", null, null);
+        //Add ingredients
+        /*for (int i = 0; i < ingreNom.size(); i++) {
+            DBHelper.addCurrentIngredient(db, ingreNom.get(i), ingreNum.get(i), i);
+        }*/
     }
 
     public static void receiveRecipe(String titre, String image, String description, String tempsCuisson,
@@ -86,18 +105,18 @@ public class LivreListe_Fragment extends Fragment {
             spin.setSelection(3);
             rate = (RatingBar) getView().findViewById(R.id.myRatingBar);
             listv = (ListView) getView().findViewById(R.id.activity_list);
-            research = (TextView) getView().findViewById(R.id.activity_title);
-            research.setText("Research");
+            cookbook = (TextView) getView().findViewById(R.id.activity_title);
+            cookbook.setText("CookBook");
 
             //Load another page of result
             btnLoad = new Button(getActivity());
-            btnLoad.setText("Load More");
+            btnLoad.setText("Next Page");
             btnLoad.setTextColor(Color.LTGRAY);
             btnLoad.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View arg0) {
 
-                    // Starting new async task
+                  /*  // Starting new async task
                     numPage++;
                     new DownloadWebTask().execute();
 
@@ -106,14 +125,14 @@ public class LivreListe_Fragment extends Fragment {
                             getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
 
                     inputManager.hideSoftInputFromWindow(getActivity().getCurrentFocus().getWindowToken(),
-                            InputMethodManager.HIDE_NOT_ALWAYS);
+                            InputMethodManager.HIDE_NOT_ALWAYS);*/
                 }
             });
             listv.addFooterView(btnLoad);
 
             //Load previous results
             btnBack = new Button(getActivity());
-            btnBack.setText("Previous Results");
+            btnBack.setText("Previous Page");
             btnBack.setTextColor(Color.LTGRAY);
             btnBack.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -121,18 +140,20 @@ public class LivreListe_Fragment extends Fragment {
 
                     // Starting new async task
                     numPage--;
-                    new DownloadWebTask().execute();
+                    /*new DownloadWebTask().execute();
 
                     //Hide keyboard after hit the button
                     InputMethodManager inputManager = (InputMethodManager)
                             getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
 
                     inputManager.hideSoftInputFromWindow(getActivity().getCurrentFocus().getWindowToken(),
-                            InputMethodManager.HIDE_NOT_ALWAYS);
+                            InputMethodManager.HIDE_NOT_ALWAYS);*/
                 }
             });
             listv.addHeaderView(btnBack);
             btnBack.setVisibility(View.GONE);
+
+            final Cursor cursor1= dbh.listRecipe(db);
 
             //Erase research text
             /*btnSearch.setOnClickListener(new View.OnClickListener() {
@@ -172,7 +193,7 @@ public class LivreListe_Fragment extends Fragment {
     }
 
     //Search in BigOvenWebAPI
-    public class DownloadWebTask extends AsyncTask<Void, Void, BigOvenWebAPI> {
+   /* public class DownloadWebTask extends AsyncTask<Void, Void, BigOvenWebAPI> {
 
         String numByPage = "20";
         //To convert the images
@@ -314,7 +335,7 @@ public class LivreListe_Fragment extends Fragment {
                 }
             });
         }
-    }
+    }*/
 
     public class MyAdapter extends BaseAdapter {
 
