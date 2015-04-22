@@ -79,7 +79,7 @@
                 android:id="@+id/button"
                 android:layout_weight="22"
                 android:onClick="callAddTimer"
-                android:background="#ff19961e"
+                android:background="#ffbe1419"
                 android:textSize="@dimen/abc_text_size_large_material" />
         </LinearLayout>
     </LinearLayout>

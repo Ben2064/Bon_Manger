@@ -7,7 +7,7 @@
     <LinearLayout
         android:orientation="horizontal"
         android:layout_width="match_parent"
-        android:layout_height="75dp"
+        android:layout_height="match_parent"
         android:background="#ff000000">
 
         <ProgressBar
@@ -16,7 +16,8 @@
             android:layout_height="match_parent"
             android:id="@+id/timerIcon"
             android:layout_weight="20"
-            android:indeterminate="false" />
+            android:indeterminate="false"
+            android:progressDrawable="@drawable/circular_countdown" />/>
 
         <TextView
             android:layout_width="match_parent"
@@ -27,7 +28,7 @@
             android:layout_weight="10"
             android:background="#ff101010"
             android:autoText="false"
-            android:textColor="#ffffffff"
+            android:textColor="@color/text_white"
             android:textAlignment="center" />
 
         <Button
@@ -37,7 +38,7 @@
             android:text="X"
             android:id="@+id/timerDelete"
             android:textSize="30dp"
-            android:background="#ffbe1419"
+            android:background="@color/nope_red"
             android:layout_weight="20"
             android:layout_margin="10dp" />
 

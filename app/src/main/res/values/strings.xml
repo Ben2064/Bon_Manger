@@ -8,6 +8,11 @@
     <string name="timer_greyout_name">Timer name</string>
     <string name="timer_greyout_time">00:00</string>
     <string name="timer_new_button">+</string>
+    <string name="calendar_title">Meal Planner</string>
+    <string name="calendar_date">Date</string>
+    <string name="calendar_share_button">Share</string>
+    <string name="calendar_add_list">Add to list</string>
+
 
     <string name="drawer_open">Slider Menu Opened</string>
     <string name="drawer_close">Slider Menu Closed</string>
