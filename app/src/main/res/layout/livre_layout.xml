@@ -33,9 +33,9 @@
                 android:id="@+id/nbp"
                 android:entries="@array/element_nbp"
                 android:layout_below="@+id/textView"
+                android:focusable="false"
                 android:layout_alignParentLeft="true"
-                android:layout_alignParentStart="true"
-                android:focusable="false" />
+                android:layout_alignParentStart="true" />
         </RelativeLayout>
 
         <TextView
@@ -55,47 +55,13 @@
         android:layout_gravity="center_horizontal"
         android:layout_weight="1">
 
-    <ListView
-        android:layout_width="match_parent"
-        android:layout_height="fill_parent"
-        android:id="@+id/activity_list"
-        android:layout_gravity="center_horizontal"
-        android:layout_weight="1"
-        android:stackFromBottom="false" />
-    </FrameLayout>
-
-    <LinearLayout
-        android:orientation="horizontal"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:padding="10dp"
-        android:layout_weight="1">
-
-        <EditText
+        <ListView
             android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:id="@+id/cherche"
-            android:hint="Enter keyword"
+            android:layout_height="fill_parent"
+            android:id="@+id/activity_list"
+            android:layout_gravity="center_horizontal"
             android:layout_weight="1"
-            android:textColor="#ffffffff"
-            android:textColorHint="#ffffffff" />
-
-        <Button
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:id="@+id/doefface"
-            android:layout_weight="0"
-            android:background="@android:drawable/ic_menu_close_clear_cancel"
-            android:visibility="visible" />
-
-        <Button
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:id="@+id/docherche"
-            android:layout_weight="0"
-            android:background="@android:drawable/ic_menu_search"
-             />
-
-    </LinearLayout>
+            android:stackFromBottom="false" />
+    </FrameLayout>
 
 </LinearLayout>
