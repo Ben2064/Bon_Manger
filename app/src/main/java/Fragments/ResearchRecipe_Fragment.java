@@ -22,6 +22,7 @@ import android.widget.Toast;
 import java.util.ArrayList;
 
 import lesdevoreurs.bon_manger.BigOvenRecipeWebAPI;
+import lesdevoreurs.bon_manger.DBHelper;
 import lesdevoreurs.bon_manger.R;
 
 /**
@@ -174,7 +175,8 @@ public class ResearchRecipe_Fragment extends Fragment {
                     final ArrayList<String> ingreNom = web.getIname();
                     final ArrayList<String> ingreNum = web.getInumber();
                     final String id = web.getID();
-                    CurrentRecipe_Fragment.receiveRecipe(titre, image, description, tempsCuisson, tempsTotal,
+                    DBHelper dbh = new DBHelper(getActivity());
+                    CurrentRecipe_Fragment.receiveRecipe(dbh, titre, image, description, tempsCuisson, tempsTotal,
                             instructions, ingreNom, ingreNum, id);
                 }
             });

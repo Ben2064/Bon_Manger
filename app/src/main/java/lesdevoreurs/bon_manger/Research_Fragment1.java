@@ -178,11 +178,11 @@ public class Research_Fragment1 extends Fragment {
 
             //Preload the "noImage"
             String urlNoImage = "http://images.bigoven.com/image/upload/t_recipe-120/recipe-no-image.jpg";   //The "noImage" URL
-            String urlSexy = "http://dnok91peocsw3.cloudfront.net/product/68709-original-1366930648-primary.png";   //FUNFUNFUN
+            //String urlSexy = "http://dnok91peocsw3.cloudfront.net/product/68709-original-1366930648-primary.png";   //FUNFUNFUN
             Drawable noImage = null;
             try {
-                InputStream is = (InputStream) new URL(urlSexy).getContent(); //FUNFUNFUN
-                //InputStream is = (InputStream) new URL(urlNoImage).getContent();
+                //InputStream is = (InputStream) new URL(urlSexy).getContent(); //FUNFUNFUN
+                InputStream is = (InputStream) new URL(urlNoImage).getContent();
                 noImage = (Drawable.createFromStream(is, "src name"));
             } catch (IOException e) {
                 Log.d("Inputstream", "Erreur noImage " + e);

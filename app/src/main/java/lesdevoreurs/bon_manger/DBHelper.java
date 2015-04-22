@@ -36,7 +36,7 @@ public class DBHelper extends SQLiteOpenHelper {
     public static final String CI_NAME = "name";
     public static final String CI_NUMBER = "number";
     static final String DB_NAME = "bonmanger.db";
-    static final int DB_VERSION = 30;    //******************METTRE À JOUR À CHAQUE FOIS!!!!!!!***********************//
+    static final int DB_VERSION = 34;    //******************METTRE À JOUR À CHAQUE FOIS!!!!!!!***********************//
     //CURRENT::table recipe for current recipe
     static final String TABLE_RECIPES = "recipes";
     //CURRENT::table ingredients for current recipe
@@ -149,7 +149,7 @@ public class DBHelper extends SQLiteOpenHelper {
     //CURRENT::add recipe
     public static void addCurrent(SQLiteDatabase db, String ID, String name, byte[] image, String description,
                                   String cooktime, String totaltime, String instructions) {
-        //db.delete(TABLE_RECIPES, null, null);
+        db.execSQL("DELETE FROM " + TABLE_RECIPES);
         String sql = "INSERT INTO "
                 + TABLE_RECIPES
                 + " (" + R_ID + ", " + R_TITRE + ", " + R_IMAGE + ", " + R_DESCRIPTION + ", " + R_COOKTIME
@@ -224,7 +224,7 @@ public class DBHelper extends SQLiteOpenHelper {
         String sql = "create table " + TABLE_RECIPES
                 + " (" + R_ID + " primary key, "
                 + R_TITRE + " text, "
-                + R_IMAGE + " text, "
+                + R_IMAGE + " BLOB, "
                 + R_DESCRIPTION + " text,"
                 + R_COOKTIME + " text, "
                 + R_TOTALTIME + " text, "
@@ -275,4 +275,5 @@ public class DBHelper extends SQLiteOpenHelper {
         db.execSQL("drop table if exists " + TABLE_CINGREDIENTS);
         onCreate(db);
     }
+
 }

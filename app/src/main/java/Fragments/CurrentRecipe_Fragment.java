@@ -18,10 +18,13 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CursorAdapter;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
 import java.io.ByteArrayOutputStream;
+import java.io.DataOutputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 
 import lesdevoreurs.bon_manger.DBHelper;
@@ -33,9 +36,10 @@ import lesdevoreurs.bon_manger.R;
 public class CurrentRecipe_Fragment extends Fragment{
 
     static SQLiteDatabase db;
+    static DBHelper dbh;
     //UI
     TextView titre;
-    //ImageView image;
+    ImageView image;
     TextView description;
     TextView temps;
     TextView cuisson;
@@ -50,16 +54,17 @@ public class CurrentRecipe_Fragment extends Fragment{
     boolean[] checkList;
     ListView listI;
     MyAdapter adapter;
-    DBHelper dbh;
 
-    public CurrentRecipe_Fragment(){};
+    public CurrentRecipe_Fragment() {
+    }
 
-    public static void receiveRecipe(String titre, Drawable image, String description, String tempsCuisson, String tempsTotal,
+    public static void receiveRecipe(DBHelper dbh, String titre, Drawable image, String description, String tempsCuisson, String tempsTotal,
                                      String instructions, ArrayList<String> ingreNom, ArrayList<String> ingreNum, String id) {
         //We receive the informations of the recipe to add
         //Here we add it to memory
 
-        //DBHelper.test(db);
+        //Open DB
+        db = dbh.getWritableDatabase();
 
         //Add recipe
         byte[] imageDB = imageSQL(image);
@@ -113,73 +118,88 @@ public class CurrentRecipe_Fragment extends Fragment{
         listI = (ListView) getView().findViewById(R.id.ingreC);
 
         //Test d'entrée des données test dans la db
-        dbh.test(db);
+        //dbh.test(db);
+        if (!dbh.isEmpty(db)) {
 
-        //Get recipe info
-        Cursor c = dbh.currentRecipe(db);
-        c.moveToPosition(0);
-        final String id = c.getString(c.getColumnIndex(DBHelper.R_ID));
-        final String t = c.getString(c.getColumnIndex(DBHelper.R_TITRE));
-        final String d = c.getString(c.getColumnIndex(DBHelper.R_DESCRIPTION));
-        final byte[] i = c.getBlob(c.getColumnIndex(DBHelper.R_IMAGE));
-        final String ins = c.getString(c.getColumnIndex(DBHelper.R_INSTRUCTIONS));
-        final String tt = c.getString(c.getColumnIndex(DBHelper.R_TOTALTIME));
-        final String ct = c.getString(c.getColumnIndex(DBHelper.R_COOKTIME));
+            //Get recipe info
+            Cursor c = dbh.currentRecipe(db);
+            c.moveToPosition(0);
+            final String id = c.getString(c.getColumnIndex(DBHelper.R_ID));
+            final String t = c.getString(c.getColumnIndex(DBHelper.R_TITRE));
+            final String d = c.getString(c.getColumnIndex(DBHelper.R_DESCRIPTION));
+            final String ins = c.getString(c.getColumnIndex(DBHelper.R_INSTRUCTIONS));
+            final String tt = c.getString(c.getColumnIndex(DBHelper.R_TOTALTIME));
+            final String ct = c.getString(c.getColumnIndex(DBHelper.R_COOKTIME));
 
-        titre = (TextView) getView().findViewById(R.id.titreC);
-        description = (TextView) getView().findViewById(R.id.descC);
-        //image = (ImageView) getView().findViewById(R.id.imgC);
-        instructions = (TextView) getView().findViewById(R.id.instC);
-        temps = (TextView) getView().findViewById(R.id.ttC);
-        cuisson = (TextView) getView().findViewById(R.id.tcC);
-        ingredients = (ListView) getView().findViewById(R.id.ingreC);
 
-        //Get ingredients info, and pass to adapter to fit in the listview
-        final Cursor c2 = dbh.currentRecipeIngredients(db);
-        //Create checklist with false
-        int size = c2.getCount();
-        setCheckList(size);
-        adapter = new MyAdapter(getActivity(), c2);
-        listI.setAdapter(adapter);
-
-        //Show only title and ingredients
-        btIng = (Button) getView().findViewById(R.id.ingC);
-        btIng.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                ingredients.setVisibility(View.VISIBLE);
-                btIng.setBackgroundColor(Color.DKGRAY);
-                instructions.setVisibility(View.GONE);
-                btIns.setBackgroundColor(Color.GRAY);
-                //image.setVisibility(View.GONE);
-                description.setVisibility(View.GONE);
-                temps.setVisibility(View.GONE);
-                cuisson.setVisibility(View.GONE);
+            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            final byte[] i = c.getBlob(c.getColumnIndex(DBHelper.R_IMAGE));
+            DataOutputStream w = new DataOutputStream(baos);
+            byte[] test = null;
+            try {
+                w.writeInt(100);
+                w.write(i);
+                w.flush();
+                //baos.write(i);
+                test = baos.toByteArray();
+            } catch (IOException e) {
+                e.printStackTrace();
             }
-        });
 
-        //Show only title and instructions
-        btIns = (Button) getView().findViewById(R.id.insC);
-        btIns.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                ingredients.setVisibility(View.GONE);
-                btIng.setBackgroundColor(Color.GRAY);
-                instructions.setVisibility(View.VISIBLE);
-                btIns.setBackgroundColor(Color.DKGRAY);
-                //image.setVisibility(View.GONE);
-                description.setVisibility(View.GONE);
-                temps.setVisibility(View.GONE);
-                cuisson.setVisibility(View.GONE);
-            }
-        });
+            titre = (TextView) getView().findViewById(R.id.titreC);
+            description = (TextView) getView().findViewById(R.id.descC);
+            image = (ImageView) getView().findViewById(R.id.imgC);
+            instructions = (TextView) getView().findViewById(R.id.instC);
+            temps = (TextView) getView().findViewById(R.id.ttC);
+            cuisson = (TextView) getView().findViewById(R.id.tcC);
+            ingredients = (ListView) getView().findViewById(R.id.ingreC);
 
-        addBtn = new Button(getActivity());
-        addBtn.setText("Add to my list");
-        addBtn.setBackgroundColor(Color.GRAY);
-        ingredients.addFooterView(addBtn);
+            //Get ingredients info, and pass to adapter to fit in the listview
+            final Cursor c2 = dbh.currentRecipeIngredients(db);
+            //Create checklist with false
+            int size = c2.getCount();
+            setCheckList(size);
+            adapter = new MyAdapter(getActivity(), c2);
+            listI.setAdapter(adapter);
 
-        //Add to cookbook
+            //Show only title and ingredients
+            btIng = (Button) getView().findViewById(R.id.ingC);
+            btIng.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    ingredients.setVisibility(View.VISIBLE);
+                    btIng.setBackgroundColor(Color.DKGRAY);
+                    instructions.setVisibility(View.GONE);
+                    btIns.setBackgroundColor(Color.GRAY);
+                    image.setVisibility(View.GONE);
+                    description.setVisibility(View.GONE);
+                    temps.setVisibility(View.GONE);
+                    cuisson.setVisibility(View.GONE);
+                }
+            });
+
+            //Show only title and instructions
+            btIns = (Button) getView().findViewById(R.id.insC);
+            btIns.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    ingredients.setVisibility(View.GONE);
+                    btIng.setBackgroundColor(Color.GRAY);
+                    instructions.setVisibility(View.VISIBLE);
+                    btIns.setBackgroundColor(Color.DKGRAY);
+                    image.setVisibility(View.GONE);
+                    description.setVisibility(View.GONE);
+                    temps.setVisibility(View.GONE);
+                    cuisson.setVisibility(View.GONE);
+                }
+            });
+
+            addBtn = new Button(getActivity());
+            addBtn.setText("Add to my list");
+            addBtn.setBackgroundColor(Color.GRAY);
+            ingredients.addFooterView(addBtn);
+
+            //Add to cookbook
         /*btnFav = (Button) getView().findViewById(R.id.btnFav);
         btnFav.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -199,37 +219,38 @@ public class CurrentRecipe_Fragment extends Fragment{
             }
         });*/
 
-        //Show images, descriptions and temps when clicking on title
-        titre.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                ingredients.setVisibility(View.GONE);
-                btIng.setBackgroundColor(Color.GRAY);
-                instructions.setVisibility(View.GONE);
-                btIns.setBackgroundColor(Color.GRAY);
-                //image.setVisibility(View.VISIBLE);
-                description.setVisibility(View.VISIBLE);
-                temps.setVisibility(View.VISIBLE);
-                cuisson.setVisibility(View.VISIBLE);
-            }
-        });
+            //Show images, descriptions and temps when clicking on title
+            titre.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    ingredients.setVisibility(View.GONE);
+                    btIng.setBackgroundColor(Color.GRAY);
+                    instructions.setVisibility(View.GONE);
+                    btIns.setBackgroundColor(Color.GRAY);
+                    //image.setVisibility(View.VISIBLE);
+                    description.setVisibility(View.VISIBLE);
+                    temps.setVisibility(View.VISIBLE);
+                    cuisson.setVisibility(View.VISIBLE);
+                }
+            });
 
-        //Put image
-        Bitmap imageBit = convertByteArrayToBitmap(i);
-        //image.setImageBitmap(imageBit);
+            //Put image
+            Bitmap imageBit = convertByteArrayToBitmap(test);
+            image.setImageBitmap(imageBit);
 
-        //Set text in UI
-        titre.setText(t);
-        description.setText(d);
-        if (!tt.equals("0"))
-            temps.setText("Ready in : " + tt);
-        if (!ct.equals("0"))
-            cuisson.setText("Cooking time: " + ct);
-        btIns.setVisibility(View.VISIBLE);
-        btIng.setVisibility(View.VISIBLE);
-        instructions.setText(ins);
-        //btnFav.setVisibility(View.VISIBLE);
-        //btnMenu.setVisibility(View.VISIBLE);
+            //Set text in UI
+            titre.setText(t);
+            description.setText(d);
+            if (!tt.equals("0"))
+                temps.setText("Ready in : " + tt);
+            if (!ct.equals("0"))
+                cuisson.setText("Cooking time: " + ct);
+            btIns.setVisibility(View.VISIBLE);
+            btIng.setVisibility(View.VISIBLE);
+            instructions.setText(ins);
+            //btnFav.setVisibility(View.VISIBLE);
+            //btnMenu.setVisibility(View.VISIBLE);
+        }
     }
 
     //Create checklist with false
