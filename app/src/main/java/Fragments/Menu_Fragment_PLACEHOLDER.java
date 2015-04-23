@@ -19,7 +19,7 @@ public class Menu_Fragment_PLACEHOLDER extends Fragment {
     public Menu_Fragment_PLACEHOLDER() {
     }
 
-    ;
+
 
     public static void receiveRecipe(String titre, String image, String description, String tempsCuisson,
                                      String tempsTotal, String instructions, ArrayList<String> ingreNom,
