@@ -16,6 +16,7 @@
             android:id="@+id/activity_title"
             android:layout_width="230dp"
             android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
             android:padding="10dp"
             android:textAppearance="?android:attr/textAppearanceLarge"
             android:textColor="#ffffffff" />
