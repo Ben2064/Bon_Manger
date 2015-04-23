@@ -44,12 +44,14 @@ public class BigOvenRecipeWebAPI {
     public String tempsCuisson = "0";
     public ArrayList<String> ingredientsNom;
     public ArrayList<String> ingredientsQuantite;
+    public ArrayList<String> ingredientsMetric;
 
     public BigOvenRecipeWebAPI(String query) {
 
         String url = "http://api.bigoven.com/recipe/" + query + "?api_key=dvxRg7vK4t5RBlTap04zYHqbu08e374G";
         ingredientsNom = new ArrayList<String>();
         ingredientsQuantite = new ArrayList<String>();
+        ingredientsMetric = new ArrayList<String>();
 
         //http://openclassrooms.com/courses/structurez-vos-donnees-avec-xml/dom-exemple-d-utilisation-en-java
         //Etape 1 : récupération d'une instance de la classe "DocumentBuilderFactory"
@@ -127,9 +129,14 @@ public class BigOvenRecipeWebAPI {
                         //Etape 6 : récupération du nom et du prénom
                         final Element nom = (Element) ingredient.getElementsByTagName("Name").item(0);
                         ingredientsNom.add(nom.getTextContent());
-                        final Element quantite = (Element) ingredient.getElementsByTagName("Quantity").item(0);
+                        final Element quantite = (Element) ingredient.getElementsByTagName("MetricDisplayQuantity").item(0);
                         if (quantite != null)
                             ingredientsQuantite.add(quantite.getTextContent());
+                        final Element metric = (Element) ingredient.getElementsByTagName("MetricUnit").item(0);
+                        if (metric != null)
+                            ingredientsMetric.add(metric.getTextContent());
+                        else
+                            ingredientsMetric.add("");
                     }
                 }
             } else {

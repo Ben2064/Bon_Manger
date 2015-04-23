@@ -42,7 +42,7 @@ public class Liste_Fragment_PLACEHOLDER extends Fragment {
 
     ;
 
-    public static void setListe(ArrayList<String> tempName, ArrayList<String> tempNum) {
+    public static void setListe(ArrayList<String> tempName, ArrayList<String> tempNum, ArrayList<String> tempMet) {
         //We receive the informations of the ingredients list to add
         //Here we add it to memory
     }
@@ -95,7 +95,8 @@ public class Liste_Fragment_PLACEHOLDER extends Fragment {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                         Log.d("MainActivity", inputField.getText().toString());
-                        DBHelper.addIngredient(db, inputField.getText().toString(), "1");
+                        String CHANGECAMANNECRISSDEFOU = "ml";
+                        DBHelper.addIngredient(db, inputField.getText().toString(), "1", CHANGECAMANNECRISSDEFOU);
                     }
                 });
 

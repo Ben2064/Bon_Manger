@@ -18,6 +18,8 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.CursorAdapter;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
@@ -57,10 +59,19 @@ public class LivreListe_Fragment extends Fragment {
     Spinner spin;
     TextView cookbook;
     View view;
+    ArrayList<String> titres;
+    ArrayList<String> cuisines;
+    ArrayList<String> categories;
+    ArrayList<String> sousCategories;
+    ArrayList<String> ratings;
+    ArrayList<Drawable> image;
+    MyAdapter adapter;
+
+    public LivreListe_Fragment(){}
 
     public static void receiveRecipe(String titre, String image, String description, String tempsCuisson,
                                      String tempsTotal, String instructions, ArrayList<String> ingreNom,
-                                     ArrayList<String> ingreNum, String id) {
+                                     ArrayList<String> ingreNum, ArrayList<String> ingreMet, String id) {
         //We receive the informations of the recipe to add from search
         //Here we add it to memory
         //Open DB
@@ -70,6 +81,11 @@ public class LivreListe_Fragment extends Fragment {
         //byte[] imageDB = imageSQL(image);
         DBHelper.addRecipe(db, id, titre, image, description,
                 tempsCuisson, tempsTotal, instructions);
+
+        //Add ingredients
+        for (int i=0;i<ingreNom.size();i++) {
+            DBHelper.addRecipeIngredient(db,ingreNom.get(i), ingreNum.get(i), ingreMet.get(i), id);
+        }
 
         //db.delete("ringredients", null, null);
         //Add ingredients
@@ -82,13 +98,36 @@ public class LivreListe_Fragment extends Fragment {
                                      String tempsTotal, String instructions, Cursor c, String id) {
         //We receive the informations of the recipe to add from current recipe
         //Here we add it to memory
+        //Open DB
+        db = dbh.getWritableDatabase();
+
+        //Add recipe
+        //byte[] imageDB = imageSQL(image);
+        DBHelper.addRecipe(db, id, titre, image, description,
+                tempsCuisson, tempsTotal, instructions);
+
+        int numIngredients = c.getCount();
+        String nom;
+        String num;
+        String met;
+        //Add ingredient
+        for (int i=0;i<numIngredients;i++) {
+            c.moveToPosition(i);
+            nom = c.getString(c.getColumnIndex(DBHelper.RI_NAME));
+            num = c.getString(c.getColumnIndex(DBHelper.RI_NUMBER));
+            met = c.getString(c.getColumnIndex(DBHelper.RI_METRIC));
+            dbh.addRecipeIngredient(db,nom,num,met,id);
+        }
+
+
+
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         //Reload the view in case of "back" or create a new one if it's the first time
         if (view == null)
-            view = inflater.inflate(R.layout.research, container, false);
+            view = inflater.inflate(R.layout.livre_layout, container, false);
         return view;
     }
 
@@ -96,6 +135,10 @@ public class LivreListe_Fragment extends Fragment {
     @Override
     public void onActivityCreated(final Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+        //open db
+        dbh = new DBHelper(getActivity());
+        db = dbh.getWritableDatabase();
+
 
         if (spin == null) {
            // btnSearch = (Button) getView().findViewById(R.id.docherche);
@@ -154,6 +197,15 @@ public class LivreListe_Fragment extends Fragment {
             btnBack.setVisibility(View.GONE);
 
             final Cursor cursor1= dbh.listRecipe(db);
+            adapter = new MyAdapter(getActivity(),cursor1);
+            listv.setAdapter(adapter);
+
+           /* int nbrRecipes=cursor1.getCount();
+
+            for (int i=0;i<nbrRecipes;i++)
+            {
+
+            }*/
 
             //Erase research text
             /*btnSearch.setOnClickListener(new View.OnClickListener() {
@@ -337,7 +389,7 @@ public class LivreListe_Fragment extends Fragment {
         }
     }*/
 
-    public class MyAdapter extends BaseAdapter {
+/*    public class MyAdapter extends BaseAdapter {
 
         ArrayList<String> titres;
         ArrayList<String> cuisines;
@@ -404,6 +456,72 @@ public class LivreListe_Fragment extends Fragment {
             } else
                 rating.setVisibility(View.INVISIBLE);
             return v;
+        }
+    }*/
+    public class MyAdapter extends CursorAdapter {
+
+        LayoutInflater inflater;
+
+
+        public MyAdapter(Context context, Cursor c) {
+            super(context, c, true);
+            inflater = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        }
+
+        @Override
+        public View getView(final int position, View convertView, ViewGroup parent) {
+            View v = convertView;
+
+            if (v == null) {
+                v = inflater.inflate(R.layout.research_item, parent, false);
+            }
+
+            //Get Cookbook recipes
+            Cursor c = getCursor();
+            c.moveToPosition(position);
+            String id = c.getString(c.getColumnIndex(DBHelper.C_ID));
+            String title = c.getString(c.getColumnIndex(DBHelper.C_TITRE));
+            String desc = c.getString(c.getColumnIndex(DBHelper.C_DESCRIPTION));
+            String image = c.getString(c.getColumnIndex(DBHelper.C_IMAGE));
+            String cookTime =c.getString(c.getColumnIndex(DBHelper.C_COOKTIME));
+            String totalTime = c.getString(c.getColumnIndex(DBHelper.C_TOTALTIME));
+
+            TextView titre = (TextView) v.findViewById(R.id.nomRechRecette);
+            titre.setText(title);
+            TextView ct = (TextView) v.findViewById(R.id.cuisineRechRecette);
+            ct.setText(cookTime);
+            TextView tt = (TextView) v.findViewById(R.id.subcategorieRechRecette);
+            tt.setText(totalTime);
+
+            /*
+            //Store if checkbox are checked or not in the position of the ingredient
+            check = (CheckBox) v.findViewById(R.id.checkCI); //Name
+            check.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View arg0) {
+                    if (!checkList[position])
+                        checkList[position] = true;
+                    else
+                        checkList[position] = false;
+                }
+            });
+
+            //If nothing found
+            if (name.equals("Nothing found"))
+                check.setTextIsSelectable(false);*/
+
+            return v;
+        }
+
+        @Override
+        public View newView(Context context, Cursor cursor, ViewGroup parent) {
+
+            return null;
+        }
+
+        @Override
+        public void bindView(View view, Context context, Cursor cursor) {
+
         }
     }
 }

@@ -23,8 +23,10 @@ public class DBHelper extends SQLiteOpenHelper {
     public static final String RI_ID = "_id";    //link with previous table
     public static final String RI_NAME = "name";
     public static final String RI_NUMBER = "number";
+    public static final String RI_METRIC = "metric";
     public static final String G_NAME = "name";
     public static final String G_NUMBER = "number";
+    public static final String G_METRIC = "metric";
     public static final String G_ID = "_id";
     public static final String C_ID = "_id";
     public static final String C_TITRE = "titre_recette";
@@ -36,8 +38,9 @@ public class DBHelper extends SQLiteOpenHelper {
     public static final String CI_ID = "_id";    //link with previous table
     public static final String CI_NAME = "name";
     public static final String CI_NUMBER = "number";
+    public static final String CI_METRIC = "metric";
     static final String DB_NAME = "bonmanger.db";
-    static final int DB_VERSION = 35;    //******************METTRE À JOUR À CHAQUE FOIS!!!!!!!***********************//
+    static final int DB_VERSION = 36;    //******************METTRE À JOUR À CHAQUE FOIS!!!!!!!***********************//
     //CURRENT::table recipe for current recipe
     static final String TABLE_RECIPES = "recipes";
     //CURRENT::table ingredients for current recipe
@@ -98,11 +101,11 @@ public class DBHelper extends SQLiteOpenHelper {
     }
 
     //COOKBOOK::add ingredients
-    public static void addRecipeIngredient(SQLiteDatabase db, String name, String number, String id) {
+    public static void addRecipeIngredient(SQLiteDatabase db, String name, String number, String metric, String id) {
         String sql = "INSERT INTO "
                 + TABLE_CINGREDIENTS
-                + " (" + CI_NAME + ", " + CI_NUMBER + ", " + CI_ID + ")"
-                + " VALUES ('" + name + "', '" + number + "', '" + id + "')";
+                + " (" + CI_NAME + ", " + CI_NUMBER + ", " + CI_METRIC + ", " +  CI_ID + ")"
+                + " VALUES ('" + name + "', '" + number + "', '" + metric + "', '" + id + "')";
         db.execSQL(sql);
     }
 
@@ -160,12 +163,12 @@ public class DBHelper extends SQLiteOpenHelper {
     }
 
     //CURRENT::add ingredients
-    public static void addCurrentIngredient(SQLiteDatabase db, String name, String number, int id) {
+    public static void addCurrentIngredient(SQLiteDatabase db, String name, String number, String metric, int id) {
         //db.execSQL("DELETE FROM "+TABLE_RINGREDIENTS+" WHERE "+RI_NAME+" = plxrrmpa)");
         String sql = "INSERT INTO "
                 + TABLE_RINGREDIENTS
-                + " (" + RI_ID + ", " + RI_NAME + ", " + RI_NUMBER + ")"
-                + " VALUES ('" + id + "', '" + name + "', '" + number + "')";
+                + " (" + RI_ID + ", " + RI_NAME + ", " + RI_NUMBER + ", " + RI_METRIC + ")"
+                + " VALUES ('" + id + "', '" + name + "', '" + number + "', '" + metric + "')";
         db.execSQL(sql);
     }
 
@@ -193,30 +196,12 @@ public class DBHelper extends SQLiteOpenHelper {
     }
 
     //GROCERY::add ingredients
-    public static void addIngredient(SQLiteDatabase db, String name, String number) {
+    public static void addIngredient(SQLiteDatabase db, String name, String number, String metric) {
         String sql = "INSERT INTO "
                 + TABLE_GROCERY
-                + " (" + G_NAME + ", " + G_NUMBER + ")"
-                + " VALUES ('" + name + "', '" + number + "')";
+                + " (" + G_NAME + ", " + G_NUMBER + ", " + G_METRIC + ")"
+                + " VALUES ('" + name + "', '" + number + "', '" + metric +"')";
         db.execSQL(sql);
-    }
-
-    //test
-    public static void test(SQLiteDatabase db) {
-        String sql = "INSERT OR REPLACE INTO "
-                + TABLE_RECIPES
-                + " (" + R_ID + ", " + R_TITRE + ", " + R_IMAGE + ", " + R_DESCRIPTION + ", " + R_COOKTIME
-                + ", " + R_TOTALTIME + ", " + R_INSTRUCTIONS + ")"
-                + " VALUES(" + "'10'" + ", " + "'crotte'" + ", " + "'bella'" + ", " + "'desc'" + ", " + "'10min'" + ", " + "'5min'" + ", " + "'mettre au feu'" + ")";
-        db.execSQL(sql);
-
-        //db.delete(TABLE_RINGREDIENTS, null, null);
-        /*sql = "INSERT OR REPLACE INTO "
-                + TABLE_RINGREDIENTS
-                + " (" + RI_NAME + ", " + RI_NUMBER + ", " + RI_ID + ")"
-                + " VALUES(" + "'plxrrmpa'" + ", " + "'10'" + ", " + "'10'" + ")";
-        db.execSQL(sql);
-        Log.d("Test", "ici");*/
     }
 
     @Override
@@ -236,13 +221,15 @@ public class DBHelper extends SQLiteOpenHelper {
         sql = "create table " + TABLE_RINGREDIENTS
                 + " (" + RI_ID + " primary key, "
                 + RI_NAME + " text, "
-                + RI_NUMBER + " text)";
+                + RI_NUMBER + " text, "
+                + RI_METRIC + " text)";
         db.execSQL(sql);
 
         //GROCERY::
         sql = "create table " + TABLE_GROCERY
                 + " (" + G_NAME + " primary key, "
                 + G_NUMBER + " text, "
+                + G_METRIC + " text, "
                 + G_ID + " text)";
         db.execSQL(sql);
 
@@ -261,7 +248,8 @@ public class DBHelper extends SQLiteOpenHelper {
         sql = "create table " + TABLE_CINGREDIENTS
                 + " (" + CI_NAME + " primary key, "
                 + CI_ID + " text, "
-                + CI_NUMBER + " text)";
+                + CI_NUMBER + " text, "
+                + CI_METRIC + " text)";
         db.execSQL(sql);
 
         Log.d("DB", "database created");

@@ -1,8 +1,9 @@
-/*package Fragments;
+package Fragments;
 
 import android.app.Fragment;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
@@ -20,6 +21,13 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import org.apache.http.HttpResponse;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.impl.client.DefaultHttpClient;
+
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 
 import Fragments.CurrentRecipe_Fragment;
@@ -34,7 +42,7 @@ import lesdevoreurs.bon_manger.R;
 /**
  * Created by virgile on 22/04/2015.
  */
-/*
+
 public class LivreRecette_Fragment extends Fragment{
     //To pass to list
     public static ArrayList<String> nameIngredients = new ArrayList<String>();
@@ -80,15 +88,51 @@ public class LivreRecette_Fragment extends Fragment{
     public void onActivityCreated(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+
+
+
+
+
+
+
+
+
+
+
         if (btIng == null) {
+
             idRecette = getArguments().getString("ID_RECETTE");
-            titre = (TextView) getView().findViewById(R.id.titreR);
-            description = (TextView) getView().findViewById(R.id.descR);
-            temps = (TextView) getView().findViewById(R.id.ttR);
-            cuisson = (TextView) getView().findViewById(R.id.tcR);
-            instructions = (TextView) getView().findViewById(R.id.instR);
-            ingredients = (ListView) getView().findViewById(R.id.ingreR);
-            image = (ImageView) getView().findViewById(R.id.imgR);
+            Cursor c = dbh.searchBookRecipe(db, idRecette);
+            c.moveToPosition(0);
+            final String id = c.getString(c.getColumnIndex(DBHelper.R_ID));
+            final String t = c.getString(c.getColumnIndex(DBHelper.R_TITRE));
+            final String i = c.getString(c.getColumnIndex(DBHelper.R_IMAGE));
+            final String d = c.getString(c.getColumnIndex(DBHelper.R_DESCRIPTION));
+            final String ins = c.getString(c.getColumnIndex(DBHelper.R_INSTRUCTIONS));
+            final String tt = c.getString(c.getColumnIndex(DBHelper.R_TOTALTIME));
+            final String ct = c.getString(c.getColumnIndex(DBHelper.R_COOKTIME));
+
+            titre.setText(t);
+            description.setText(d);
+            if (!tt.equals("0"))
+                temps.setText("Ready in : " + tt);
+            if (!ct.equals("0"))
+                cuisson.setText("Cooking time: " + ct);
+            btIns.setVisibility(View.VISIBLE);
+            btIng.setVisibility(View.VISIBLE);
+            instructions.setText(ins);
+            btnDelete.setVisibility(View.VISIBLE);
+            btnMenu.setVisibility(View.VISIBLE);
+
+            new DownloadImageTask(i).execute();
+
+            titre = (TextView) getView().findViewById(R.id.titreL);
+            description = (TextView) getView().findViewById(R.id.descL);
+            temps = (TextView) getView().findViewById(R.id.ttL);
+            cuisson = (TextView) getView().findViewById(R.id.tcL);
+            instructions = (TextView) getView().findViewById(R.id.instL);
+            ingredients = (ListView) getView().findViewById(R.id.ingreL);
+            image = (ImageView) getView().findViewById(R.id.imgL);
 
             //Show images, descriptions and temps when clicking on title
             titre.setOnClickListener(new View.OnClickListener() {
@@ -143,8 +187,8 @@ public class LivreRecette_Fragment extends Fragment{
             ingredients.addFooterView(addBtn);
 
             //Start searching API
-            final DownloadWebTask web = new DownloadWebTask();
-            web.execute();
+           /* final DownloadWebTask web = new DownloadWebTask();
+            web.execute();*/
 
             //Add to cookbook
             btnDelete = (Button) getView().findViewById(R.id.btnFav);
@@ -153,7 +197,7 @@ public class LivreRecette_Fragment extends Fragment{
                 public void onClick(View v) {
                     Toast.makeText(getActivity(), "Deleted from my cookbook", Toast.LENGTH_LONG).show();
                     //Getting info
-                    final String titre = web.getTitre();
+                   /* final String titre = web.getTitre();
                     final String imagePath = web.getImagePath();
                     final String description = web.getDesc();
                     final String tempsCuisson = web.getCuisson();
@@ -163,7 +207,8 @@ public class LivreRecette_Fragment extends Fragment{
                     final ArrayList<String> ingreNum = web.getInumber();
                     final String id = web.getID();
                     Livre_Fragment_PLACEHOLDER.receiveRecipe(titre, imagePath, description, tempsCuisson, tempsTotal,
-                            instructions, ingreNom, ingreNum, id);
+                            instructions, ingreNom, ingreNum, id);*/
+                    DBHelper.deleteRecipe(db,idRecette);
 
                 }
             });
@@ -175,7 +220,7 @@ public class LivreRecette_Fragment extends Fragment{
                 public void onClick(View v) {
                     Toast.makeText(getActivity(), "Added to current recipe", Toast.LENGTH_LONG).show();
                     //Getting info
-                    final String titre = web.getTitre();
+                   /* final String titre = web.getTitre();
                     final String imagePath = web.getImagePath();
                     final String description = web.getDesc();
                     final String tempsCuisson = web.getCuisson();
@@ -186,7 +231,11 @@ public class LivreRecette_Fragment extends Fragment{
                     final String id = web.getID();
                     DBHelper dbh = new DBHelper(getActivity());
                     CurrentRecipe_Fragment.receiveRecipe(dbh, titre, imagePath, description, tempsCuisson, tempsTotal,
-                            instructions, ingreNom, ingreNum, id);
+                            instructions, ingreNom, ingreNum, id);*/
+
+                    DBHelper dbh = new DBHelper(getActivity());
+
+                    //CurrentRecipe_Fragment.receiveRecipe(dbh,t,i,d,ct,tt,ins,;
                 }
             });
 
@@ -197,7 +246,7 @@ public class LivreRecette_Fragment extends Fragment{
                 public void onClick(View v) {
                     Toast.makeText(getActivity(), "Add to menu", Toast.LENGTH_LONG).show();
                     //Getting info
-                    final String titre = web.getTitre();
+                    /*final String titre = web.getTitre();
                     final String imagePath = web.getImagePath();
                     final String description = web.getDesc();
                     final String tempsCuisson = web.getCuisson();
@@ -207,10 +256,10 @@ public class LivreRecette_Fragment extends Fragment{
                     final ArrayList<String> ingreNum = web.getInumber();
                     final String id = web.getID();
                     Menu_Fragment_PLACEHOLDER.receiveRecipe(titre, imagePath, description, tempsCuisson, tempsTotal,
-                            instructions, ingreNom, ingreNum, id);
+                            instructions, ingreNom, ingreNum, id);*/
                     dbh = new DBHelper(getActivity());
                     db = dbh.getWritableDatabase();
-                    DBHelper.deleteRecipe(db,id);
+                    //DBHelper.deleteRecipe(db,id,i,d,ct,);
                 }
             });
         }
@@ -254,7 +303,7 @@ public class LivreRecette_Fragment extends Fragment{
     public void resetNumberIngredients() {
         numberIngredients = new ArrayList<String>();
     }
-
+/*
     //Search in BigOvenRecipeWebAPI
     public class DownloadWebTask extends AsyncTask<Void, Void, BigOvenRecipeWebAPI> {
         ProgressDialog progressDialog;
@@ -403,7 +452,7 @@ public class LivreRecette_Fragment extends Fragment{
             btnMake.setVisibility(View.VISIBLE);
             btnMenu.setVisibility(View.VISIBLE);
         }
-    }
+    }*/
 
     public class MyAdapter extends BaseAdapter {
 
@@ -466,5 +515,35 @@ public class LivreRecette_Fragment extends Fragment{
             return v;
         }
     }
+
+    //Load and put image
+    public class DownloadImageTask extends AsyncTask<Void, Void, Drawable> {
+
+        String imagePath;
+        Drawable imageDraw = null;
+
+        public DownloadImageTask() {
+        }
+
+        public DownloadImageTask(String imagePath) {
+            this.imagePath = imagePath;
+        }
+
+        @Override
+        protected Drawable doInBackground(Void... params) {
+            //Load image
+            HttpClient httpClient = new DefaultHttpClient();
+            HttpGet http = new HttpGet(imagePath);
+            HttpResponse response = null;
+            try {
+                response = httpClient.execute(http);
+                InputStream is = response.getEntity().getContent();
+                imageDraw = Drawable.createFromStream(is, "src");
+            } catch (IOException e) {
+                Log.d("Imageload", "Problème avec load d'image" + e);
+            }
+            return imageDraw;
+        }
+    }
 }
-*/
+

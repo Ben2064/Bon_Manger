@@ -62,7 +62,8 @@ public class CurrentRecipe_Fragment extends Fragment{
     }
 
     public static void receiveRecipe(DBHelper dbh, String titre, String imagePath, String description, String tempsCuisson, String tempsTotal,
-                                     String instructions, ArrayList<String> ingreNom, ArrayList<String> ingreNum, String id) {
+                                     String instructions, ArrayList<String> ingreNom, ArrayList<String> ingreNum,
+                                     ArrayList<String> ingrMet, String id) {
         //We receive the informations of the recipe to add
         //Here we add it to memory
 
@@ -77,7 +78,7 @@ public class CurrentRecipe_Fragment extends Fragment{
         db.delete("ringredients", null, null);
         //Add ingredients
         for (int i = 0; i < ingreNom.size(); i++) {
-            DBHelper.addCurrentIngredient(db, ingreNom.get(i), ingreNum.get(i), i);
+            DBHelper.addCurrentIngredient(db, ingreNom.get(i), ingreNum.get(i), ingrMet.get(i), i);
         }
     }
 
@@ -175,7 +176,7 @@ public class CurrentRecipe_Fragment extends Fragment{
                 @Override
                 public void onClick(View v) {
                     Toast.makeText(getActivity(), "Added to my list", Toast.LENGTH_LONG).show();
-                    Livre_Fragment_PLACEHOLDER.receiveRecipe(t, i, d, ct, tt, ins, c2, id);
+                    LivreListe_Fragment.receiveRecipe(t, i, d, ct, tt, ins, c2, id);
                 }
             });
 
@@ -255,9 +256,10 @@ public class CurrentRecipe_Fragment extends Fragment{
             String id = c.getString(c.getColumnIndex(DBHelper.RI_ID));
             String name = c.getString(c.getColumnIndex(DBHelper.RI_NAME));
             String number = c.getString(c.getColumnIndex(DBHelper.RI_NUMBER));
+            String metric = c.getString(c.getColumnIndex(DBHelper.RI_METRIC));
 
             TextView titre = (TextView) v.findViewById(R.id.textCI);
-            titre.setText(number + " " + name);
+            titre.setText(number + " " + metric + " " + name);
 
             //Store if checkbox are checked or not in the position of the ingredient
             check = (CheckBox) v.findViewById(R.id.checkCI); //Name

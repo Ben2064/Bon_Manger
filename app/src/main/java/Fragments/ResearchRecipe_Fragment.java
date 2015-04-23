@@ -33,6 +33,7 @@ public class ResearchRecipe_Fragment extends Fragment {
     //To pass to list
     public static ArrayList<String> nameIngredients = new ArrayList<String>();
     public static ArrayList<String> numberIngredients = new ArrayList<String>();
+    public static ArrayList<String> metricIngredients = new ArrayList<String>();
     public static boolean checkList[] = null;
     //UI
     TextView titre;
@@ -151,9 +152,10 @@ public class ResearchRecipe_Fragment extends Fragment {
                     final String instructions = web.getInstructions();
                     final ArrayList<String> ingreNom = web.getIname();
                     final ArrayList<String> ingreNum = web.getInumber();
+                    final ArrayList<String> ingreMet = web.getImetric();
                     final String id = web.getID();
-                    Livre_Fragment_PLACEHOLDER.receiveRecipe(titre, imagePath, description, tempsCuisson, tempsTotal,
-                            instructions, ingreNom, ingreNum, id);
+                    LivreListe_Fragment.receiveRecipe(titre, imagePath, description, tempsCuisson, tempsTotal,
+                            instructions, ingreNom, ingreNum, ingreMet, id);
                 }
             });
 
@@ -172,10 +174,11 @@ public class ResearchRecipe_Fragment extends Fragment {
                     final String instructions = web.getInstructions();
                     final ArrayList<String> ingreNom = web.getIname();
                     final ArrayList<String> ingreNum = web.getInumber();
+                    final ArrayList<String> ingreMet = web.getImetric();
                     final String id = web.getID();
                     DBHelper dbh = new DBHelper(getActivity());
                     CurrentRecipe_Fragment.receiveRecipe(dbh, titre, imagePath, description, tempsCuisson, tempsTotal,
-                            instructions, ingreNom, ingreNum, id);
+                            instructions, ingreNom, ingreNum, ingreMet, id);
                 }
             });
 
@@ -194,9 +197,10 @@ public class ResearchRecipe_Fragment extends Fragment {
                     final String instructions = web.getInstructions();
                     final ArrayList<String> ingreNom = web.getIname();
                     final ArrayList<String> ingreNum = web.getInumber();
+                    final ArrayList<String> ingreMet = web.getImetric();
                     final String id = web.getID();
                     Menu_Fragment_PLACEHOLDER.receiveRecipe(titre, imagePath, description, tempsCuisson, tempsTotal,
-                            instructions, ingreNom, ingreNum, id);
+                            instructions, ingreNom, ingreNum, ingreMet, id);
                 }
             });
         }
@@ -233,6 +237,8 @@ public class ResearchRecipe_Fragment extends Fragment {
         return numberIngredients;
     }
 
+    public ArrayList<String> getMetricIngredients() { return metricIngredients; }
+
     public void resetNameIngredients() {
         nameIngredients = new ArrayList<String>();
     }
@@ -240,6 +246,8 @@ public class ResearchRecipe_Fragment extends Fragment {
     public void resetNumberIngredients() {
         numberIngredients = new ArrayList<String>();
     }
+
+    public void resetMetricIngredients() { metricIngredients = new ArrayList<String>();}
 
     //Search in BigOvenRecipeWebAPI
     public class DownloadWebTask extends AsyncTask<Void, Void, BigOvenRecipeWebAPI> {
@@ -254,6 +262,7 @@ public class ResearchRecipe_Fragment extends Fragment {
         Drawable cuisineR;
         ArrayList<String> ingredientsN = new ArrayList<String>();
         ArrayList<String> ingredientsNb = new ArrayList<String>();
+        ArrayList<String> ingredientsMet = new ArrayList<String>();
         boolean[] checkList;
 
         public DownloadWebTask() {
@@ -299,6 +308,8 @@ public class ResearchRecipe_Fragment extends Fragment {
             return ingredientsN;
         }
 
+        protected ArrayList<String> getImetric() { return ingredientsMet; }
+
         @Override
         protected BigOvenRecipeWebAPI doInBackground(Void... params) {
             //Load API of the recipe
@@ -331,6 +342,7 @@ public class ResearchRecipe_Fragment extends Fragment {
             imagePath = bigovenrecipewebapi.imagePath;
             ingredientsN = bigovenrecipewebapi.ingredientsNom;
             ingredientsNb = bigovenrecipewebapi.ingredientsQuantite;
+            ingredientsMet = bigovenrecipewebapi.ingredientsMetric;
             ID = bigovenrecipewebapi.ID;
 
             //Set text in UI
@@ -350,7 +362,7 @@ public class ResearchRecipe_Fragment extends Fragment {
             setCheckList(size);
 
             //Setup ingredient listview
-            final MyAdapter adapter = new MyAdapter(ingredientsN, ingredientsNb);
+            final MyAdapter adapter = new MyAdapter(ingredientsN, ingredientsNb, ingredientsMet);
             ingredients.setAdapter(adapter);
             progressDialog.dismiss();
 
@@ -364,12 +376,14 @@ public class ResearchRecipe_Fragment extends Fragment {
                     //Store temporary
                     ArrayList<String> tempName = getNameIngredients();
                     ArrayList<String> tempNum = getNumberIngredients();
+                    ArrayList<String> tempMet = getMetricIngredients();
 
                     if (!temp.equals("Nothing found")) {
                         for (int i = 0; i < checktemp.length; i++) {
                             if (checktemp[i]) {
                                 tempName.add(ingredientsN.get(i));
                                 tempNum.add(ingredientsNb.get(i));
+                                tempMet.add(ingredientsMet.get(i));
                             }
                         }
 
@@ -378,9 +392,10 @@ public class ResearchRecipe_Fragment extends Fragment {
                             Log.d("Liste", "" + tempName.get(j) + " "
                                     + tempNum.get(j));
                         }
-                        Liste_Fragment_PLACEHOLDER.setListe(tempName, tempNum);
+                        Liste_Fragment_PLACEHOLDER.setListe(tempName, tempNum, tempMet);
                         resetNameIngredients();
                         resetNumberIngredients();
+                        resetMetricIngredients();
                     }
                 }
             });
@@ -395,14 +410,16 @@ public class ResearchRecipe_Fragment extends Fragment {
 
         ArrayList<String> nom;
         ArrayList<String> nombre;
+        ArrayList<String> metric;
         LayoutInflater inflater;
         CheckBox check;
 
-        public MyAdapter(ArrayList<String> n, ArrayList<String> nb) {
+        public MyAdapter(ArrayList<String> n, ArrayList<String> nb, ArrayList<String> m) {
             inflater = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
             this.nom = n;
             this.nombre = nb;
+            this.metric = m;
         }
 
         @Override
@@ -431,7 +448,7 @@ public class ResearchRecipe_Fragment extends Fragment {
 
             //Put everything in the listview
             TextView titre = (TextView) v.findViewById(R.id.textI); //Name
-            titre.setText(nombre.get(position) + " " + nom.get(position));
+            titre.setText(nombre.get(position) + " " + metric.get(position) + " " + nom.get(position));
 
             //Store if checkbox are checked or not in the position of the ingredient
             check = (CheckBox) v.findViewById(R.id.checkI); //Name

@@ -31,7 +31,7 @@ public class Menu_Fragment_PLACEHOLDER extends Fragment {
 
     public static void receiveRecipe(String titre, String image, String description, String tempsCuisson,
                                      String tempsTotal, String instructions, ArrayList<String> ingreNom,
-                                     ArrayList<String> ingreNum, String id) {
+                                     ArrayList<String> ingreNum, ArrayList<String> ingreMet, String id) {
         //We receive the informations of the recipe to add from search
         //Here we add it to memory
     }
