@@ -12,12 +12,14 @@ import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import java.util.concurrent.TimeUnit;
+
 import lesdevoreurs.bon_manger.R;
 
 /**
  * Created by BenZen on 20/04/15.
  */
-/*
+ /*
 public class timer_item extends Activity
 {
     ProgressBar timerBar;
@@ -29,13 +31,19 @@ public class timer_item extends Activity
     CountDownTimer countDown;
 
     @Override
-    public void onCreate()
+    public void onCreate(Bundle savedState)
     {
+        super.onCreate(savedState);
         setContentView(R.layout.timer_item);
+
+        //Sets up the timer
         timerBar = (ProgressBar) view.findViewById(R.id.timerIcon);
         Animation anim = new RotateAnimation(0.0f, 90.0f, 250f, 273f);
         anim.setFillAfter(true);
         timerBar.startAnimation(anim);
+
+        //Sets up the button listener
+
     }
     public void onClick()
     {
@@ -69,5 +77,55 @@ public class timer_item extends Activity
     public String getName(){
         return timerName.getText();
     }
-}
-*/
+
+    public class TimerClass extends CountDownTimer
+    {
+        long totalTime;
+
+        public TimerClass(long millisInFuture, long countDownInterval)
+        {
+            super(millisInFuture, countDownInterval);
+            this.totalTime = millisInFuture;
+        }
+
+        @Override
+        public void onTick(long millisUntilFinished)
+        {
+            //Updates time remaining and display!
+            long millisec = millisUntilFinished;
+            String timeShown;
+            int percentComplete = (int) (millisUntilFinished/totalTime);
+
+            if (millisec < 60000) {
+                //show only seconds if < 1 min
+                timeShown = String.format("%02d", TimeUnit.MILLISECONDS.toSeconds(millisec));
+            }
+            else if (millisec < 600000) {
+                //show min:sec if < 10 min
+                timeShown = String.format("%02d:%d20", TimeUnit.MILLISECONDS.toMinutes(millisec),
+                        TimeUnit.MILLISECONDS.toSeconds(millisec) - TimeUnit.HOURS.toSeconds(TimeUnit.MILLISECONDS.toMinutes(millisec)));
+            }
+            else if (millisec < 3600000) {
+                //show only minutes if < 1 hour
+                timeShown = String.format("%02d", TimeUnit.MILLISECONDS.toMinutes(millisec));
+            }
+            else {
+                //show hours:min
+                timeShown = String.format("%02d:%02d", TimeUnit.MILLISECONDS.toHours(millisec),
+                        TimeUnit.MILLISECONDS.toMinutes(millisec) - TimeUnit.HOURS.toMinutes(TimeUnit.MILLISECONDS.toHours(millisec)));
+            }
+
+
+            timeRemainText.setText(timeShown);
+        }
+
+        @Override
+        public void onFinish()
+        {
+            //Alert User
+        }
+
+    }
+
+
+}*/

@@ -1,47 +1,45 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:weightSum="1"
-    android:background="@color/background_dark">
+    android:background="@color/box_dark"
+    android:layout_margin="5dp">
 
-    <LinearLayout
-        android:orientation="horizontal"
+    <ProgressBar
+        style="?android:attr/progressBarStyleSmall"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:id="@+id/timerIcon"
+        android:layout_weight="20"
+        android:indeterminate="false"
+        android:progressDrawable="@drawable/circular_countdown"
+        android:layout_margin="5dp" />
 
-        <ProgressBar
-            style="?android:attr/progressBarStyleSmall"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:id="@+id/timerIcon"
-            android:layout_weight="20"
-            android:indeterminate="false"
-            android:progressDrawable="@drawable/circular_countdown" />/>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="Timer Name"
+        android:id="@+id/timerName"
+        android:layout_weight="10"
+        android:autoText="false"
+        android:textColor="@color/text_white"
+        android:textAlignment="center"
+        android:layout_margin="5dp" />
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:text="Timer Name"
-            android:id="@+id/timerName"
-            android:layout_weight="10"
-            android:background="@color/box_dark"
-            android:autoText="false"
-            android:textColor="@color/text_white"
-            android:textAlignment="center" />
-
-        <Button
-            style="?android:attr/buttonStyleSmall"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:text="X"
-            android:id="@+id/timerDelete"
-            android:textSize="30dp"
-            android:background="@color/nope_red"
-            android:layout_weight="20"
-            android:layout_margin="10dp" />
-
-    </LinearLayout>
+    <Button
+        style="?android:attr/buttonStyleSmall"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:text="X"
+        android:id="@+id/timerDelete"
+        android:textSize="30dp"
+        android:background="@color/nope_red"
+        android:layout_weight="20"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp" />
 
 </LinearLayout>

@@ -21,7 +21,7 @@
             android:id="@+id/calendar_text_title"
             android:layout_gravity="center_horizontal"
             android:textColor="@color/text_white"
-            android:textSize="30dp"
+            android:textSize="28dp"
             android:textAlignment="center"
             android:textIsSelectable="true"
             android:layout_weight="10" />
@@ -50,7 +50,8 @@
             android:id="@+id/textView3"
             android:layout_weight="25"
             android:textColor="@color/text_white"
-            android:textSize="30dp" />
+            android:textSize="26dp"
+            android:textIsSelectable="true" />
 
         <Spinner
             android:layout_width="match_parent"
@@ -87,8 +88,11 @@
                 android:layout_row="1"
                 android:layout_column="1"
                 android:background="@color/item_light"
-                android:layout_margin="5dp"
-                android:singleLine="true" />
+                android:singleLine="true"
+                android:layout_marginLeft="5dp"
+                android:layout_marginTop="5dp"
+                android:layout_marginRight="3dp"
+                android:layout_marginBottom="5dp" />
 
             <LinearLayout
                 android:orientation="vertical"
@@ -96,7 +100,9 @@
                 android:layout_height="fill_parent"
                 android:background="@color/item_light"
                 android:layout_weight="10"
-                android:layout_margin="5dp">
+                android:layout_marginBottom="5dp"
+                android:layout_marginRight="3dp"
+                android:layout_marginLeft="5dp">
 
                 <TextView
                     android:layout_width="match_parent"
@@ -134,7 +140,9 @@
                 android:layout_height="fill_parent"
                 android:background="@color/item_light"
                 android:layout_weight="10"
-                android:layout_margin="5dp">
+                android:layout_marginBottom="5dp"
+                android:layout_marginRight="3dp"
+                android:layout_marginLeft="5dp">
 
                 <TextView
                     android:layout_width="match_parent"
@@ -172,7 +180,9 @@
                 android:layout_height="fill_parent"
                 android:background="@color/item_light"
                 android:layout_weight="10"
-                android:layout_margin="5dp">
+                android:layout_marginBottom="5dp"
+                android:layout_marginRight="3dp"
+                android:layout_marginLeft="5dp">
 
                 <TextView
                     android:layout_width="match_parent"
@@ -230,7 +240,10 @@
                 android:layout_row="1"
                 android:layout_column="1"
                 android:background="@color/item_light"
-                android:layout_margin="5dp" />
+                android:layout_marginLeft="3dp"
+                android:layout_marginTop="5dp"
+                android:layout_marginRight="5dp"
+                android:layout_marginBottom="5dp" />
 
             <LinearLayout
                 android:orientation="vertical"
@@ -238,7 +251,9 @@
                 android:layout_height="fill_parent"
                 android:background="@color/item_light"
                 android:layout_weight="10"
-                android:layout_margin="5dp" >
+                android:layout_marginBottom="5dp"
+                android:layout_marginRight="5dp"
+                android:layout_marginLeft="3dp">
 
                 <TextView
                     android:layout_width="match_parent"
@@ -276,7 +291,9 @@
                 android:layout_height="fill_parent"
                 android:background="@color/item_light"
                 android:layout_weight="10"
-                android:layout_margin="5dp" >
+                android:layout_marginBottom="5dp"
+                android:layout_marginRight="5dp"
+                android:layout_marginLeft="3dp">
 
                 <TextView
                     android:layout_width="match_parent"
@@ -313,7 +330,9 @@
                 android:layout_height="fill_parent"
                 android:background="@color/item_light"
                 android:layout_weight="10"
-                android:layout_margin="5dp" >
+                android:layout_marginBottom="5dp"
+                android:layout_marginRight="5dp"
+                android:layout_marginLeft="3dp">
 
                 <TextView
                     android:layout_width="match_parent"
