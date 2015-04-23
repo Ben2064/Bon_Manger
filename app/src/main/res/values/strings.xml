@@ -11,7 +11,8 @@
     <string name="calendar_title">Meal Planner</string>
     <string name="calendar_date">Date</string>
     <string name="calendar_share_button">Share</string>
-    <string name="calendar_add_list">Add to list</string>
+    <string name="calendar_week">Week:</string>
+
 
 
     <string name="drawer_open">Slider Menu Opened</string>
@@ -43,6 +44,15 @@
     <!-- Content Description -->
     <string name="desc_list_item_icon">Item Icon</string>
     <string name="recherche_bar">Search</string>
+
+    <!-- placeholder strings for a rolldown -->
+    <string-array name="rolldown_date">
+        <item >April 19</item>
+        <item >April 26</item>
+        <item >May 3</item>
+        <item >May 10</item>
+        <item >...</item>
+    </string-array>
 
 
 

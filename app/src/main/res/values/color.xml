@@ -16,12 +16,18 @@
 
     <color name="box_dark">#ff101010</color>
 
+    <color name="box_light">#ff808080</color>
+
+    <color name="item_light">#ffd5d5d5</color>
+
     <color name="background_dark">#ff2c2c2c</color>
 
     <color name="yep_green">#ff19961e</color>
 
     <color name="nope_red">#ffbe1419</color>
 
-    <color name="text_white">#ffffffff</color>
+    <color name="text_white">#c5c4c4</color>
+
+    <color name="box_blue">#d7158adc</color>
 
 </resources>
