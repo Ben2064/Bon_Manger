@@ -14,9 +14,9 @@
 
     <color name="counter_text_color">#c5c4c4</color>
 
-    <color name="dark_grey">#ff101010</color>
+    <color name="box_dark">#ff101010</color>
 
-    <color name="background_black">#ff000000</color>
+    <color name="background_dark">#ff2c2c2c</color>
 
     <color name="yep_green">#ff19961e</color>
 

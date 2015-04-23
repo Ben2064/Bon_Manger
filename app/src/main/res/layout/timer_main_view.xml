@@ -4,7 +4,7 @@
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     android:paddingBottom="@dimen/activity_vertical_margin" tools:context=".MainMenu"
-    android:background="#ff000000">
+    android:background="@color/background_dark">
 
     <LinearLayout
         android:orientation="vertical"
@@ -34,7 +34,7 @@
             android:layout_alignParentEnd="true"
             android:fastScrollAlwaysVisible="false"
             android:layout_weight="6"
-            android:background="#ff101010" />
+            android:background="@color/box_dark" />
 
         <TextView
             android:layout_width="match_parent"
@@ -51,7 +51,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="0"
-            android:background="#ff101010">
+            android:background="@color/box_dark">
 
             <EditText
                 android:layout_width="match_parent"
@@ -78,9 +78,8 @@
                 android:text="@string/timer_new_button"
                 android:id="@+id/button"
                 android:layout_weight="22"
-                android:onClick="callAddTimer"
-                android:background="#ffbe1419"
-                android:textSize="@dimen/abc_text_size_large_material" />
+                android:background="@color/yep_green"
+                android:textSize="30dp" />
         </LinearLayout>
     </LinearLayout>
 </RelativeLayout>
