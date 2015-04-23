@@ -1,51 +1,54 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
+    android:id="@+id/"
+    android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#ff2c2c2c"
     android:focusable="true"
     android:focusableInTouchMode="true"
-    android:weightSum="1"
-    android:background="#ff000000">
+    android:orientation="vertical"
+    android:weightSum="1">
 
     <LinearLayout
         android:layout_width="fill_parent"
         android:layout_height="50dp">
 
         <TextView
+            android:id="@+id/activity_title"
             android:layout_width="230dp"
             android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:id="@+id/activity_title"
             android:padding="10dp"
+            android:textAppearance="?android:attr/textAppearanceLarge"
             android:textColor="#ffffffff" />
 
         <RelativeLayout
             android:layout_width="wrap_content"
             android:layout_height="35dp"
-            android:background="#ffffffff"
-            android:layout_weight="5"
-            android:layout_marginTop="10dp"
             android:layout_marginBottom="10dp"
-            android:layout_marginRight="2dp">
+            android:layout_marginRight="2dp"
+            android:layout_marginTop="10dp"
+            android:layout_weight="5"
+            android:background="#ffffffff">
+
             <Spinner
+                android:id="@+id/nbp"
                 android:layout_width="fill_parent"
                 android:layout_height="35dp"
-                android:id="@+id/nbp"
-                android:entries="@array/element_nbp"
-                android:layout_below="@+id/textView"
                 android:layout_alignParentLeft="true"
                 android:layout_alignParentStart="true"
+                android:layout_below="@+id/textView"
+                android:entries="@array/element_nbp"
                 android:focusable="false" />
         </RelativeLayout>
 
         <TextView
+            android:id="@+id/textView2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:layout_weight="0"
             android:text="by page"
-            android:id="@+id/textView2"
-            android:textColor="#ffffffff"
-            android:layout_weight="0" />
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textColor="#ffffffff" />
 
     </LinearLayout>
 
@@ -56,42 +59,42 @@
         android:layout_weight="1">
 
     <ListView
+        android:id="@+id/activity_list"
         android:layout_width="match_parent"
         android:layout_height="fill_parent"
-        android:id="@+id/activity_list"
         android:layout_gravity="center_horizontal"
         android:layout_weight="1"
         android:stackFromBottom="false" />
     </FrameLayout>
 
     <LinearLayout
-        android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="10dp"
-        android:layout_weight="1">
+        android:layout_weight="1"
+        android:orientation="horizontal"
+        android:padding="10dp">
 
         <EditText
+            android:id="@+id/cherche"
             android:layout_width="match_parent"
             android:layout_height="50dp"
-            android:id="@+id/cherche"
-            android:hint="Enter keyword"
             android:layout_weight="1"
+            android:hint="Enter keyword"
             android:textColor="#ffffffff"
             android:textColorHint="#ffffffff" />
 
         <Button
+            android:id="@+id/doefface"
             android:layout_width="50dp"
             android:layout_height="50dp"
-            android:id="@+id/doefface"
             android:layout_weight="0"
             android:background="@android:drawable/ic_menu_close_clear_cancel"
             android:visibility="visible" />
 
         <Button
+            android:id="@+id/docherche"
             android:layout_width="50dp"
             android:layout_height="50dp"
-            android:id="@+id/docherche"
             android:layout_weight="0"
             android:background="@android:drawable/ic_menu_search"
              />
