@@ -152,7 +152,7 @@ public class Liste_Fragment_PLACEHOLDER extends Fragment {
         Log.d("MainActivity cursor",
                 cu.getString(0));
         while(cu.moveToNext()) {
-            Log.d("MainActivity cursor",
+            Log.d("MainActivity cursor ",
                     cu.getString(0));
         }
         listI = (ListView) getView();
