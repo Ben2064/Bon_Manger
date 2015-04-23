@@ -1,4 +1,4 @@
-package Fragments;
+/*package Fragments;
 
 import android.app.Fragment;
 import android.app.ProgressDialog;
@@ -34,6 +34,7 @@ import lesdevoreurs.bon_manger.R;
 /**
  * Created by virgile on 22/04/2015.
  */
+/*
 public class LivreRecette_Fragment extends Fragment{
     //To pass to list
     public static ArrayList<String> nameIngredients = new ArrayList<String>();
@@ -466,3 +467,4 @@ public class LivreRecette_Fragment extends Fragment{
         }
     }
 }
+*/
