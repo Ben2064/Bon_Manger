@@ -40,7 +40,7 @@ public class DBHelper extends SQLiteOpenHelper {
     public static final String CI_NUMBER = "number";
     public static final String CI_METRIC = "metric";
     static final String DB_NAME = "bonmanger.db";
-    static final int DB_VERSION = 36;    //******************METTRE À JOUR À CHAQUE FOIS!!!!!!!***********************//
+    static final int DB_VERSION = 40;    //******************METTRE À JOUR À CHAQUE FOIS!!!!!!!***********************//
     //CURRENT::table recipe for current recipe
     static final String TABLE_RECIPES = "recipes";
     //CURRENT::table ingredients for current recipe
@@ -50,7 +50,7 @@ public class DBHelper extends SQLiteOpenHelper {
     //COOKBOOK::Table cookbook
     static final String TABLE_COOKBOOK = "cookbook";
     //COOKBOOK::table ingredients for cookbook
-    static final String TABLE_CINGREDIENTS = "groceryingredients";
+    static final String TABLE_CINGREDIENTS = "cookbookingredients";
 
 
     public DBHelper(Context context) {
@@ -246,7 +246,7 @@ public class DBHelper extends SQLiteOpenHelper {
 
         //COOKBOOK::
         sql = "create table " + TABLE_CINGREDIENTS
-                + " (" + CI_NAME + " primary key, "
+                + " (" + CI_NAME + " text, "
                 + CI_ID + " text, "
                 + CI_NUMBER + " text, "
                 + CI_METRIC + " text)";

@@ -154,7 +154,8 @@ public class ResearchRecipe_Fragment extends Fragment {
                     final ArrayList<String> ingreNum = web.getInumber();
                     final ArrayList<String> ingreMet = web.getImetric();
                     final String id = web.getID();
-                    LivreListe_Fragment.receiveRecipe(titre, imagePath, description, tempsCuisson, tempsTotal,
+                    DBHelper dbh = new DBHelper(getActivity());
+                    LivreListe_Fragment.receiveRecipe(dbh, titre, imagePath, description, tempsCuisson, tempsTotal,
                             instructions, ingreNom, ingreNum, ingreMet, id);
                 }
             });
@@ -199,7 +200,8 @@ public class ResearchRecipe_Fragment extends Fragment {
                     final ArrayList<String> ingreNum = web.getInumber();
                     final ArrayList<String> ingreMet = web.getImetric();
                     final String id = web.getID();
-                    Menu_Fragment_PLACEHOLDER.receiveRecipe(titre, imagePath, description, tempsCuisson, tempsTotal,
+                    DBHelper dbh = new DBHelper(getActivity());
+                    Menu_Fragment_PLACEHOLDER.receiveRecipe(dbh, titre, imagePath, description, tempsCuisson, tempsTotal,
                             instructions, ingreNom, ingreNum, ingreMet, id);
                 }
             });
@@ -392,7 +394,8 @@ public class ResearchRecipe_Fragment extends Fragment {
                             Log.d("Liste", "" + tempName.get(j) + " "
                                     + tempNum.get(j));
                         }
-                        Liste_Fragment_PLACEHOLDER.setListe(tempName, tempNum, tempMet);
+                        DBHelper dbh = new DBHelper(getActivity());
+                        Liste_Fragment_PLACEHOLDER.setListe(dbh, tempName, tempNum, tempMet);
                         resetNameIngredients();
                         resetNumberIngredients();
                         resetMetricIngredients();

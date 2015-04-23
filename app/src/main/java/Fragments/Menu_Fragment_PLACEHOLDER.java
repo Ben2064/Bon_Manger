@@ -14,6 +14,7 @@ import android.widget.Spinner;
 
 import java.util.ArrayList;
 
+import lesdevoreurs.bon_manger.DBHelper;
 import lesdevoreurs.bon_manger.R;
 
 /**
@@ -29,7 +30,7 @@ public class Menu_Fragment_PLACEHOLDER extends Fragment {
 
 
 
-    public static void receiveRecipe(String titre, String image, String description, String tempsCuisson,
+    public static void receiveRecipe(DBHelper dbh, String titre, String image, String description, String tempsCuisson,
                                      String tempsTotal, String instructions, ArrayList<String> ingreNom,
                                      ArrayList<String> ingreNum, ArrayList<String> ingreMet, String id) {
         //We receive the informations of the recipe to add from search

@@ -1,5 +1,6 @@
 package Fragments;
 
+import android.app.ActionBar;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.ProgressDialog;
@@ -25,7 +26,13 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.RatingBar;
 import android.widget.Spinner;
+import android.widget.TableLayout;
 import android.widget.TextView;
+
+import org.apache.http.HttpResponse;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.impl.client.DefaultHttpClient;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -59,17 +66,19 @@ public class LivreListe_Fragment extends Fragment {
     Spinner spin;
     TextView cookbook;
     View view;
+    ImageView image;
     ArrayList<String> titres;
     ArrayList<String> cuisines;
     ArrayList<String> categories;
     ArrayList<String> sousCategories;
     ArrayList<String> ratings;
-    ArrayList<Drawable> image;
+    ArrayList<Drawable> imageList = new ArrayList<Drawable>();
+    //ArrayList<Drawable> image;
     MyAdapter adapter;
 
     public LivreListe_Fragment(){}
 
-    public static void receiveRecipe(String titre, String image, String description, String tempsCuisson,
+    public static void receiveRecipe(DBHelper dbh, String titre, String image, String description, String tempsCuisson,
                                      String tempsTotal, String instructions, ArrayList<String> ingreNom,
                                      ArrayList<String> ingreNum, ArrayList<String> ingreMet, String id) {
         //We receive the informations of the recipe to add from search
@@ -79,6 +88,7 @@ public class LivreListe_Fragment extends Fragment {
 
         //Add recipe
         //byte[] imageDB = imageSQL(image);
+        Log.d("Fromrecherche",image);
         DBHelper.addRecipe(db, id, titre, image, description,
                 tempsCuisson, tempsTotal, instructions);
 
@@ -482,16 +492,32 @@ public class LivreListe_Fragment extends Fragment {
             String id = c.getString(c.getColumnIndex(DBHelper.C_ID));
             String title = c.getString(c.getColumnIndex(DBHelper.C_TITRE));
             String desc = c.getString(c.getColumnIndex(DBHelper.C_DESCRIPTION));
-            String image = c.getString(c.getColumnIndex(DBHelper.C_IMAGE));
+            String i = c.getString(c.getColumnIndex(DBHelper.C_IMAGE));
             String cookTime =c.getString(c.getColumnIndex(DBHelper.C_COOKTIME));
             String totalTime = c.getString(c.getColumnIndex(DBHelper.C_TOTALTIME));
 
             TextView titre = (TextView) v.findViewById(R.id.nomRechRecette);
             titre.setText(title);
             TextView ct = (TextView) v.findViewById(R.id.cuisineRechRecette);
-            ct.setText(cookTime);
+            ct.setText("Cook: "+cookTime+" min");
+           // ct.setWidth(120);
+            ct.setLayoutParams(new TableLayout.LayoutParams(60,60,5));
             TextView tt = (TextView) v.findViewById(R.id.subcategorieRechRecette);
-            tt.setText(totalTime);
+            tt.setText("Total: "+totalTime + " min");
+            tt.setLayoutParams(new TableLayout.LayoutParams(60,60,5));
+            TextView st = (TextView) v.findViewById(R.id.categorieRechRecette);
+            st.setVisibility(View.GONE);
+            image = (ImageView) v.findViewById(R.id.imageRechRecette);
+
+            DownloadImageTask imag=new DownloadImageTask(i);
+            Drawable im2;
+
+            new DownloadImageTask(i).execute();
+            image.setImageDrawable(imageList.get(position));
+            //imag.execute();
+            //im2 = imag.getImage();
+            //image.setImageDrawable(im2);
+
 
             /*
             //Store if checkbox are checked or not in the position of the ingredient
@@ -523,5 +549,54 @@ public class LivreListe_Fragment extends Fragment {
         public void bindView(View view, Context context, Cursor cursor) {
 
         }
+    }
+
+    //Load and put image
+    public class DownloadImageTask extends AsyncTask<Void, Void, Drawable> {
+
+        String imagePath;
+        Drawable imageDraw = null;
+
+        public DownloadImageTask() {
+        }
+
+        public DownloadImageTask(String imagePath) {
+            this.imagePath = imagePath;
+        }
+
+        @Override
+        protected Drawable doInBackground(Void... params) {
+            //Load image
+            HttpClient httpClient = new DefaultHttpClient();
+            HttpGet http = new HttpGet(imagePath);
+            HttpResponse response = null;
+            try {
+                response = httpClient.execute(http);
+                InputStream is = response.getEntity().getContent();
+                imageDraw = Drawable.createFromStream(is, "src");
+            } catch (IOException e) {
+                Log.d("Imageload", "Problème avec load d'image" + e);
+            }
+            return imageDraw;
+        }
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+        }
+
+        @Override
+        protected void onPostExecute(final Drawable imageDraw) {
+            //ImageView image = (ImageView) getView().findViewById(R.id.imgC);
+            //image.setImageDrawable(imageDraw);
+            setImageList(imageDraw);
+        }
+
+        public Drawable getImage(){
+            return imageDraw;
+        }
+    }
+
+    public void setImageList(Drawable imagee) {
+        this.imageList.add(imagee);
     }
 }
