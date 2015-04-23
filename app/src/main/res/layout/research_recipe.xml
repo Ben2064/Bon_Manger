@@ -3,7 +3,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#ff000000"
+    android:background="#ff2c2c2c"
     android:orientation="vertical"
     android:weightSum="1">
 
@@ -38,7 +38,7 @@
                 android:layout_width="256dp"
                 android:layout_height="256dp"
                 android:layout_gravity="center_horizontal"
-                android:background="#ff000000" />
+                android:background="#ff2c2c2c" />
 
             <TextView
                 android:id="@+id/descR"
