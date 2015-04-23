@@ -58,14 +58,20 @@ public class CurrentRecipe_Fragment extends Fragment{
     ListView listI;
     MyAdapter adapter;
 
+    //for cookbook
+    ArrayList<String> ingreNom;
+    ArrayList<String> ingreNum;
+
     public CurrentRecipe_Fragment() {
     }
 
-    public static void receiveRecipe(DBHelper dbh, String titre, String imagePath, String description, String tempsCuisson, String tempsTotal,
-                                     String instructions, ArrayList<String> ingreNom, ArrayList<String> ingreNum, String id) {
+    public void receiveRecipe(DBHelper dbh, String titre, String imagePath, String description, String tempsCuisson, String tempsTotal,
+                              String instructions, ArrayList<String> ingreNom, ArrayList<String> ingreNum, String id) {
         //We receive the informations of the recipe to add
         //Here we add it to memory
 
+        setNI(ingreNom);
+        setNbI(ingreNum);
         //Open DB
         db = dbh.getWritableDatabase();
 
@@ -175,7 +181,7 @@ public class CurrentRecipe_Fragment extends Fragment{
                 @Override
                 public void onClick(View v) {
                     Toast.makeText(getActivity(), "Added to my list", Toast.LENGTH_LONG).show();
-                    Livre_Fragment_PLACEHOLDER.receiveRecipe(t, i, d, ct, tt, ins, c2, id);
+                    Livre_Fragment_PLACEHOLDER.receiveRecipe(t, i, d, ct, tt, ins, ingreNom, ingreNum, id);
                 }
             });
 
@@ -185,7 +191,7 @@ public class CurrentRecipe_Fragment extends Fragment{
                 @Override
                 public void onClick(View v) {
                     Toast.makeText(getActivity(), "Add to menu", Toast.LENGTH_LONG).show();
-                    Menu_Fragment_PLACEHOLDER.receiveRecipe(t, i, d, ct, tt, ins, c2, id);
+                    Menu_Fragment_PLACEHOLDER.receiveRecipe(t, i, d, ct, tt, ins, ingreNom, ingreNum, id);
                 }
             });
 
@@ -229,6 +235,14 @@ public class CurrentRecipe_Fragment extends Fragment{
             checkList[i] = false;
             Log.d("Checklist", "" + checkList[i]);
         }
+    }
+
+    public void setNbI(ArrayList<String> Num) {
+        this.ingreNum = Num;
+    }
+
+    public void setNI(ArrayList<String> Nom) {
+        this.ingreNom = Nom;
     }
 
     public class MyAdapter extends CursorAdapter {

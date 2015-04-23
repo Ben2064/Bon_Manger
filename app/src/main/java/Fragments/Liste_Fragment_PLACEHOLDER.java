@@ -15,20 +15,14 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
-import android.widget.CheckBox;
 import android.widget.CursorAdapter;
 import android.widget.EditText;
-import android.widget.LinearLayout;
 import android.widget.ListView;
-import android.widget.RelativeLayout;
-import android.widget.SimpleCursorAdapter;
 import android.widget.TextView;
 
 import java.util.ArrayList;
 
 import lesdevoreurs.bon_manger.DBHelper;
-import lesdevoreurs.bon_manger.MainActivity;
 import lesdevoreurs.bon_manger.R;
 
 /**
@@ -43,29 +37,38 @@ public class Liste_Fragment_PLACEHOLDER extends Fragment {
     MyAdapter adapter;
     View view;
 
-    public Liste_Fragment_PLACEHOLDER(){};
+    public Liste_Fragment_PLACEHOLDER() {
+    }
+
+    ;
+
+    public static void setListe(ArrayList<String> tempName, ArrayList<String> tempNum) {
+        //We receive the informations of the ingredients list to add
+        //Here we add it to memory
+    }
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
         if (view == null)
-            view  = inflater.inflate(R.layout.liste_layout_placeholder, container, false);
-        Log.d("a","createview");
+            view = inflater.inflate(R.layout.liste_layout_placeholder, container, false);
+        Log.d("a", "createview");
         return view;
     }
 
-    public static void setListe(ArrayList<String> tempName, ArrayList<String> tempNum){
-        //We receive the informations of the ingredients list to add
-        //Here we add it to memory
-    }
     @Override
     public void onCreate(Bundle savedInstanceState) {
         //Open DB
         dbh = new DBHelper(getActivity());
         db = dbh.getWritableDatabase();
-        cu = DBHelper.listIngredients(db);
-        update();
+        //cu = DBHelper.listIngredients(db);
+        listI = (ListView) getView().findViewById(R.id.list);
+        //Get ingredients info, and pass to adapter to fit in the listview
+        final Cursor c2 = dbh.listIngredients(db);
+        //Create checklist with false
+        adapter = new MyAdapter(getActivity(), c2);
+        listI.setAdapter(adapter);
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
     }
@@ -91,18 +94,34 @@ public class Liste_Fragment_PLACEHOLDER extends Fragment {
                 builder.setPositiveButton("Add", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
-                        Log.d("MainActivity",inputField.getText().toString());
-                        DBHelper.addIngredient(db,inputField.getText().toString(),"1");
+                        Log.d("MainActivity", inputField.getText().toString());
+                        DBHelper.addIngredient(db, inputField.getText().toString(), "1");
                     }
                 });
 
-                builder.setNegativeButton("Cancel",null);
+                builder.setNegativeButton("Cancel", null);
                 builder.create().show();
                 return true;
 
             default:
                 return false;
         }
+    }
+
+    private void update() {
+        cu.moveToFirst();
+        /*Log.d("MainActivity cursor",
+                cu.getString(0));
+        while(cu.moveToNext()) {
+            Log.d("MainActivity cursor ",
+                    cu.getString(0));
+        }*/
+        listI = (ListView) getView().findViewById(R.id.list);
+        //Get ingredients info, and pass to adapter to fit in the listview
+        final Cursor c2 = dbh.listIngredients(db);
+        //Create checklist with false
+        adapter = new MyAdapter(getActivity(), c2);
+        listI.setAdapter(adapter);
     }
 
     public class MyAdapter extends CursorAdapter {
@@ -145,22 +164,6 @@ public class Liste_Fragment_PLACEHOLDER extends Fragment {
         public void bindView(View view, Context context, Cursor cursor) {
 
         }
-    }
-
-    private void update(){
-        cu.moveToFirst();
-        Log.d("MainActivity cursor",
-                cu.getString(0));
-        while(cu.moveToNext()) {
-            Log.d("MainActivity cursor ",
-                    cu.getString(0));
-        }
-        listI = (ListView) getView();
-        //Get ingredients info, and pass to adapter to fit in the listview
-        final Cursor c2 = dbh.listIngredients(db);
-        //Create checklist with false
-        adapter = new MyAdapter(getActivity(), c2);
-        listI.setAdapter(adapter);
     }
 
 }
