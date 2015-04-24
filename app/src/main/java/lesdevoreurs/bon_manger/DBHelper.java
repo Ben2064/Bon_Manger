@@ -12,6 +12,18 @@ import android.util.Log;
  */
 public class DBHelper extends SQLiteOpenHelper {
 
+    static final String DB_NAME = "bonmanger.db";
+    static final int DB_VERSION = 40;    //******************METTRE À JOUR À CHAQUE FOIS!!!!!!!***********************//
+    //CURRENT::table recipe for current recipe
+    static final String TABLE_RECIPES = "recipes";
+    //CURRENT::table ingredients for current recipe
+    static final String TABLE_RINGREDIENTS = "ringredients";
+    //GROCERY::table for ingredients for grocerylsit
+    static final String TABLE_GROCERY = "grocery";
+    //COOKBOOK::Table cookbook
+    static final String TABLE_COOKBOOK = "cookbook";
+    //COOKBOOK::table ingredients for cookbook
+    static final String TABLE_CINGREDIENTS = "cookbookingredients";
 
     public static final String R_ID = "_id";
     public static final String R_TITRE = "titre_recette";
@@ -39,22 +51,70 @@ public class DBHelper extends SQLiteOpenHelper {
     public static final String CI_NAME = "name";
     public static final String CI_NUMBER = "number";
     public static final String CI_METRIC = "metric";
-    static final String DB_NAME = "bonmanger.db";
-    static final int DB_VERSION = 40;    //******************METTRE À JOUR À CHAQUE FOIS!!!!!!!***********************//
-    //CURRENT::table recipe for current recipe
-    static final String TABLE_RECIPES = "recipes";
-    //CURRENT::table ingredients for current recipe
-    static final String TABLE_RINGREDIENTS = "ringredients";
-    //GROCERY::table for ingredients for grocerylsit
-    static final String TABLE_GROCERY = "grocery";
-    //COOKBOOK::Table cookbook
-    static final String TABLE_COOKBOOK = "cookbook";
-    //COOKBOOK::table ingredients for cookbook
-    static final String TABLE_CINGREDIENTS = "cookbookingredients";
-
 
     public DBHelper(Context context) {
         super(context, DB_NAME, null, DB_VERSION);
+    }
+
+    @Override
+    public void onCreate(SQLiteDatabase db) {
+        //CURRENT::
+        String sql = "create table " + TABLE_RECIPES
+                + " (" + R_ID + " primary key, "
+                + R_TITRE + " text, "
+                + R_IMAGE + " text, "
+                + R_DESCRIPTION + " text,"
+                + R_COOKTIME + " text, "
+                + R_TOTALTIME + " text, "
+                + R_INSTRUCTIONS + " text)";
+        db.execSQL(sql);
+
+        //CURRENT::
+        sql = "create table " + TABLE_RINGREDIENTS
+                + " (" + RI_ID + " primary key, "
+                + RI_NAME + " text, "
+                + RI_NUMBER + " text, "
+                + RI_METRIC + " text)";
+        db.execSQL(sql);
+
+        //GROCERY::
+        sql = "create table " + TABLE_GROCERY
+                + " (" + G_NAME + " primary key, "
+                + G_NUMBER + " text, "
+                + G_METRIC + " text, "
+                + G_ID + " text)";
+        db.execSQL(sql);
+
+        //COOKBOOK::
+        sql = "create table " + TABLE_COOKBOOK
+                + " (" + C_ID + " primary key, "
+                + C_TITRE + " text, "
+                + C_IMAGE + " text, "
+                + C_DESCRIPTION + " text,"
+                + C_COOKTIME + " text, "
+                + C_TOTALTIME + " text, "
+                + C_INSTRUCTIONS + " text)";
+        db.execSQL(sql);
+
+        //COOKBOOK::
+        sql = "create table " + TABLE_CINGREDIENTS
+                + " (" + CI_NAME + " text, "
+                + CI_ID + " text, "
+                + CI_NUMBER + " text, "
+                + CI_METRIC + " text)";
+        db.execSQL(sql);
+
+        Log.d("DB", "database created");
+    }
+
+    @Override
+    public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+        db.execSQL("drop table if exists " + TABLE_RECIPES);
+        db.execSQL("drop table if exists " + TABLE_RINGREDIENTS);
+        db.execSQL("drop table if exists " + TABLE_GROCERY);
+        db.execSQL("drop table if exists " + TABLE_COOKBOOK);
+        db.execSQL("drop table if exists " + TABLE_CINGREDIENTS);
+        onCreate(db);
     }
 
     //COOKBOOK::Return the recipes for cookbook
@@ -202,66 +262,5 @@ public class DBHelper extends SQLiteOpenHelper {
                 + " (" + G_NAME + ", " + G_NUMBER + ", " + G_METRIC + ")"
                 + " VALUES ('" + name + "', '" + number + "', '" + metric +"')";
         db.execSQL(sql);
-    }
-
-    @Override
-    public void onCreate(SQLiteDatabase db) {
-        //CURRENT::
-        String sql = "create table " + TABLE_RECIPES
-                + " (" + R_ID + " primary key, "
-                + R_TITRE + " text, "
-                + R_IMAGE + " text, "
-                + R_DESCRIPTION + " text,"
-                + R_COOKTIME + " text, "
-                + R_TOTALTIME + " text, "
-                + R_INSTRUCTIONS + " text)";
-        db.execSQL(sql);
-
-        //CURRENT::
-        sql = "create table " + TABLE_RINGREDIENTS
-                + " (" + RI_ID + " primary key, "
-                + RI_NAME + " text, "
-                + RI_NUMBER + " text, "
-                + RI_METRIC + " text)";
-        db.execSQL(sql);
-
-        //GROCERY::
-        sql = "create table " + TABLE_GROCERY
-                + " (" + G_NAME + " primary key, "
-                + G_NUMBER + " text, "
-                + G_METRIC + " text, "
-                + G_ID + " text)";
-        db.execSQL(sql);
-
-        //COOKBOOK::
-        sql = "create table " + TABLE_COOKBOOK
-                + " (" + C_ID + " primary key, "
-                + C_TITRE + " text, "
-                + C_IMAGE + " text, "
-                + C_DESCRIPTION + " text,"
-                + C_COOKTIME + " text, "
-                + C_TOTALTIME + " text, "
-                + C_INSTRUCTIONS + " text)";
-        db.execSQL(sql);
-
-        //COOKBOOK::
-        sql = "create table " + TABLE_CINGREDIENTS
-                + " (" + CI_NAME + " text, "
-                + CI_ID + " text, "
-                + CI_NUMBER + " text, "
-                + CI_METRIC + " text)";
-        db.execSQL(sql);
-
-        Log.d("DB", "database created");
-    }
-
-    @Override
-    public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        db.execSQL("drop table if exists " + TABLE_RECIPES);
-        db.execSQL("drop table if exists " + TABLE_RINGREDIENTS);
-        db.execSQL("drop table if exists " + TABLE_GROCERY);
-        db.execSQL("drop table if exists " + TABLE_COOKBOOK);
-        db.execSQL("drop table if exists " + TABLE_CINGREDIENTS);
-        onCreate(db);
     }
 }
