@@ -451,6 +451,7 @@ public class ResearchRecipe_Fragment extends Fragment {
 
             //Put everything in the listview
             TextView titre = (TextView) v.findViewById(R.id.textI); //Name
+            String test = metric.get(position);
             titre.setText(nombre.get(position) + " " + metric.get(position) + " " + nom.get(position));
 
             //Store if checkbox are checked or not in the position of the ingredient

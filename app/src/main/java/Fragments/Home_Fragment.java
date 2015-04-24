@@ -5,7 +5,6 @@ import android.app.FragmentManager;
 import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -37,7 +36,6 @@ public class Home_Fragment extends Fragment{
 
     public Home_Fragment(){};
 
-    @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
@@ -66,7 +64,7 @@ public class Home_Fragment extends Fragment{
         });
 
         title.setText("Rosti");
-        description.setText("Nicolas suggest you: this traditionnal Swiss casserole made with potato, turnip and eggs." +
+        description.setText("Nicolas suggests you: this traditionnal Swiss casserole made with potato, turnip and eggs." +
                 "A little taste of Europe in your plate");
 
         new DownloadImageTask("http://images.bigoven.com/image/upload/t_recipe-256/rosti-a.jpg").execute();

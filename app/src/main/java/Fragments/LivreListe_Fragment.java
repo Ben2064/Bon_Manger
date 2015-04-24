@@ -78,8 +78,10 @@ public class LivreListe_Fragment extends Fragment {
         //Add recipe
         //byte[] imageDB = imageSQL(image);
         Log.d("Fromrecherche",image);
-        DBHelper.addRecipe(db, id, titre, image, description,
-                tempsCuisson, tempsTotal, instructions);
+        if(DBHelper.searchBookRecipe(db,id).getCount() == 0) {
+            DBHelper.addRecipe(db, id, titre, image, description,
+                    tempsCuisson, tempsTotal, instructions);
+        }
 
         //Add ingredients
         for (int i=0;i<ingreNom.size();i++) {
@@ -188,23 +190,20 @@ public class LivreListe_Fragment extends Fragment {
 
             final Cursor cursor1 = dbh.listRecipe(db);
 
-            for(int cu=0; cu<cursor1.getCount(); cu++){
-                String i = cursor1.getString(cursor1.getColumnIndex(DBHelper.C_IMAGE));
-                new DownloadImageTask(i).execute();
-            }
-
-            adapter = new MyAdapter(getActivity(), cursor1);
-            listv.setAdapter(adapter);
+            final DownloadImageTask DBim = new DownloadImageTask(cursor1);
+            DBim.execute();
+            Log.d("Imageload","Nb image "+DBim.getImgDrawList().size());
         }
     }
 
     public class MyAdapter extends CursorAdapter {
 
         LayoutInflater inflater;
+        ArrayList<Drawable> images;
 
-
-        public MyAdapter(Context context, Cursor c) {
+        public MyAdapter(Context context, Cursor c, ArrayList<Drawable> images) {
             super(context, c, true);
+            this.images=images;
             inflater = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         }
 
@@ -237,16 +236,8 @@ public class LivreListe_Fragment extends Fragment {
             TextView st = (TextView) v.findViewById(R.id.categorieRechRecette);
             st.setVisibility(View.GONE);
             ImageView image = (ImageView) v.findViewById(R.id.imageRechRecette);
-            image.setImageDrawable(imageList.get(position));
 
-            //DownloadImageTask imag=new DownloadImageTask(i);
-            //Drawable im2;
-
-            //new DownloadImageTask(i).execute();
-            //image.setImageDrawable(imageList.get(position));
-            //imag.execute();
-            //im2 = imag.getImage();
-            //image.setImageDrawable(im2);
+            image.setImageDrawable(images.get(position));
             return v;
         }
 
@@ -265,28 +256,45 @@ public class LivreListe_Fragment extends Fragment {
     //Load and put image
     public class DownloadImageTask extends AsyncTask<Void, Void, Drawable> {
 
-        String imagePath;
+        Cursor cursorImage;
         Drawable imageDraw = null;
+        ArrayList<Drawable> imgDrawList = new ArrayList<Drawable>();
 
         public DownloadImageTask() {
         }
 
-        public DownloadImageTask(String imagePath) {
-            this.imagePath = imagePath;
+        protected ArrayList<Drawable> getImgDrawList(){
+            return this.imgDrawList;
+        }
+
+        protected Cursor getCursor(){
+            return cursorImage;
+        }
+
+        public DownloadImageTask(Cursor imagePath) {
+            this.cursorImage = imagePath;
         }
 
         @Override
         protected Drawable doInBackground(Void... params) {
-            //Load image
-            HttpClient httpClient = new DefaultHttpClient();
-            HttpGet http = new HttpGet(imagePath);
-            HttpResponse response = null;
-            try {
-                response = httpClient.execute(http);
-                InputStream is = response.getEntity().getContent();
-                imageDraw = Drawable.createFromStream(is, "src");
-            } catch (IOException e) {
-                Log.d("Imageload", "Problème avec load d'image" + e);
+            Log.d("Imageload",""+cursorImage.getCount());
+            for(int cu=0; cu<cursorImage.getCount(); cu++){
+                cursorImage.moveToPosition(cu);
+                String i = cursorImage.getString(cursorImage.getColumnIndex(DBHelper.C_IMAGE));
+                Log.d("Imageload","Path: "+i);
+
+                //Load image
+                HttpClient httpClient = new DefaultHttpClient();
+                HttpGet http = new HttpGet(i);
+                HttpResponse response = null;
+                try {
+                    response = httpClient.execute(http);
+                    InputStream is = response.getEntity().getContent();
+                    imageDraw = Drawable.createFromStream(is, "src");
+                } catch (IOException e) {
+                    Log.d("Imageload", "Problème avec load d'image" + e);
+                }
+                imgDrawList.add(imageDraw);
             }
             return imageDraw;
         }
@@ -297,13 +305,8 @@ public class LivreListe_Fragment extends Fragment {
 
         @Override
         protected void onPostExecute(final Drawable imageDraw) {
-            //ImageView image = (ImageView) getView().findViewById(R.id.imgC);
-            //image.setImageDrawable(imageDraw);
-            setImageList(imageDraw);
+            adapter = new MyAdapter(getActivity(), getCursor(), getImgDrawList());
+            listv.setAdapter(adapter);
         }
-    }
-
-    public void setImageList(Drawable imagee) {
-        this.imageList.add(imagee);
     }
 }

@@ -132,6 +132,8 @@ public class BigOvenRecipeWebAPI {
                         final Element quantite = (Element) ingredient.getElementsByTagName("MetricDisplayQuantity").item(0);
                         if (quantite != null)
                             ingredientsQuantite.add(quantite.getTextContent());
+                        else
+                            ingredientsMetric.add("1");
                         final Element metric = (Element) ingredient.getElementsByTagName("MetricUnit").item(0);
                         if (metric != null)
                             ingredientsMetric.add(metric.getTextContent());

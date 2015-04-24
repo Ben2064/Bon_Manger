@@ -2,32 +2,32 @@
 <items version="2" >
 
     <item
-        jar="C:\Users\Fr\AndroidStudioProjects\Bon_Manger\app\build\intermediates\exploded-aar\com.android.support\support-v4\21.0.3\libs\internal_impl-21.0.3.jar"
+        jar="C:\Users\Nicolas\AndroidStudioProjects\Bon_Manger\app\build\intermediates\exploded-aar\com.android.support\support-v4\21.0.3\libs\internal_impl-21.0.3.jar"
         jumboMode="false"
         revision="21.1.2"
         sha1="01ec05bfbafcc07646ba813000bf2ef11742dd03">
-        <dex dex="C:\Users\Fr\AndroidStudioProjects\Bon_Manger\app\build\intermediates\pre-dexed\debug\internal_impl-21.0.3-ee3fa957713844c224107c171aee49c12e78a1c4.jar" />
+        <dex dex="C:\Users\Nicolas\AndroidStudioProjects\Bon_Manger\app\build\intermediates\pre-dexed\debug\internal_impl-21.0.3-5caaded06926e446afdf6adc1464a572bbf2b328.jar" />
     </item>
     <item
-        jar="C:\Users\Fr\AppData\Local\Android\sdk\extras\android\m2repository\com\android\support\support-annotations\21.0.3\support-annotations-21.0.3.jar"
-        jumboMode="false"
-        revision="21.1.2"
-        sha1="4b74cefe1f0c1b819e7260c8627a14674e37fd35">
-        <dex dex="C:\Users\Fr\AndroidStudioProjects\Bon_Manger\app\build\intermediates\pre-dexed\debug\support-annotations-21.0.3-aee1045f9b96d1f261112fd41dfd22334e4fce23.jar" />
-    </item>
-    <item
-        jar="C:\Users\Fr\AndroidStudioProjects\Bon_Manger\app\build\intermediates\exploded-aar\com.android.support\support-v4\21.0.3\classes.jar"
+        jar="C:\Users\Nicolas\AndroidStudioProjects\Bon_Manger\app\build\intermediates\exploded-aar\com.android.support\support-v4\21.0.3\classes.jar"
         jumboMode="false"
         revision="21.1.2"
         sha1="2c91c949a45a21cdecf26e03951e46c7beec9ad8">
-        <dex dex="C:\Users\Fr\AndroidStudioProjects\Bon_Manger\app\build\intermediates\pre-dexed\debug\classes-8cf230b13b35b19847fc38b9b15a9142e4a84e67.jar" />
+        <dex dex="C:\Users\Nicolas\AndroidStudioProjects\Bon_Manger\app\build\intermediates\pre-dexed\debug\classes-14578d2f1a3bf7d59429111d77fd52457c75a749.jar" />
     </item>
     <item
-        jar="C:\Users\Fr\AndroidStudioProjects\Bon_Manger\app\build\intermediates\exploded-aar\com.android.support\appcompat-v7\21.0.3\classes.jar"
+        jar="C:\Users\Nicolas\AppData\Local\Android\sdk\extras\android\m2repository\com\android\support\support-annotations\21.0.3\support-annotations-21.0.3.jar"
+        jumboMode="false"
+        revision="21.1.2"
+        sha1="4b74cefe1f0c1b819e7260c8627a14674e37fd35">
+        <dex dex="C:\Users\Nicolas\AndroidStudioProjects\Bon_Manger\app\build\intermediates\pre-dexed\debug\support-annotations-21.0.3-b9dd877ceb5c58fa6960b3c48a7d510d0c2c7c32.jar" />
+    </item>
+    <item
+        jar="C:\Users\Nicolas\AndroidStudioProjects\Bon_Manger\app\build\intermediates\exploded-aar\com.android.support\appcompat-v7\21.0.3\classes.jar"
         jumboMode="false"
         revision="21.1.2"
         sha1="81d42bf983a8741f4888a6e333e454e4a5e0eeb7">
-        <dex dex="C:\Users\Fr\AndroidStudioProjects\Bon_Manger\app\build\intermediates\pre-dexed\debug\classes-69374176180ecbb7eb0e51627a5d9fdbdd8f7938.jar" />
+        <dex dex="C:\Users\Nicolas\AndroidStudioProjects\Bon_Manger\app\build\intermediates\pre-dexed\debug\classes-936e979c24acc97e70e8e5f2d96087b33029b9b1.jar" />
     </item>
 
 </items>
