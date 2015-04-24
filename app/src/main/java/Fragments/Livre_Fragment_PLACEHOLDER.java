@@ -15,10 +15,9 @@ import lesdevoreurs.bon_manger.R;
  * Created by virgile on 17/04/2015.
  */
 public class Livre_Fragment_PLACEHOLDER extends Fragment {
+
     public Livre_Fragment_PLACEHOLDER() {
     }
-
-    ;
 
     public static void receiveRecipe(String titre, String image, String description, String tempsCuisson,
                                      String tempsTotal, String instructions, ArrayList<String> ingreNom,

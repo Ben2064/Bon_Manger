@@ -33,12 +33,14 @@ import lesdevoreurs.bon_manger.DBHelper;
 import lesdevoreurs.bon_manger.R;
 
 /**
- * Created by virgile on 17/04/2015.
+ * Fragment for current recipe
  */
 public class CurrentRecipe_Fragment extends Fragment{
 
     static SQLiteDatabase db;
     static DBHelper dbh;
+    MyAdapter adapter;
+
     //UI
     TextView titre;
     ImageView image;
@@ -54,28 +56,38 @@ public class CurrentRecipe_Fragment extends Fragment{
     Button btnMenu;
     View view;
     boolean[] checkList;
-    ListView listI;
-    MyAdapter adapter;
 
     public CurrentRecipe_Fragment() {
     }
 
+    /**
+     * We receive the informations of the recipe to add
+     * Here we add it to memory
+     * @param dbh   The Database
+     * @param titre Title of the recipe
+     * @param imagePath Path of the picture
+     * @param description   Description fo the recipe
+     * @param tempsCuisson  Cooktime of recipe
+     * @param tempsTotal    Total time of preparation of recipe
+     * @param instructions  Instructions of recipes
+     * @param ingreNom  Names of ingredients
+     * @param ingreNum  Number of ingredients
+     * @param ingrMet   Metric use to the number of ingredient
+     * @param id    Id of the recipe
+     */
     public static void receiveRecipe(DBHelper dbh, String titre, String imagePath, String description, String tempsCuisson, String tempsTotal,
                                      String instructions, ArrayList<String> ingreNom, ArrayList<String> ingreNum,
                                      ArrayList<String> ingrMet, String id) {
-        //We receive the informations of the recipe to add
-        //Here we add it to memory
 
         //Open DB
         db = dbh.getWritableDatabase();
 
-        //Add recipe
-        //byte[] imageDB = imageSQL(image);
+        //Add and replace recipe
         DBHelper.addCurrent(db, id, titre, imagePath, description,
                 tempsCuisson, tempsTotal, instructions);
 
+        //Add and replace ingredients
         db.delete("ringredients", null, null);
-        //Add ingredients
         for (int i = 0; i < ingreNom.size(); i++) {
             DBHelper.addCurrentIngredient(db, ingreNom.get(i), ingreNum.get(i), ingrMet.get(i), i);
         }
@@ -83,10 +95,9 @@ public class CurrentRecipe_Fragment extends Fragment{
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-
         //Reload the view in case of "back" or create a new one if it's the first time
         if (view == null)
-            view = inflater.inflate(R.layout.current_recipe, container, false);
+            view = inflater.inflate(R.layout.research_recipe, container, false);
         return view;
     }
 
@@ -97,14 +108,16 @@ public class CurrentRecipe_Fragment extends Fragment{
         dbh = new DBHelper(getActivity());
         db = dbh.getWritableDatabase();
 
-        //Test d'entrée des données test dans la db
-        //dbh.test(db);
+        //Check if no current recipe
+        titre = (TextView) getView().findViewById(R.id.titreR);
+        Cursor c = dbh.currentRecipe(db);
+        if(c.getCount()==0)
+            titre.setText("No current recipe!");
+
+        //Don't reload everything if we hit back button
         if (!dbh.isEmpty(db) && addBtn == null) {
 
-            listI = (ListView) getView().findViewById(R.id.ingreC);
-
-            //Get recipe info
-            Cursor c = dbh.currentRecipe(db);
+            //Get recipe info from DB
             c.moveToPosition(0);
             final String id = c.getString(c.getColumnIndex(DBHelper.R_ID));
             final String t = c.getString(c.getColumnIndex(DBHelper.R_TITRE));
@@ -114,25 +127,25 @@ public class CurrentRecipe_Fragment extends Fragment{
             final String tt = c.getString(c.getColumnIndex(DBHelper.R_TOTALTIME));
             final String ct = c.getString(c.getColumnIndex(DBHelper.R_COOKTIME));
 
-            Log.d("Test", i);
-            titre = (TextView) getView().findViewById(R.id.titreC);
-            description = (TextView) getView().findViewById(R.id.descC);
-            image = (ImageView) getView().findViewById(R.id.imgC);
-            instructions = (TextView) getView().findViewById(R.id.instC);
-            temps = (TextView) getView().findViewById(R.id.ttC);
-            cuisson = (TextView) getView().findViewById(R.id.tcC);
-            ingredients = (ListView) getView().findViewById(R.id.ingreC);
+            //Get UI
+            description = (TextView) getView().findViewById(R.id.descR);
+            image = (ImageView) getView().findViewById(R.id.imgR);
+            instructions = (TextView) getView().findViewById(R.id.instR);
+            temps = (TextView) getView().findViewById(R.id.ttR);
+            cuisson = (TextView) getView().findViewById(R.id.tcR);
+            ingredients = (ListView) getView().findViewById(R.id.ingreR);
 
             //Get ingredients info, and pass to adapter to fit in the listview
             final Cursor c2 = dbh.currentRecipeIngredients(db);
+
             //Create checklist with false
             int size = c2.getCount();
             setCheckList(size);
             adapter = new MyAdapter(getActivity(), c2);
-            listI.setAdapter(adapter);
+            ingredients.setAdapter(adapter);
 
             //Show only title and ingredients
-            btIng = (Button) getView().findViewById(R.id.ingC);
+            btIng = (Button) getView().findViewById(R.id.ingR);
             btIng.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -148,7 +161,7 @@ public class CurrentRecipe_Fragment extends Fragment{
             });
 
             //Show only title and instructions
-            btIns = (Button) getView().findViewById(R.id.insC);
+            btIns = (Button) getView().findViewById(R.id.insR);
             btIns.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -169,17 +182,22 @@ public class CurrentRecipe_Fragment extends Fragment{
             ingredients.addFooterView(addBtn);
 
             //Add to cookbook
-            btnFav = (Button) getView().findViewById(R.id.btnFavC);
-            btnFav.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Toast.makeText(getActivity(), "Added to my list", Toast.LENGTH_LONG).show();
-                    LivreListe_Fragment.receiveRecipe(t, i, d, ct, tt, ins, c2, id);
-                }
-            });
+            btnFav = (Button) getView().findViewById(R.id.btnFav);
+            if(dbh.searchBookRecipe(db,id).getCount()==0) {
+                btnFav.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Toast.makeText(getActivity(), "Added to my list", Toast.LENGTH_LONG).show();
+                        LivreListe_Fragment.receiveRecipe(t, i, d, ct, tt, ins, c2, id);
+                        btnFav.setBackgroundResource(android.R.drawable.btn_star_big_on);
+                    }
+                });
+            }
+            else
+                btnFav.setBackgroundResource(android.R.drawable.btn_star_big_on);
 
             //Add to menu
-            btnMenu = (Button) getView().findViewById(R.id.btnMenuC);
+            btnMenu = (Button) getView().findViewById(R.id.btnMenu);
             btnMenu.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -188,7 +206,7 @@ public class CurrentRecipe_Fragment extends Fragment{
                 }
             });
 
-            //Show images, descriptions and temps when clicking on title
+            //Show images, descriptions and times when clicking on title
             titre.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -216,17 +234,16 @@ public class CurrentRecipe_Fragment extends Fragment{
             btnFav.setVisibility(View.VISIBLE);
             btnMenu.setVisibility(View.VISIBLE);
 
+            //Load picture
             new DownloadImageTask(i).execute();
         }
     }
 
     //Create checklist with false
     public void setCheckList(int size) {
-        Log.d("Size", "" + size);
         checkList = new boolean[size];
         for (int i = 0; i < size; i++) {
             checkList[i] = false;
-            Log.d("Checklist", "" + checkList[i]);
         }
     }
 
@@ -245,7 +262,7 @@ public class CurrentRecipe_Fragment extends Fragment{
             View v = convertView;
 
             if (v == null) {
-                v = inflater.inflate(R.layout.current_recipe_item, parent, false);
+                v = inflater.inflate(R.layout.research_recipe_item, parent, false);
             }
 
             //Get ingredients info
@@ -256,11 +273,12 @@ public class CurrentRecipe_Fragment extends Fragment{
             String number = c.getString(c.getColumnIndex(DBHelper.RI_NUMBER));
             String metric = c.getString(c.getColumnIndex(DBHelper.RI_METRIC));
 
-            TextView titre = (TextView) v.findViewById(R.id.textCI);
+            //Put ingredients info
+            TextView titre = (TextView) v.findViewById(R.id.textI);
             titre.setText(number + " " + metric + " " + name);
 
             //Store if checkbox are checked or not in the position of the ingredient
-            check = (CheckBox) v.findViewById(R.id.checkCI); //Name
+            check = (CheckBox) v.findViewById(R.id.checkI); //Name
             check.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View arg0) {
@@ -296,10 +314,7 @@ public class CurrentRecipe_Fragment extends Fragment{
         String imagePath;
         Drawable imageDraw = null;
 
-        public DownloadImageTask() {
-        }
-
-        public DownloadImageTask(String imagePath) {
+       public DownloadImageTask(String imagePath) {
             this.imagePath = imagePath;
         }
 
@@ -326,7 +341,7 @@ public class CurrentRecipe_Fragment extends Fragment{
 
         @Override
         protected void onPostExecute(final Drawable imageDraw) {
-            //ImageView image = (ImageView) getView().findViewById(R.id.imgC);
+            //Put the image
             image.setImageDrawable(imageDraw);
         }
     }

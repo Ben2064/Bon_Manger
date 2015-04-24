@@ -283,7 +283,6 @@ public class Research_Fragment1 extends Fragment {
 
                     //Check if it's a recipe or a Nothing found before adding listener
                     if (titrecheck.length() >= 13) {
-                        Log.d("Test", "" + titrecheck.substring(0, 13));
                         if (titrecheck.substring(0, 13).equals("Nothing found")) {
                             chercheRecette = false;
                         }

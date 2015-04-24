@@ -7,7 +7,6 @@ import android.content.DialogInterface;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -18,7 +17,6 @@ import android.view.ViewGroup;
 import android.widget.CursorAdapter;
 import android.widget.EditText;
 import android.widget.ListView;
-import android.widget.TextView;
 
 import java.util.ArrayList;
 
@@ -47,7 +45,6 @@ public class Liste_Fragment_PLACEHOLDER extends Fragment {
         //Here we add it to memory
     }
 
-    @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
@@ -149,8 +146,8 @@ public class Liste_Fragment_PLACEHOLDER extends Fragment {
             String name = c.getString(c.getColumnIndex(DBHelper.RI_NAME));
             String number = c.getString(c.getColumnIndex(DBHelper.RI_NUMBER));
 
-            TextView titre = (TextView) v.findViewById(R.id.textCI);
-            titre.setText(number + " " + name);
+            //TextView titre = (TextView) v.findViewById(R.id.textCI);
+            //titre.setText(number + " " + name);
 
             return v;
         }

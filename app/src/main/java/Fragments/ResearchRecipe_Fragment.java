@@ -3,6 +3,7 @@ package Fragments;
 import android.app.Fragment;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
@@ -139,26 +140,33 @@ public class ResearchRecipe_Fragment extends Fragment {
 
             //Add to cookbook
             btnFav = (Button) getView().findViewById(R.id.btnFav);
-            btnFav.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Toast.makeText(getActivity(), "Added to my list", Toast.LENGTH_LONG).show();
-                    //Getting info
-                    final String titre = web.getTitre();
-                    final String imagePath = web.getImagePath();
-                    final String description = web.getDesc();
-                    final String tempsCuisson = web.getCuisson();
-                    final String tempsTotal = web.getTemps();
-                    final String instructions = web.getInstructions();
-                    final ArrayList<String> ingreNom = web.getIname();
-                    final ArrayList<String> ingreNum = web.getInumber();
-                    final ArrayList<String> ingreMet = web.getImetric();
-                    final String id = web.getID();
-                    DBHelper dbh = new DBHelper(getActivity());
-                    LivreListe_Fragment.receiveRecipe(dbh, titre, imagePath, description, tempsCuisson, tempsTotal,
-                            instructions, ingreNom, ingreNum, ingreMet, id);
-                }
-            });
+            DBHelper dbh = new DBHelper(getActivity());
+            SQLiteDatabase db = dbh.getWritableDatabase();
+            if(dbh.searchBookRecipe(db,idRecette).getCount()==0) {
+                btnFav.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Toast.makeText(getActivity(), "Added to my list", Toast.LENGTH_LONG).show();
+                        //Getting info
+                        final String titre = web.getTitre();
+                        final String imagePath = web.getImagePath();
+                        final String description = web.getDesc();
+                        final String tempsCuisson = web.getCuisson();
+                        final String tempsTotal = web.getTemps();
+                        final String instructions = web.getInstructions();
+                        final ArrayList<String> ingreNom = web.getIname();
+                        final ArrayList<String> ingreNum = web.getInumber();
+                        final ArrayList<String> ingreMet = web.getImetric();
+                        final String id = web.getID();
+                        DBHelper dbh = new DBHelper(getActivity());
+                        LivreListe_Fragment.receiveRecipe(dbh, titre, imagePath, description, tempsCuisson, tempsTotal,
+                                instructions, ingreNom, ingreNum, ingreMet, id);
+                        btnFav.setBackgroundResource(android.R.drawable.btn_star_big_on);
+                    }
+                });
+            }
+            else
+                btnFav.setBackgroundResource(android.R.drawable.btn_star_big_on);
 
             //Add to current recipe
             btnMake = (Button) getView().findViewById(R.id.btnMake);

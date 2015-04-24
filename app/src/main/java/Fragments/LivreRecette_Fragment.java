@@ -1,7 +1,6 @@
 package Fragments;
 
 import android.app.Fragment;
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -30,12 +29,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 
-import Fragments.CurrentRecipe_Fragment;
-import Fragments.Liste_Fragment_PLACEHOLDER;
-import Fragments.Livre_Fragment_PLACEHOLDER;
-import Fragments.Menu_Fragment_PLACEHOLDER;
-import Fragments.ResearchRecipe_Fragment;
-import lesdevoreurs.bon_manger.BigOvenRecipeWebAPI;
 import lesdevoreurs.bon_manger.DBHelper;
 import lesdevoreurs.bon_manger.R;
 
@@ -88,17 +81,6 @@ public class LivreRecette_Fragment extends Fragment{
     public void onActivityCreated(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-
-
-
-
-
-
-
-
-
-
-
         if (btIng == null) {
 
             idRecette = getArguments().getString("ID_RECETTE");
@@ -126,7 +108,6 @@ public class LivreRecette_Fragment extends Fragment{
 
             new DownloadImageTask(i).execute();
 
-            titre = (TextView) getView().findViewById(R.id.titreL);
             description = (TextView) getView().findViewById(R.id.descL);
             temps = (TextView) getView().findViewById(R.id.ttL);
             cuisson = (TextView) getView().findViewById(R.id.tcL);

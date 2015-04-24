@@ -132,6 +132,14 @@ public class LivreListe_Fragment extends Fragment {
         dbh = new DBHelper(getActivity());
         db = dbh.getWritableDatabase();
 
+        //Check if no favorite recipe
+        cookbook = (TextView) getView().findViewById(R.id.activity_title);
+        Cursor cursor1 = dbh.listRecipe(db);
+        if(cursor1.getCount()==0)
+            cookbook.setText("Cookbook empty!");
+        else
+            cookbook.setText("CookBook");
+
         if (spin == null) {
             // btnSearch = (Button) getView().findViewById(R.id.docherche);
             // btnEff = (Button) getView().findViewById(R.id.doefface);
@@ -140,8 +148,7 @@ public class LivreListe_Fragment extends Fragment {
             spin.setSelection(3);
             rate = (RatingBar) getView().findViewById(R.id.myRatingBar);
             listv = (ListView) getView().findViewById(R.id.activity_list);
-            cookbook = (TextView) getView().findViewById(R.id.activity_title);
-            cookbook.setText("CookBook");
+
 
             //Load another page of result
             btnLoad = new Button(getActivity());
@@ -188,7 +195,7 @@ public class LivreListe_Fragment extends Fragment {
             listv.addHeaderView(btnBack);
             btnBack.setVisibility(View.GONE);
 
-            final Cursor cursor1 = dbh.listRecipe(db);
+
 
             final DownloadImageTask DBim = new DownloadImageTask(cursor1);
             DBim.execute();

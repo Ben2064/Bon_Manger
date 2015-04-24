@@ -13,7 +13,8 @@ import android.util.Log;
 public class DBHelper extends SQLiteOpenHelper {
 
     static final String DB_NAME = "bonmanger.db";
-    static final int DB_VERSION = 43;    //******************METTRE À JOUR À CHAQUE FOIS!!!!!!!***********************//
+    static final int DB_VERSION = 46;    //******************METTRE À JOUR À CHAQUE FOIS!!!!!!!***********************//
+
     //CURRENT::table recipe for current recipe
     static final String TABLE_RECIPES = "recipes";
     //CURRENT::table ingredients for current recipe
@@ -156,7 +157,7 @@ public class DBHelper extends SQLiteOpenHelper {
                 + TABLE_COOKBOOK
                 + " (" + C_ID + ", " + C_TITRE + ", " + C_IMAGE + ", " + C_DESCRIPTION + ", " + C_COOKTIME
                 + ", " + C_TOTALTIME + ", " + C_INSTRUCTIONS + ")"
-                + " VALUES ('" + ID + "', '" + name + "', '" + image + "', '" + description + "', '" + cooktime + "', '" + totaltime + "', '" + instructions + "')";
+                + " VALUES ('" + ID + "', '" + name.replace("'", "''") + "', '" + image + "', '" + description.replace("'", "''") + "', '" + cooktime + "', '" + totaltime + "', '" + instructions.replace("'", "''") + "')";
         db.execSQL(sql);
     }
 
@@ -165,7 +166,7 @@ public class DBHelper extends SQLiteOpenHelper {
         String sql = "INSERT INTO "
                 + TABLE_CINGREDIENTS
                 + " (" + CI_NAME + ", " + CI_NUMBER + ", " + CI_METRIC + ", " +  CI_ID + ")"
-                + " VALUES ('" + name + "', '" + number + "', '" + metric + "', '" + id + "')";
+                + " VALUES ('" + name.replace("'", "''") + "', '" + number + "', '" + metric + "', '" + id + "')";
         db.execSQL(sql);
     }
 
@@ -228,7 +229,7 @@ public class DBHelper extends SQLiteOpenHelper {
         String sql = "INSERT INTO "
                 + TABLE_RINGREDIENTS
                 + " (" + RI_ID + ", " + RI_NAME + ", " + RI_NUMBER + ", " + RI_METRIC + ")"
-                + " VALUES ('" + id + "', '" + name + "', '" + number + "', '" + metric + "')";
+                + " VALUES ('" + id + "', '" + name.replace("'", "''") + "', '" + number + "', '" + metric + "')";
         db.execSQL(sql);
     }
 
@@ -243,7 +244,7 @@ public class DBHelper extends SQLiteOpenHelper {
 
     //GROGERY::search ingredients by name
     public static Cursor searchIngredient(SQLiteDatabase db, String name) {
-        String args[] = new String[]{"%" + name + "%"};
+        String args[] = new String[]{"%" + name.replace("'", "''") + "%"};
         Cursor c = db.rawQuery("select * from " + TABLE_GROCERY + " where " + G_NAME + " like ?", args);
         return c;
     }
@@ -252,7 +253,7 @@ public class DBHelper extends SQLiteOpenHelper {
     public static void setIngredientsNumber(SQLiteDatabase db, String name, String number) {
         ContentValues cv = new ContentValues();
         cv.put(G_NUMBER, number);
-        db.update(TABLE_GROCERY, cv, G_NAME + " = " + name, null);
+        db.update(TABLE_GROCERY, cv, G_NAME + " = " + name.replace("'", "''"), null);
     }
 
     //GROCERY::add ingredients
@@ -260,7 +261,7 @@ public class DBHelper extends SQLiteOpenHelper {
         String sql = "INSERT INTO "
                 + TABLE_GROCERY
                 + " (" + G_NAME + ", " + G_NUMBER + ", " + G_METRIC + ")"
-                + " VALUES ('" + name + "', '" + number + "', '" + metric +"')";
+                + " VALUES ('" + name.replace("'", "''") + "', '" + number + "', '" + metric +"')";
         db.execSQL(sql);
     }
 }
