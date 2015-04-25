@@ -1,6 +1,5 @@
 package lesdevoreurs.bon_manger;
 
-import android.graphics.drawable.Drawable;
 import android.util.Log;
 
 import org.apache.http.HttpEntity;
@@ -18,7 +17,6 @@ import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
 import java.io.IOException;
-import java.io.InputStream;
 import java.net.URL;
 import java.util.ArrayList;
 
@@ -31,7 +29,6 @@ import javax.xml.parsers.ParserConfigurationException;
  * Created by Nicolas on 2015-04-12.
  */
 public class BigOvenRecipeWebAPI {
-    public Drawable image = null;
     public String imagePath = "";
     public String ID = "";
     public String titre = "";
@@ -96,17 +93,13 @@ public class BigOvenRecipeWebAPI {
             if (prim != null)
                 ingredientPrimaire = prim.getTextContent();
             final Element im = (Element) racine.getElementsByTagName("HeroPhotoUrl").item(0);
-            if (im != null) {
-                Log.d("test", im.getTextContent());
+            if (im != null)
                 imagePath = im.getTextContent().replace("http://redirect.bigoven.com/pics/rs/640/",
                         "http://images.bigoven.com/image/upload/t_recipe-256/")
                         .replace("http://images.bigoven.com/image/upload/", "http://images.bigoven.com/image/upload/t_recipe-256/")
                         .replace(" ", "");
-                Log.d("test", imagePath);
-                image = loadHttpImage(imagePath);
-            } else
+            else
                 imagePath = "http://images.bigoven.com/image/upload/t_recipe-256/recipe-no-image.jpg";
-            image = loadHttpImage(imagePath);
             final Element inst = (Element) racine.getElementsByTagName("Instructions").item(0);
             if (inst != null)
                 instructions = inst.getTextContent();
@@ -171,18 +164,5 @@ public class BigOvenRecipeWebAPI {
         HttpGet http = new HttpGet(url);
         HttpResponse response = httpClient.execute(http);
         return response.getEntity();
-    }
-
-    /**
-     * Load picture from web
-     * @param url   The url to load from
-     * @return  The image we retrieve
-     * @throws ClientProtocolException
-     * @throws IOException
-     */
-    private Drawable loadHttpImage(String url) throws ClientProtocolException, IOException {
-        InputStream is = getHttp(url).getContent();
-        Drawable d = Drawable.createFromStream(is, "src");
-        return d;
     }
 }

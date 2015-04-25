@@ -2,6 +2,13 @@
 <items version="2" >
 
     <item
+        jar="C:\Users\Nicolas\.gradle\caches\modules-2\files-2.1\com.squareup.picasso\picasso\2.3.3\1262995965440e28ba5c4d480c9c9ab4ccce84cc\picasso-2.3.3.jar"
+        jumboMode="false"
+        revision="21.1.2"
+        sha1="1262995965440e28ba5c4d480c9c9ab4ccce84cc">
+        <dex dex="C:\Users\Nicolas\AndroidStudioProjects\Bon_Manger\app\build\intermediates\pre-dexed\debug\picasso-2.3.3-6bf29d182efbe04f6190a16e6e263734ac99167a.jar" />
+    </item>
+    <item
         jar="C:\Users\Nicolas\AndroidStudioProjects\Bon_Manger\app\build\intermediates\exploded-aar\com.android.support\support-v4\21.0.3\libs\internal_impl-21.0.3.jar"
         jumboMode="false"
         revision="21.1.2"

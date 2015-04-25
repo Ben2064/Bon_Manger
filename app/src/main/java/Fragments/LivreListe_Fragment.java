@@ -7,7 +7,6 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -22,13 +21,8 @@ import android.widget.Spinner;
 import android.widget.TableLayout;
 import android.widget.TextView;
 
-import org.apache.http.HttpResponse;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.impl.client.DefaultHttpClient;
+import com.squareup.picasso.Picasso;
 
-import java.io.IOException;
-import java.io.InputStream;
 import java.util.ArrayList;
 
 import lesdevoreurs.bon_manger.DBHelper;
@@ -195,11 +189,8 @@ public class LivreListe_Fragment extends Fragment {
             listv.addHeaderView(btnBack);
             btnBack.setVisibility(View.GONE);
 
-
-
-            final DownloadImageTask DBim = new DownloadImageTask(cursor1);
-            DBim.execute();
-            Log.d("Imageload","Nb image "+DBim.getImgDrawList().size());
+            adapter = new MyAdapter(getActivity(), cursor1);
+            listv.setAdapter(adapter);
         }
     }
 
@@ -208,9 +199,8 @@ public class LivreListe_Fragment extends Fragment {
         LayoutInflater inflater;
         ArrayList<Drawable> images;
 
-        public MyAdapter(Context context, Cursor c, ArrayList<Drawable> images) {
+        public MyAdapter(Context context, Cursor c) {
             super(context, c, true);
-            this.images=images;
             inflater = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         }
 
@@ -230,6 +220,7 @@ public class LivreListe_Fragment extends Fragment {
             String desc = c.getString(c.getColumnIndex(DBHelper.C_DESCRIPTION));
             String cookTime =c.getString(c.getColumnIndex(DBHelper.C_COOKTIME));
             String totalTime = c.getString(c.getColumnIndex(DBHelper.C_TOTALTIME));
+            String imagePath = c.getString(c.getColumnIndex(DBHelper.C_IMAGE));
 
             TextView titre = (TextView) v.findViewById(R.id.nomRechRecette);
             titre.setText(title);
@@ -243,8 +234,9 @@ public class LivreListe_Fragment extends Fragment {
             TextView st = (TextView) v.findViewById(R.id.categorieRechRecette);
             st.setVisibility(View.GONE);
             ImageView image = (ImageView) v.findViewById(R.id.imageRechRecette);
-
-            image.setImageDrawable(images.get(position));
+            Picasso.with(getActivity())
+                    .load(imagePath)
+                    .into(image);
             return v;
         }
 
@@ -257,63 +249,6 @@ public class LivreListe_Fragment extends Fragment {
         @Override
         public void bindView(View view, Context context, Cursor cursor) {
 
-        }
-    }
-
-    //Load and put image
-    public class DownloadImageTask extends AsyncTask<Void, Void, Drawable> {
-
-        Cursor cursorImage;
-        Drawable imageDraw = null;
-        ArrayList<Drawable> imgDrawList = new ArrayList<Drawable>();
-
-        public DownloadImageTask() {
-        }
-
-        protected ArrayList<Drawable> getImgDrawList(){
-            return this.imgDrawList;
-        }
-
-        protected Cursor getCursor(){
-            return cursorImage;
-        }
-
-        public DownloadImageTask(Cursor imagePath) {
-            this.cursorImage = imagePath;
-        }
-
-        @Override
-        protected Drawable doInBackground(Void... params) {
-            Log.d("Imageload",""+cursorImage.getCount());
-            for(int cu=0; cu<cursorImage.getCount(); cu++){
-                cursorImage.moveToPosition(cu);
-                String i = cursorImage.getString(cursorImage.getColumnIndex(DBHelper.C_IMAGE));
-                Log.d("Imageload","Path: "+i);
-
-                //Load image
-                HttpClient httpClient = new DefaultHttpClient();
-                HttpGet http = new HttpGet(i);
-                HttpResponse response = null;
-                try {
-                    response = httpClient.execute(http);
-                    InputStream is = response.getEntity().getContent();
-                    imageDraw = Drawable.createFromStream(is, "src");
-                } catch (IOException e) {
-                    Log.d("Imageload", "Problème avec load d'image" + e);
-                }
-                imgDrawList.add(imageDraw);
-            }
-            return imageDraw;
-        }
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-        }
-
-        @Override
-        protected void onPostExecute(final Drawable imageDraw) {
-            adapter = new MyAdapter(getActivity(), getCursor(), getImgDrawList());
-            listv.setAdapter(adapter);
         }
     }
 }

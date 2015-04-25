@@ -27,10 +27,10 @@
 
         <LinearLayout
             android:id="@+id/staff"
-            android:layout_width="fill_parent"
+            android:layout_width="match_parent"
             android:layout_height="fill_parent"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp"
+            android:layout_marginLeft="30dp"
+            android:layout_marginRight="30dp"
             android:orientation="vertical">
 
             <ImageView
@@ -41,7 +41,7 @@
                 android:layout_gravity="center_horizontal"
                 android:layout_marginBottom="20dp"
                 android:layout_row="0"
-                android:background="@android:mipmap/sym_def_app_icon" />
+                android:background="@color/background_dark" />
 
             <TextView
                 android:id="@+id/staffTitle"

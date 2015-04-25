@@ -5,10 +5,8 @@ import android.app.FragmentManager;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.graphics.Color;
-import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -25,9 +23,8 @@ import android.widget.RatingBar;
 import android.widget.Spinner;
 import android.widget.TextView;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.URL;
+import com.squareup.picasso.Picasso;
+
 import java.util.ArrayList;
 
 import Fragments.ResearchRecipe_Fragment;
@@ -197,9 +194,6 @@ public class Research_Fragment1 extends Fragment {
     public class DownloadWebTask extends AsyncTask<Void, Void, BigOvenWebAPI> {
 
         String numByPage = "20";
-        //To convert the images
-        ArrayList<String> images;
-        ArrayList<Drawable> drawImages;
 
         @Override
         protected BigOvenWebAPI doInBackground(Void... params) {
@@ -215,48 +209,6 @@ public class Research_Fragment1 extends Fragment {
             numByPage = String.valueOf(spin.getSelectedItem());
             BigOvenWebAPI web = new BigOvenWebAPI(query, numPage, numByPage);
 
-            //Preload the "noImage"
-            String urlNoImage = "http://images.bigoven.com/image/upload/t_recipe-120/recipe-no-image.jpg";   //The "noImage" URL
-            //String urlSexy = "http://dnok91peocsw3.cloudfront.net/product/68709-original-1366930648-primary.png";   //FUNFUNFUN
-            Drawable noImage = null;
-            try {
-                //InputStream is = (InputStream) new URL(urlSexy).getContent(); //FUNFUNFUN
-                InputStream is = (InputStream) new URL(urlNoImage).getContent();
-                noImage = (Drawable.createFromStream(is, "src name"));
-            } catch (IOException e) {
-                Log.d("Inputstream", "Erreur noImage " + e);
-            }
-
-            //Load every images from website
-            images = web.images;
-            drawImages = new ArrayList<Drawable>();
-
-            progressDialog.setMax(images.size()); //Put the number of pictures in progressbar
-
-            //Check every images URL, to look for recipe without images
-            for (int position = 0; position < images.size(); position++) {
-                //If the recipe have no image
-                if (images.get(position).equals(urlNoImage))
-                    drawImages.add(noImage);
-                    //If the recipe have an image
-                else {
-                    InputStream is2 = null;
-                    try {
-                        is2 = (InputStream) new URL(images.get(position)).getContent();
-                    } catch (IOException e) {
-                        Log.d("Inputstream", "Erreur Image " + e);
-                    }
-                    Drawable imageTemp = Drawable.createFromStream(is2, "src name");    //Load the image
-                    //Check if there's a problem with the loaded images
-                    if (imageTemp != null)
-                        drawImages.add(imageTemp);
-                    else
-                        drawImages.add(noImage);
-                }
-
-                progressDialog.setProgress(position);   //Show loading progress
-            }
-
             return web;
         }
 
@@ -265,12 +217,11 @@ public class Research_Fragment1 extends Fragment {
             super.onPreExecute();
             //Window to see the progress of loading
             progressDialog = new ProgressDialog(getActivity());
-            progressDialog.setTitle("Showing Recipes ...");
+            progressDialog.setTitle("Showing Recipe ...");
             progressDialog.setMessage("Loading. Please Wait");
             progressDialog.setIndeterminate(false);
-            progressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
-            progressDialog.setMax(50);
-            progressDialog.setCancelable(true);
+            progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+            progressDialog.setCancelable(false);
             progressDialog.show();
         }
 
@@ -279,6 +230,7 @@ public class Research_Fragment1 extends Fragment {
 
             //Get from BigOvenWebAPI
             final ArrayList<String> titres = bigovenwebapi.titres;
+            ArrayList<String> imagePath = bigovenwebapi.images;
             ArrayList<String> cuisines = bigovenwebapi.cuisines;
             ArrayList<String> categories = bigovenwebapi.categories;
             ArrayList<String> sousCategories = bigovenwebapi.sousCategories;
@@ -291,11 +243,13 @@ public class Research_Fragment1 extends Fragment {
                 nomResultats = "Result : ";
             research.setText(nomResultats + nbResultats);
 
+            //Check number of results
             String nbResult = research.getText().toString().replace("Result : ", "").replace("Results : ", "");
             if (nbResult != "Research") {
                 double nbR = Double.parseDouble(nbResult);
                 double nbRP = Double.parseDouble(numByPage);
 
+                //Showing or not the "loadmore", "previous result" button
                 //Check if there's a next page
                 if (Math.ceil(nbR / nbRP) >= numPage + 1)
                     btnLoad.setVisibility(View.VISIBLE);
@@ -309,7 +263,7 @@ public class Research_Fragment1 extends Fragment {
                     btnBack.setVisibility(View.VISIBLE);
             }
 
-            final MyAdapter adapter = new MyAdapter(titres, cuisines, categories, sousCategories, drawImages, ratings, numByPage);
+            final MyAdapter adapter = new MyAdapter(titres, cuisines, categories, sousCategories, imagePath, ratings, numByPage);
             listv.setAdapter(adapter);
             progressDialog.dismiss();   //End the progress window
 
@@ -346,21 +300,21 @@ public class Research_Fragment1 extends Fragment {
         ArrayList<String> cuisines;
         ArrayList<String> categories;
         ArrayList<String> sousCategories;
-        ArrayList<Drawable> images;
+        ArrayList<String> imagesPath;
         ArrayList<String> ratings;
 
         int numByPage;
         LayoutInflater inflater;
 
         public MyAdapter(ArrayList<String> titres, ArrayList<String> cuisines, ArrayList<String> categories, ArrayList<String> sousCategories,
-                         ArrayList<Drawable> images, ArrayList<String> ratings, String numByPage) {
+                         ArrayList<String> imagesPath, ArrayList<String> ratings, String numByPage) {
             inflater = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
             this.titres = titres;
             this.cuisines = cuisines;
             this.categories = categories;
             this.sousCategories = sousCategories;
-            this.images = images;
+            this.imagesPath = imagesPath;
             this.ratings = ratings;
             this.numByPage = Integer.parseInt(numByPage);
         }
@@ -399,7 +353,10 @@ public class Research_Fragment1 extends Fragment {
             TextView sousCategorie = (TextView) v.findViewById(R.id.subcategorieRechRecette);    //SubCategorie
             sousCategorie.setText(sousCategories.get(position));
             ImageView imageView = (ImageView) v.findViewById(R.id.imageRechRecette); //Image
-            imageView.setImageDrawable(images.get(position));
+            //imageView.setImageDrawable(images.get(position));
+            Picasso.with(getActivity())
+                    .load(imagesPath.get(position))
+                    .into(imageView);
             RatingBar rating = (RatingBar) v.findViewById(R.id.myRatingBar); //Rating
             if (ratings.get(position) != "") {   //If Rating is empty
                 double star = Double.parseDouble(ratings.get(position));

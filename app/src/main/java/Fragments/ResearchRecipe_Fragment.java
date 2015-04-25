@@ -5,7 +5,6 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
-import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
@@ -19,6 +18,8 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
@@ -197,6 +198,7 @@ public class ResearchRecipe_Fragment extends Fragment {
                     final ArrayList<String> ingreNum = web.getInumber();
                     final ArrayList<String> ingreMet = web.getImetric();
                     final String id = web.getID();
+
                     DBHelper dbh = new DBHelper(getActivity());
                     CurrentRecipe_Fragment.receiveRecipe(dbh, titre, imagePath, description, tempsCuisson, tempsTotal,
                             instructions, ingreNom, ingreNum, ingreMet, id);
@@ -318,7 +320,6 @@ public class ResearchRecipe_Fragment extends Fragment {
         String cuissonR;
         String instructionsR;
         String imagePath;
-        Drawable cuisineR;
         ArrayList<String> ingredientsN = new ArrayList<String>();
         ArrayList<String> ingredientsNb = new ArrayList<String>();
         ArrayList<String> ingredientsMet = new ArrayList<String>();
@@ -349,10 +350,6 @@ public class ResearchRecipe_Fragment extends Fragment {
 
         protected String getInstructions() {
             return instructionsR;
-        }
-
-        protected Drawable getImage() {
-            return cuisineR;
         }
 
         protected String getImagePath() {
@@ -397,7 +394,6 @@ public class ResearchRecipe_Fragment extends Fragment {
             tempsR = bigovenrecipewebapi.tempsTotal;
             cuissonR = bigovenrecipewebapi.tempsCuisson;
             instructionsR = bigovenrecipewebapi.instructions;
-            cuisineR = bigovenrecipewebapi.image;
             imagePath = bigovenrecipewebapi.imagePath;
             ingredientsN = bigovenrecipewebapi.ingredientsNom;
             ingredientsNb = bigovenrecipewebapi.ingredientsQuantite;
@@ -406,7 +402,9 @@ public class ResearchRecipe_Fragment extends Fragment {
 
             //Set text in UI
             titre.setText(titreR);
-            image.setImageDrawable(cuisineR);
+            Picasso.with(getActivity())
+                    .load(imagePath)
+                    .into(image);
             description.setText(descriptionR);
             if (!tempsR.equals("0"))
                 temps.setText("Ready in : " + tempsR);

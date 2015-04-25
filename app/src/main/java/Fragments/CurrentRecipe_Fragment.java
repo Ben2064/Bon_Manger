@@ -5,10 +5,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
-import android.graphics.drawable.Drawable;
-import android.os.AsyncTask;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,13 +17,8 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import org.apache.http.HttpResponse;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.impl.client.DefaultHttpClient;
+import com.squareup.picasso.Picasso;
 
-import java.io.IOException;
-import java.io.InputStream;
 import java.util.ArrayList;
 
 import lesdevoreurs.bon_manger.DBHelper;
@@ -250,8 +242,9 @@ public class CurrentRecipe_Fragment extends Fragment{
             btnFav.setVisibility(View.VISIBLE);
             btnMenu.setVisibility(View.VISIBLE);
 
-            //Load picture
-            new DownloadImageTask(i).execute();
+            Picasso.with(getActivity())
+                    .load(i)
+                    .into(image);
         }
     }
 
@@ -327,46 +320,6 @@ public class CurrentRecipe_Fragment extends Fragment{
         @Override
         public void bindView(View view, Context context, Cursor cursor) {
 
-        }
-    }
-
-    /**
-     * Load and put image
-     */
-    public class DownloadImageTask extends AsyncTask<Void, Void, Drawable> {
-
-        String imagePath;
-        Drawable imageDraw = null;
-
-       public DownloadImageTask(String imagePath) {
-            this.imagePath = imagePath;
-        }
-
-        @Override
-        protected Drawable doInBackground(Void... params) {
-            //Load image
-            HttpClient httpClient = new DefaultHttpClient();
-            HttpGet http = new HttpGet(imagePath);
-            HttpResponse response = null;
-            try {
-                response = httpClient.execute(http);
-                InputStream is = response.getEntity().getContent();
-                imageDraw = Drawable.createFromStream(is, "src");
-            } catch (IOException e) {
-                Log.d("Imageload", "Problème avec load d'image" + e);
-            }
-            return imageDraw;
-        }
-
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-        }
-
-        @Override
-        protected void onPostExecute(final Drawable imageDraw) {
-            //Put the image
-            image.setImageDrawable(imageDraw);
         }
     }
 }

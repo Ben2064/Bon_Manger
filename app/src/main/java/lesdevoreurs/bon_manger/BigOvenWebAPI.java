@@ -1,6 +1,5 @@
 package lesdevoreurs.bon_manger;
 
-import android.graphics.drawable.Drawable;
 import android.util.Log;
 
 import org.apache.http.HttpEntity;
@@ -18,7 +17,6 @@ import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
 import java.io.IOException;
-import java.io.InputStream;
 import java.net.URL;
 import java.util.ArrayList;
 
@@ -38,7 +36,6 @@ public class BigOvenWebAPI {
     ArrayList<String> sousCategories;
     ArrayList<String> images;
     ArrayList<String> ratings;
-    ArrayList<Drawable> imagesDraw;
     String nbResultats;
 
     /**
@@ -121,7 +118,7 @@ public class BigOvenWebAPI {
                 cuisines.add("");
                 categories.add("");
                 sousCategories.add("");
-                images.add("");
+                images.add("http://images.bigoven.com/image/upload/t_recipe-256/recipe-no-image.jpg");
                 ratings.add("");
             }
         } catch (IOException e) {
@@ -145,18 +142,5 @@ public class BigOvenWebAPI {
         HttpGet http = new HttpGet(url);
         HttpResponse response = httpClient.execute(http);
         return response.getEntity();
-    }
-
-    /**
-     * Load picture from web
-     * @param url   The url to load from
-     * @return  The image we retrieve
-     * @throws ClientProtocolException
-     * @throws IOException
-     */
-    private Drawable loadHttpImage(String url) throws ClientProtocolException, IOException {
-        InputStream is = getHttp(url).getContent();
-        Drawable d = Drawable.createFromStream(is, "src");
-        return d;
     }
 }
