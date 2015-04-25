@@ -15,6 +15,7 @@ import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -52,6 +53,9 @@ public class ResearchRecipe_Fragment extends Fragment {
     Button btnFav;
     Button btnMake;
     Button btnMenu;
+    Button arrow;
+    LinearLayout titreMore;
+
     View view;
     private String idRecette;   //The ID of the recipe to show
 
@@ -94,9 +98,11 @@ public class ResearchRecipe_Fragment extends Fragment {
             instructions = (TextView) getView().findViewById(R.id.instR);
             ingredients = (ListView) getView().findViewById(R.id.ingreR);
             image = (ImageView) getView().findViewById(R.id.imgR);
+            titreMore = (LinearLayout) getView().findViewById(R.id.titreMore);
+            arrow = (Button) getView().findViewById(R.id.arrow);
 
             //Show images, descriptions and temps when clicking on title
-            titre.setOnClickListener(new View.OnClickListener() {
+            titreMore.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     ingredients.setVisibility(View.GONE);
@@ -107,6 +113,7 @@ public class ResearchRecipe_Fragment extends Fragment {
                     description.setVisibility(View.VISIBLE);
                     temps.setVisibility(View.VISIBLE);
                     cuisson.setVisibility(View.VISIBLE);
+                    arrow.setVisibility(View.GONE);
                 }
             });
 
@@ -123,6 +130,7 @@ public class ResearchRecipe_Fragment extends Fragment {
                     description.setVisibility(View.GONE);
                     temps.setVisibility(View.GONE);
                     cuisson.setVisibility(View.GONE);
+                    arrow.setVisibility(View.VISIBLE);
                 }
             });
 
@@ -139,6 +147,7 @@ public class ResearchRecipe_Fragment extends Fragment {
                     description.setVisibility(View.GONE);
                     temps.setVisibility(View.GONE);
                     cuisson.setVisibility(View.GONE);
+                    arrow.setVisibility(View.VISIBLE);
                 }
             });
 
