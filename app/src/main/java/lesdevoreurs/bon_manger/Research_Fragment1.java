@@ -9,9 +9,11 @@ import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
@@ -30,7 +32,10 @@ import java.util.ArrayList;
 
 import Fragments.ResearchRecipe_Fragment;
 
-
+/**
+ * Fragment for search
+ * Created by Nicolas on 17/04/2015.
+ */
 public class Research_Fragment1 extends Fragment {
 
     static ProgressDialog progressDialog;
@@ -48,6 +53,13 @@ public class Research_Fragment1 extends Fragment {
     TextView research;
     View view;
 
+    /**
+     * Everytime we open the view, reload if back, load new if from menu
+     * @param inflater  The layout to use
+     * @param container
+     * @param savedInstanceState
+     * @return
+     */
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         //Reload the view in case of "back" or create a new one if it's the first time
@@ -56,7 +68,10 @@ public class Research_Fragment1 extends Fragment {
         return view;
     }
 
-
+    /**
+     * Every time we open or reopen the fragment
+     * @param savedInstanceState
+     */
     @Override
     public void onActivityCreated(final Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
@@ -117,30 +132,26 @@ public class Research_Fragment1 extends Fragment {
             listv.addHeaderView(btnBack);
             btnBack.setVisibility(View.GONE);
 
-            //Erase research text
+            //Research text when clicking on button
             btnSearch.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    performSearch();
+                }
+            });
 
-                    String recherche = edR.getText().toString();
-
-                    //New search
-                    rechPage = "";
-                    btnLoad.setVisibility(View.GONE);
-                    btnBack.setVisibility(View.GONE);
-
-                    //If search field isn't empty, we perform the search
-                    if (!recherche.matches("")) {
-                        numPage = 1;
-                        new DownloadWebTask().execute();
-
-                        //Hide keyboard after hit the button
-                        InputMethodManager inputManager = (InputMethodManager)
-                                getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
-
-                        inputManager.hideSoftInputFromWindow(getActivity().getCurrentFocus().getWindowToken(),
-                                InputMethodManager.HIDE_NOT_ALWAYS);
+            //Replace the return key on keyboard
+            //Research text when clicking on keyboard button
+            //http://www.joellipman.com/articles/google/android-o-s/app-development/741-android-replace-return-key-with-done-go-send.html
+            edR.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+                @Override
+                public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                    boolean handled = false;
+                    if (actionId == EditorInfo.IME_ACTION_SEARCH) {
+                        performSearch();  // do function
+                        handled = true;
                     }
+                    return handled;
                 }
             });
 
@@ -154,7 +165,35 @@ public class Research_Fragment1 extends Fragment {
         }
     }
 
-    //Search in BigOvenWebAPI
+    /**
+     * Method to do when we hit the search button from keyboard or layout,
+     * Perform the search
+     */
+    public void performSearch(){
+        String recherche = edR.getText().toString();
+
+        //New search
+        rechPage = "";
+        btnLoad.setVisibility(View.GONE);
+        btnBack.setVisibility(View.GONE);
+
+        //If search field isn't empty, we perform the search
+        if (!recherche.matches("")) {
+            numPage = 1;
+            new DownloadWebTask().execute();
+
+            //Hide keyboard after hit the button
+            InputMethodManager inputManager = (InputMethodManager)
+                    getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+
+            inputManager.hideSoftInputFromWindow(getActivity().getCurrentFocus().getWindowToken(),
+                    InputMethodManager.HIDE_NOT_ALWAYS);
+        }
+    }
+
+    /**
+     * Search in BigOvenWebAPI
+     */
     public class DownloadWebTask extends AsyncTask<Void, Void, BigOvenWebAPI> {
 
         String numByPage = "20";
@@ -298,6 +337,9 @@ public class Research_Fragment1 extends Fragment {
         }
     }
 
+    /**
+     * Place the result in the listview
+     */
     public class MyAdapter extends BaseAdapter {
 
         ArrayList<String> titres;

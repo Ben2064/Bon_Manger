@@ -80,6 +80,8 @@
             android:layout_height="50dp"
             android:layout_weight="1"
             android:hint="Enter keyword"
+            android:imeOptions="actionSearch"
+            android:inputType="text"
             android:textColor="#ffffffff"
             android:textColorHint="#ffffffff" />
 

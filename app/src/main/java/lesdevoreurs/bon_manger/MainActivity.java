@@ -24,12 +24,20 @@ import Fragments.CurrentRecipe_Fragment;
 import Fragments.Home_Fragment;
 import Fragments.Liste_Fragment_PLACEHOLDER;
 import Fragments.LivreListe_Fragment;
-import Fragments.Livre_Fragment_PLACEHOLDER;
 import Fragments.Menu_Fragment_PLACEHOLDER;
 import Fragments.Timer_Fragment_PLACEHOLDER;
 import SlidingMenu.NavDrawerItem;
 
-
+/**
+ * Application bon_manger,
+ * You can search for recipe and add them to your cookbook, save one in current recipe, add timers,
+ * save a grocery list and planning a menu for your family. Our team also choose you a meal for
+ * each month.
+ * @serial 893281910023182AB3388EM
+ * @author Nicolas, Virgile, Benoit, François
+ * @date 30-04-2015
+ * @version 4.8.3.0.542.38902.12
+ */
 public class MainActivity extends Activity {
 
     private DrawerLayout mDrawerLayout;

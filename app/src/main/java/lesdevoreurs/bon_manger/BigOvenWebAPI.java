@@ -27,6 +27,7 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
 /**
+ * Here we load everything from the Big Oven API for recipe that we'll need for the app
  * Created by Nicolas on 2015-02-19.
  */
 public class BigOvenWebAPI {
@@ -40,6 +41,12 @@ public class BigOvenWebAPI {
     ArrayList<Drawable> imagesDraw;
     String nbResultats;
 
+    /**
+     * Default constructor, perform the search
+     * @param query The keyword to search
+     * @param numPage   Number of the page to load
+     * @param numByPage Number of recipe by page to load
+     */
     public BigOvenWebAPI(String query, int numPage, String numByPage){
 
         //Search URL style from BigOven
@@ -101,7 +108,8 @@ public class BigOvenWebAPI {
                             cuisines.add("");
                         categories.add(categorie.getTextContent());
                         sousCategories.add(souscategorie.getTextContent());
-                        images.add(image.getTextContent().replace("http://redirect.bigoven.com/pics/rs/120/", "http://images.bigoven.com/image/upload/t_recipe-120/"));
+                        images.add(image.getTextContent().replace("http://redirect.bigoven.com/pics/rs/120/", "http://images.bigoven.com/image/upload/t_recipe-120/")
+                        .replace("http://images.bigoven.com/image/upload/","http://images.bigoven.com/image/upload/t_recipe-120/"));
                         ratings.add(rating.getTextContent());
                     }
                 }
@@ -125,6 +133,13 @@ public class BigOvenWebAPI {
         }
     }
 
+    /**
+     * Connection with website
+     * @param url   The url to connect to
+     * @return  If we're connect
+     * @throws ClientProtocolException
+     * @throws IOException
+     */
     public HttpEntity getHttp(String url) throws ClientProtocolException, IOException{
         HttpClient httpClient = new DefaultHttpClient();
         HttpGet http = new HttpGet(url);
@@ -132,6 +147,13 @@ public class BigOvenWebAPI {
         return response.getEntity();
     }
 
+    /**
+     * Load picture from web
+     * @param url   The url to load from
+     * @return  The image we retrieve
+     * @throws ClientProtocolException
+     * @throws IOException
+     */
     private Drawable loadHttpImage(String url) throws ClientProtocolException, IOException {
         InputStream is = getHttp(url).getContent();
         Drawable d = Drawable.createFromStream(is, "src");

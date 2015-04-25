@@ -27,6 +27,7 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
 /**
+ * Here we load everything from the Big Oven API for recipe that we'll need for the app
  * Created by Nicolas on 2015-04-12.
  */
 public class BigOvenRecipeWebAPI {
@@ -46,6 +47,10 @@ public class BigOvenRecipeWebAPI {
     public ArrayList<String> ingredientsQuantite;
     public ArrayList<String> ingredientsMetric;
 
+    /**
+     * Default constructor, perform the search
+     * @param query The id of the recipe to search
+     */
     public BigOvenRecipeWebAPI(String query) {
 
         String url = "http://api.bigoven.com/recipe/" + query + "?api_key=dvxRg7vK4t5RBlTap04zYHqbu08e374G";
@@ -154,6 +159,13 @@ public class BigOvenRecipeWebAPI {
         }
     }
 
+    /**
+     * Connection with website
+     * @param url   The url to connect to
+     * @return  If we're connect
+     * @throws ClientProtocolException
+     * @throws IOException
+     */
     public HttpEntity getHttp(String url) throws ClientProtocolException, IOException {
         HttpClient httpClient = new DefaultHttpClient();
         HttpGet http = new HttpGet(url);
@@ -161,6 +173,13 @@ public class BigOvenRecipeWebAPI {
         return response.getEntity();
     }
 
+    /**
+     * Load picture from web
+     * @param url   The url to load from
+     * @return  The image we retrieve
+     * @throws ClientProtocolException
+     * @throws IOException
+     */
     private Drawable loadHttpImage(String url) throws ClientProtocolException, IOException {
         InputStream is = getHttp(url).getContent();
         Drawable d = Drawable.createFromStream(is, "src");

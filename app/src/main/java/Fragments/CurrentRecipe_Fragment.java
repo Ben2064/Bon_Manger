@@ -34,6 +34,7 @@ import lesdevoreurs.bon_manger.R;
 
 /**
  * Fragment for current recipe
+ * Created by Nicolas on 2015-04-12.
  */
 public class CurrentRecipe_Fragment extends Fragment{
 
@@ -57,6 +58,9 @@ public class CurrentRecipe_Fragment extends Fragment{
     View view;
     boolean[] checkList;
 
+    /**
+     * Default constructor
+     */
     public CurrentRecipe_Fragment() {
     }
 
@@ -93,6 +97,14 @@ public class CurrentRecipe_Fragment extends Fragment{
         }
     }
 
+    /**
+     * When we open the fragment by the menu or by hitting the back button
+     * Reload if back, or create new instance if it's by menu
+     * @param inflater  Use the research_recipe layout, beacause it's the same look
+     * @param container
+     * @param savedInstanceState
+     * @return
+     */
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         //Reload the view in case of "back" or create a new one if it's the first time
@@ -101,6 +113,10 @@ public class CurrentRecipe_Fragment extends Fragment{
         return view;
     }
 
+    /**
+     * Load each time we open the fragment
+     * @param savedInstanceState
+     */
     public void onActivityCreated(final Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
@@ -239,7 +255,10 @@ public class CurrentRecipe_Fragment extends Fragment{
         }
     }
 
-    //Create checklist with false
+    /**
+     * Create checklist with false
+     * @param size  Number of ingredients
+     */
     public void setCheckList(int size) {
         checkList = new boolean[size];
         for (int i = 0; i < size; i++) {
@@ -247,6 +266,9 @@ public class CurrentRecipe_Fragment extends Fragment{
         }
     }
 
+    /**
+     * Put everything in listview
+     */
     public class MyAdapter extends CursorAdapter {
 
         LayoutInflater inflater;
@@ -308,7 +330,9 @@ public class CurrentRecipe_Fragment extends Fragment{
         }
     }
 
-    //Load and put image
+    /**
+     * Load and put image
+     */
     public class DownloadImageTask extends AsyncTask<Void, Void, Drawable> {
 
         String imagePath;

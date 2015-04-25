@@ -27,7 +27,8 @@ import lesdevoreurs.bon_manger.DBHelper;
 import lesdevoreurs.bon_manger.R;
 
 /**
- * Created by Ash Ketchum on 17/04/2015.
+ * Recipe from research fragment
+ * Created by Nicolas on 17/04/2015.
  */
 public class ResearchRecipe_Fragment extends Fragment {
 
@@ -53,10 +54,17 @@ public class ResearchRecipe_Fragment extends Fragment {
     View view;
     private String idRecette;   //The ID of the recipe to show
 
+    /**
+     * Default constructor
+     */
     public ResearchRecipe_Fragment() {
     }
 
-    //Constructor with the id of the recipe in parameters
+    /**
+     * Constructor with the id of the recipe in parameters
+     * @param id    The id of the recipe in the API
+     * @return  Return fragment
+     */
     public static ResearchRecipe_Fragment newInstance(String id) {
 
         ResearchRecipe_Fragment fragment = new ResearchRecipe_Fragment();
@@ -68,6 +76,10 @@ public class ResearchRecipe_Fragment extends Fragment {
         return fragment;
     }
 
+    /**
+     * Every time we open or reopen the fragment
+     * @param savedInstanceState
+     */
     @Override
     public void onActivityCreated(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -216,6 +228,13 @@ public class ResearchRecipe_Fragment extends Fragment {
         }
     }
 
+    /**
+     * Everytime we open the view, reload if back, load new if from menu
+     * @param inflater  The layout to use
+     * @param container
+     * @param savedInstanceState
+     * @return
+     */
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
@@ -225,11 +244,18 @@ public class ResearchRecipe_Fragment extends Fragment {
         return view;
     }
 
+    /**
+     * Get checkList informations about ingredients
+     * @return
+     */
     public boolean[] getCheckList() {
         return checkList;
     }
 
-    //Create checklist with false
+    /**
+     * Create checklist with false
+     * @param size  Number of ingredients
+     */
     public void setCheckList(int size) {
         Log.d("Size", "" + size);
         checkList = new boolean[size];
@@ -239,27 +265,50 @@ public class ResearchRecipe_Fragment extends Fragment {
         }
     }
 
+    /**
+     * Get list of ingredients name
+     * @return  List
+     */
     public ArrayList<String> getNameIngredients() {
         return nameIngredients;
     }
 
+    /**
+     * Get list of how many ingredients
+     * @return  List
+     */
     public ArrayList<String> getNumberIngredients() {
         return numberIngredients;
     }
 
+    /**
+     * Get list of wich metric it's in use with the ingredients
+     * @return  List
+     */
     public ArrayList<String> getMetricIngredients() { return metricIngredients; }
 
+    /**
+     * Erease the list of ingredients name when we put a new current recipe
+     */
     public void resetNameIngredients() {
         nameIngredients = new ArrayList<String>();
     }
 
+    /**
+     * Erease the list of number of ingredients when we put a new current recipe
+     */
     public void resetNumberIngredients() {
         numberIngredients = new ArrayList<String>();
     }
 
+    /**
+     * Erease the list of metrics uses by number of ingredients when we put a new current recipe
+     */
     public void resetMetricIngredients() { metricIngredients = new ArrayList<String>();}
 
-    //Search in BigOvenRecipeWebAPI
+    /**
+     * Search in BigOvenRecipeWebAPI
+     */
     public class DownloadWebTask extends AsyncTask<Void, Void, BigOvenRecipeWebAPI> {
         ProgressDialog progressDialog;
         String ID;
@@ -417,6 +466,9 @@ public class ResearchRecipe_Fragment extends Fragment {
         }
     }
 
+    /**
+     * Set everything in the listview of ingredients
+     */
     public class MyAdapter extends BaseAdapter {
 
         ArrayList<String> nom;
