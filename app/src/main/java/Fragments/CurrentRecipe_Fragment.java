@@ -47,6 +47,7 @@ public class CurrentRecipe_Fragment extends Fragment{
     Button addBtn;
     Button btnFav;
     Button btnMenu;
+    Button arrow;
     View view;
     boolean[] checkList;
 
@@ -142,6 +143,7 @@ public class CurrentRecipe_Fragment extends Fragment{
             temps = (TextView) getView().findViewById(R.id.ttR);
             cuisson = (TextView) getView().findViewById(R.id.tcR);
             ingredients = (ListView) getView().findViewById(R.id.ingreR);
+            arrow = (Button)getView().findViewById(R.id.arrow);
 
             //Get ingredients info, and pass to adapter to fit in the listview
             final Cursor c2 = dbh.currentRecipeIngredients(db);
@@ -165,6 +167,7 @@ public class CurrentRecipe_Fragment extends Fragment{
                     description.setVisibility(View.GONE);
                     temps.setVisibility(View.GONE);
                     cuisson.setVisibility(View.GONE);
+                    arrow.setVisibility(View.VISIBLE);
                 }
             });
 
@@ -181,6 +184,7 @@ public class CurrentRecipe_Fragment extends Fragment{
                     description.setVisibility(View.GONE);
                     temps.setVisibility(View.GONE);
                     cuisson.setVisibility(View.GONE);
+                    arrow.setVisibility(View.VISIBLE);
                 }
             });
 
@@ -226,6 +230,7 @@ public class CurrentRecipe_Fragment extends Fragment{
                     description.setVisibility(View.VISIBLE);
                     temps.setVisibility(View.VISIBLE);
                     cuisson.setVisibility(View.VISIBLE);
+                    arrow.setVisibility(View.GONE);
                 }
             });
 
