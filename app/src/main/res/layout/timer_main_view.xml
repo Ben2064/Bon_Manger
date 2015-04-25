@@ -9,8 +9,7 @@
     <LinearLayout
         android:orientation="vertical"
         android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:weightSum="1">
+        android:layout_height="fill_parent">
 
         <TextView
             android:layout_width="fill_parent"
@@ -27,149 +26,31 @@
             android:textIsSelectable="false"
             android:textColor="#ffffffff" />
 
-        <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-            android:orientation="horizontal"
-            android:layout_width="match_parent"
-            android:layout_height="70dp"
-            android:background="@color/box_dark" >
-
-            <ProgressBar
-                style="?android:attr/progressBarStyleSmall"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:id="@+id/progressBar2"
-                android:layout_weight="20"
-                android:indeterminate="false"
-                android:progressDrawable="@drawable/circular_countdown"
-                android:layout_margin="5dp" />
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceMedium"
-                android:text="Stir the Pasta"
-                android:id="@+id/textView21"
-                android:layout_weight="10"
-                android:autoText="false"
-                android:textColor="@color/text_white"
-                android:textAlignment="center"
-                android:layout_margin="5dp" />
-
-            <Button
-                style="?android:attr/buttonStyleSmall"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:text="X"
-                android:id="@+id/button3"
-                android:textSize="30dp"
-                android:background="@color/nope_red"
-                android:layout_weight="20"
-                android:layout_margin="10dp" />
-        </LinearLayout>
-
-        <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-            android:orientation="horizontal"
-            android:layout_width="match_parent"
-            android:layout_height="70dp"
-            android:background="@color/box_dark">
-
-            <ProgressBar
-                style="?android:attr/progressBarStyleSmall"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:id="@+id/progressBar"
-                android:layout_weight="20"
-                android:indeterminate="false"
-                android:progressDrawable="@drawable/circular_countdown"
-                android:layout_margin="5dp" />
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceMedium"
-                android:text="Chicken in the Oven"
-                android:id="@+id/textView20"
-                android:layout_weight="10"
-                android:autoText="false"
-                android:textColor="@color/text_white"
-                android:textAlignment="center"
-                android:layout_margin="5dp" />
-
-            <Button
-                style="?android:attr/buttonStyleSmall"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:text="X"
-                android:id="@+id/button2"
-                android:textSize="30dp"
-                android:background="@color/nope_red"
-                android:layout_weight="20"
-                android:layout_margin="10dp" />
-        </LinearLayout>
-
-        <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-            android:orientation="horizontal"
-            android:layout_width="match_parent"
-            android:layout_height="70dp"
-            android:background="@color/box_dark" >
-
-            <ProgressBar
-                style="?android:attr/progressBarStyleSmall"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:id="@+id/progressBar3"
-                android:layout_weight="20"
-                android:indeterminate="false"
-                android:progressDrawable="@drawable/circular_countdown"
-                android:layout_margin="5dp" />
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceMedium"
-                android:text="Surrender to Sauron"
-                android:id="@+id/textView22"
-                android:layout_weight="10"
-                android:autoText="false"
-                android:textColor="@color/text_white"
-                android:textAlignment="center"
-                android:layout_margin="5dp" />
-
-            <Button
-                style="?android:attr/buttonStyleSmall"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:text="X"
-                android:id="@+id/button4"
-                android:textSize="30dp"
-                android:background="@color/nope_red"
-                android:layout_weight="20"
-                android:layout_margin="10dp" />
-        </LinearLayout>
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:orientation="vertical"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true">
+        <ListView
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:id="@+id/timerList"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
+            android:fastScrollAlwaysVisible="false"
+            android:layout_weight="6"
+            android:background="@color/box_dark" />
 
         <TextView
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:text="@string/timer_new"
             android:id="@+id/textView"
             android:layout_weight="0"
             android:textColor="#ffffffff"
-            android:autoText="false"/>
+            android:autoText="true" />
 
         <LinearLayout
             android:orientation="horizontal"
             android:layout_width="match_parent"
-            android:layout_height="60dp"
-            android:layout_alignParentBottom="true"
+            android:layout_height="wrap_content"
+            android:layout_weight="0"
             android:background="@color/box_dark">
 
             <EditText
@@ -196,12 +77,10 @@
                 android:layout_height="fill_parent"
                 android:text="@string/timer_new_button"
                 android:id="@+id/button"
-                android:layout_weight="20"
+                android:layout_weight="22"
                 android:background="@color/yep_green"
                 android:textSize="30dp"
-                android:layout_margin="10dp" />
-
+                android:layout_margin="2dp" />
         </LinearLayout>
     </LinearLayout>
-
 </RelativeLayout>

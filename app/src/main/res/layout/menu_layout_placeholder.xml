@@ -7,7 +7,7 @@
     <LinearLayout
         android:orientation="horizontal"
         android:layout_width="fill_parent"
-        android:layout_height="30dp">
+        android:layout_height="40dp">
 
         <FrameLayout
             android:layout_width="match_parent"
@@ -21,7 +21,7 @@
             android:id="@+id/calendar_text_title"
             android:layout_gravity="center_horizontal"
             android:textColor="@color/text_white"
-            android:textSize="28dp"
+            android:textSize="30dp"
             android:textAlignment="center"
             android:textIsSelectable="true"
             android:layout_weight="10" />
@@ -30,39 +30,24 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="15"></FrameLayout>
-
     </LinearLayout>
 
     <LinearLayout
         android:orientation="horizontal"
         android:layout_width="match_parent"
-        android:layout_height="40dp"
+        android:layout_height="50dp"
         android:layout_gravity="center_horizontal"
+        android:layout_marginLeft="50dp"
         android:layout_marginRight="50dp"
-        android:layout_marginTop="10dp"
-        android:layout_marginLeft="30dp">
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:text="@string/calendar_week"
-            android:id="@+id/textView3"
-            android:layout_weight="25"
-            android:textColor="@color/text_white"
-            android:textSize="26dp"
-            android:textIsSelectable="true" />
+        android:layout_marginTop="10dp">
 
         <Spinner
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:id="@+id/calendar_date_select"
             android:spinnerMode="dropdown"
-            android:drawSelectorOnTop="true"
-            android:focusable="true"
-            android:focusableInTouchMode="true"
-            android:background="@color/item_light"
-            android:layout_weight="10" />
+            android:contentDescription="@string/calendar_date"
+            android:drawSelectorOnTop="true"/>
 
     </LinearLayout>
 
@@ -73,300 +58,10 @@
         android:layout_margin="10dp"
         android:background="@color/box_dark">
 
-        <LinearLayout
-            android:orientation="vertical"
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
-            android:layout_weight="10">
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceLarge"
-                android:text="Wed, April 22"
-                android:id="@+id/textView4"
-                android:layout_row="1"
-                android:layout_column="1"
-                android:background="@color/item_light"
-                android:singleLine="true"
-                android:layout_marginLeft="5dp"
-                android:layout_marginTop="5dp"
-                android:layout_marginRight="3dp"
-                android:layout_marginBottom="5dp" />
-
-            <LinearLayout
-                android:orientation="vertical"
-                android:layout_width="fill_parent"
-                android:layout_height="fill_parent"
-                android:background="@color/item_light"
-                android:layout_weight="10"
-                android:layout_marginBottom="5dp"
-                android:layout_marginRight="3dp"
-                android:layout_marginLeft="5dp">
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Breakfast"
-                    android:id="@+id/textView6"
-                    android:background="@color/box_blue"
-                    android:layout_marginLeft="5dp"
-                    android:textSize="20dp"
-                    android:layout_marginRight="5dp"
-                    android:layout_marginBottom="10dp" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="- Maple Pancakes"
-                    android:id="@+id/textView8"
-                    android:layout_marginLeft="15dp"
-                    android:textSize="17dp"
-                    android:layout_marginBottom="5dp" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="- Milk"
-                    android:id="@+id/textView9"
-                    android:layout_marginLeft="15dp"
-                    android:textSize="17dp"
-                    android:layout_marginBottom="5dp" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:orientation="vertical"
-                android:layout_width="fill_parent"
-                android:layout_height="fill_parent"
-                android:background="@color/item_light"
-                android:layout_weight="10"
-                android:layout_marginBottom="5dp"
-                android:layout_marginRight="3dp"
-                android:layout_marginLeft="5dp">
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Lunch"
-                    android:id="@+id/textView10"
-                    android:background="@color/box_blue"
-                    android:layout_marginLeft="5dp"
-                    android:textSize="20dp"
-                    android:layout_marginRight="5dp"
-                    android:layout_marginBottom="10dp" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="- Club Sandwich"
-                    android:id="@+id/textView12"
-                    android:layout_marginLeft="15dp"
-                    android:textSize="17dp"
-                    android:layout_marginBottom="5dp" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="- Homemade Fries"
-                    android:id="@+id/textView13"
-                    android:layout_marginLeft="15dp"
-                    android:textSize="17dp"
-                    android:layout_marginBottom="5dp" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:orientation="vertical"
-                android:layout_width="fill_parent"
-                android:layout_height="fill_parent"
-                android:background="@color/item_light"
-                android:layout_weight="10"
-                android:layout_marginBottom="5dp"
-                android:layout_marginRight="3dp"
-                android:layout_marginLeft="5dp">
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Supper"
-                    android:id="@+id/textView11"
-                    android:background="@color/box_blue"
-                    android:layout_marginLeft="5dp"
-                    android:textSize="20dp"
-                    android:layout_marginRight="5dp"
-                    android:layout_marginBottom="10dp" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="- Salmon Gravlax"
-                    android:id="@+id/textView15"
-                    android:layout_marginLeft="15dp"
-                    android:textSize="17dp"
-                    android:layout_marginBottom="5dp" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="- Strawberries Salad"
-                    android:id="@+id/textView16"
-                    android:layout_marginLeft="15dp"
-                    android:textSize="17dp"
-                    android:layout_marginBottom="5dp" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="- Oatmeal Cookies"
-                    android:id="@+id/textView14"
-                    android:layout_marginLeft="15dp"
-                    android:textSize="17dp"
-                    android:layout_marginBottom="5dp" />
-            </LinearLayout>
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:orientation="vertical"
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
-            android:layout_weight="10">
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceLarge"
-                android:text="Thu, April 23"
-                android:id="@+id/textView5"
-                android:layout_row="1"
-                android:layout_column="1"
-                android:background="@color/item_light"
-                android:layout_marginLeft="3dp"
-                android:layout_marginTop="5dp"
-                android:layout_marginRight="5dp"
-                android:layout_marginBottom="5dp" />
-
-            <LinearLayout
-                android:orientation="vertical"
-                android:layout_width="fill_parent"
-                android:layout_height="fill_parent"
-                android:background="@color/item_light"
-                android:layout_weight="10"
-                android:layout_marginBottom="5dp"
-                android:layout_marginRight="5dp"
-                android:layout_marginLeft="3dp">
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Breakfast"
-                    android:id="@+id/textView17"
-                    android:background="@color/box_blue"
-                    android:layout_marginLeft="5dp"
-                    android:textSize="20dp"
-                    android:layout_marginRight="5dp"
-                    android:layout_marginBottom="10dp" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="- Mushroom Omelette"
-                    android:id="@+id/textView18"
-                    android:layout_marginLeft="15dp"
-                    android:textSize="17dp"
-                    android:layout_marginBottom="5dp" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="- Orange Juice"
-                    android:id="@+id/textView19"
-                    android:layout_marginLeft="15dp"
-                    android:textSize="17dp"
-                    android:layout_marginBottom="5dp" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:orientation="vertical"
-                android:layout_width="fill_parent"
-                android:layout_height="fill_parent"
-                android:background="@color/item_light"
-                android:layout_weight="10"
-                android:layout_marginBottom="5dp"
-                android:layout_marginRight="5dp"
-                android:layout_marginLeft="3dp">
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Lunch"
-                    android:id="@+id/textView17"
-                    android:background="@color/box_blue"
-                    android:layout_marginLeft="5dp"
-                    android:textSize="20dp"
-                    android:layout_marginRight="5dp"
-                    android:layout_marginBottom="10dp" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="- Quinoa Fried Rice"
-                    android:id="@+id/textView18"
-                    android:layout_marginLeft="15dp"
-                    android:textSize="17dp"
-                    android:layout_marginBottom="5dp" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/textView19"
-                    android:layout_marginLeft="15dp"
-                    android:textSize="17dp"
-                    android:layout_marginBottom="5dp" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:orientation="vertical"
-                android:layout_width="fill_parent"
-                android:layout_height="fill_parent"
-                android:background="@color/item_light"
-                android:layout_weight="10"
-                android:layout_marginBottom="5dp"
-                android:layout_marginRight="5dp"
-                android:layout_marginLeft="3dp">
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Supper"
-                    android:id="@+id/textView17"
-                    android:background="@color/box_blue"
-                    android:layout_marginLeft="5dp"
-                    android:textSize="20dp"
-                    android:layout_marginRight="5dp"
-                    android:layout_marginBottom="10dp" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="- Sausage Quiche"
-                    android:id="@+id/textView18"
-                    android:layout_marginLeft="15dp"
-                    android:textSize="17dp"
-                    android:layout_marginBottom="5dp" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="- Tomato Soup"
-                    android:id="@+id/textView19"
-                    android:layout_marginLeft="15dp"
-                    android:textSize="17dp"
-                    android:layout_marginBottom="5dp" />
-
-            </LinearLayout>
-
-        </LinearLayout>
-
+        <GridView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/gridView" />
     </LinearLayout>
 
 </LinearLayout>
