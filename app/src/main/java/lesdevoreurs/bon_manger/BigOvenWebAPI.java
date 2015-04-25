@@ -123,6 +123,7 @@ public class BigOvenWebAPI {
             }
         } catch (IOException e) {
             Log.d("Web ", "Erreur: "+e.getMessage());
+            titres.add("Cannot connect to internet...");
         } catch (ParserConfigurationException e) {
             Log.d("Parser ", "Erreur: " + e.getMessage());
         } catch (SAXException e) {

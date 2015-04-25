@@ -345,24 +345,35 @@ public class Research_Fragment1 extends Fragment {
 
             //Put everything in the listview
             TextView titre = (TextView) v.findViewById(R.id.nomRechRecette); //Title
-            titre.setText(titres.get(position));
             TextView cuisine = (TextView) v.findViewById(R.id.cuisineRechRecette);   //Cuisine
-            cuisine.setText(cuisines.get(position));
             TextView categorie = (TextView) v.findViewById(R.id.categorieRechRecette);   //Categorie
-            categorie.setText(categories.get(position));
             TextView sousCategorie = (TextView) v.findViewById(R.id.subcategorieRechRecette);    //SubCategorie
-            sousCategorie.setText(sousCategories.get(position));
             ImageView imageView = (ImageView) v.findViewById(R.id.imageRechRecette); //Image
-            //imageView.setImageDrawable(images.get(position));
-            Picasso.with(getActivity())
-                    .load(imagesPath.get(position))
-                    .into(imageView);
             RatingBar rating = (RatingBar) v.findViewById(R.id.myRatingBar); //Rating
-            if (ratings.get(position) != "") {   //If Rating is empty
-                double star = Double.parseDouble(ratings.get(position));
-                rating.setRating((int) star);
-            } else
-                rating.setVisibility(View.INVISIBLE);
+            titre.setText(titres.get(position));
+
+            //Check if offline
+            if(titre.getText()!="Cannot connect to internet...") {
+                cuisine.setText(cuisines.get(position));
+                categorie.setText(categories.get(position));
+                sousCategorie.setText(sousCategories.get(position));
+                //imageView.setImageDrawable(images.get(position));
+                Picasso.with(getActivity())
+                        .load(imagesPath.get(position))
+                        .into(imageView);
+                if (ratings.get(position) != "") {   //If Rating is empty
+                    double star = Double.parseDouble(ratings.get(position));
+                    rating.setRating((int) star);
+                } else
+                    rating.setVisibility(View.INVISIBLE);
+            }
+            else{
+                cuisine.setVisibility(View.GONE);
+                categorie.setVisibility(View.GONE);
+                sousCategorie.setVisibility(View.GONE);
+                imageView.setVisibility(View.GONE);
+                rating.setVisibility(View.GONE);
+            }
             return v;
         }
     }

@@ -390,77 +390,83 @@ public class ResearchRecipe_Fragment extends Fragment {
 
             //Get from BigOvenRecipeWebAPI
             titreR = bigovenrecipewebapi.titre;
-            descriptionR = bigovenrecipewebapi.description;
-            tempsR = bigovenrecipewebapi.tempsTotal;
-            cuissonR = bigovenrecipewebapi.tempsCuisson;
-            instructionsR = bigovenrecipewebapi.instructions;
-            imagePath = bigovenrecipewebapi.imagePath;
-            ingredientsN = bigovenrecipewebapi.ingredientsNom;
-            ingredientsNb = bigovenrecipewebapi.ingredientsQuantite;
-            ingredientsMet = bigovenrecipewebapi.ingredientsMetric;
-            ID = bigovenrecipewebapi.ID;
 
-            //Set text in UI
-            titre.setText(titreR);
-            Picasso.with(getActivity())
-                    .load(imagePath)
-                    .into(image);
-            description.setText(descriptionR);
-            if (!tempsR.equals("0"))
-                temps.setText("Ready in : " + tempsR);
-            if (!cuissonR.equals("0"))
-                cuisson.setText("Cooking time: " + cuissonR);
-            btIns.setVisibility(View.VISIBLE);
-            btIng.setVisibility(View.VISIBLE);
-            instructions.setText(instructionsR);
+            if(titreR!="OFFLINE") {
+                descriptionR = bigovenrecipewebapi.description;
+                tempsR = bigovenrecipewebapi.tempsTotal;
+                cuissonR = bigovenrecipewebapi.tempsCuisson;
+                instructionsR = bigovenrecipewebapi.instructions;
+                imagePath = bigovenrecipewebapi.imagePath;
+                ingredientsN = bigovenrecipewebapi.ingredientsNom;
+                ingredientsNb = bigovenrecipewebapi.ingredientsQuantite;
+                ingredientsMet = bigovenrecipewebapi.ingredientsMetric;
+                ID = bigovenrecipewebapi.ID;
 
-            //Create checklist with false
-            int size = ingredientsN.size();
-            setCheckList(size);
+                //Set text in UI
+                titre.setText(titreR);
+                if (bigovenrecipewebapi != null)
+                    Picasso.with(getActivity())
+                            .load(imagePath)
+                            .into(image);
+                description.setText(descriptionR);
+                if (!tempsR.equals("0"))
+                    temps.setText("Ready in : " + tempsR);
+                if (!cuissonR.equals("0"))
+                    cuisson.setText("Cooking time: " + cuissonR);
+                btIns.setVisibility(View.VISIBLE);
+                btIng.setVisibility(View.VISIBLE);
+                instructions.setText(instructionsR);
 
-            //Setup ingredient listview
-            final MyAdapter adapter = new MyAdapter(ingredientsN, ingredientsNb, ingredientsMet);
-            ingredients.setAdapter(adapter);
-            progressDialog.dismiss();
+                //Create checklist with false
+                int size = ingredientsN.size();
+                setCheckList(size);
 
-            //The button to add the ingredients to the list
-            addBtn.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    boolean[] checktemp = getCheckList();
-                    String temp = ingredientsN.get(0);
+                //Setup ingredient listview
+                final MyAdapter adapter = new MyAdapter(ingredientsN, ingredientsNb, ingredientsMet);
+                ingredients.setAdapter(adapter);
 
-                    //Store temporary
-                    ArrayList<String> tempName = getNameIngredients();
-                    ArrayList<String> tempNum = getNumberIngredients();
-                    ArrayList<String> tempMet = getMetricIngredients();
+                //The button to add the ingredients to the list
+                addBtn.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        boolean[] checktemp = getCheckList();
+                        String temp = ingredientsN.get(0);
 
-                    if (!temp.equals("Nothing found")) {
-                        for (int i = 0; i < checktemp.length; i++) {
-                            if (checktemp[i]) {
-                                tempName.add(ingredientsN.get(i));
-                                tempNum.add(ingredientsNb.get(i));
-                                tempMet.add(ingredientsMet.get(i));
+                        //Store temporary
+                        ArrayList<String> tempName = getNameIngredients();
+                        ArrayList<String> tempNum = getNumberIngredients();
+                        ArrayList<String> tempMet = getMetricIngredients();
+
+                        if (!temp.equals("Nothing found")) {
+                            for (int i = 0; i < checktemp.length; i++) {
+                                if (checktemp[i]) {
+                                    tempName.add(ingredientsN.get(i));
+                                    tempNum.add(ingredientsNb.get(i));
+                                    tempMet.add(ingredientsMet.get(i));
+                                }
                             }
-                        }
 
-                        //INSÉRER LE CODE POUR LIER AVEC LISTE RECETTE ICI, POUR L'INSTANT PRINT LA LISTE
-                        for (int j = 0; j < getNameIngredients().size(); j++) {
-                            Log.d("Liste", "" + tempName.get(j) + " "
-                                    + tempNum.get(j));
+                            //INSÉRER LE CODE POUR LIER AVEC LISTE RECETTE ICI, POUR L'INSTANT PRINT LA LISTE
+                            for (int j = 0; j < getNameIngredients().size(); j++) {
+                                Log.d("Liste", "" + tempName.get(j) + " "
+                                        + tempNum.get(j));
+                            }
+                            DBHelper dbh = new DBHelper(getActivity());
+                            Liste_Fragment_PLACEHOLDER.setListe(dbh, tempName, tempNum, tempMet);
+                            resetNameIngredients();
+                            resetNumberIngredients();
+                            resetMetricIngredients();
                         }
-                        DBHelper dbh = new DBHelper(getActivity());
-                        Liste_Fragment_PLACEHOLDER.setListe(dbh, tempName, tempNum, tempMet);
-                        resetNameIngredients();
-                        resetNumberIngredients();
-                        resetMetricIngredients();
                     }
-                }
-            });
+                });
 
-            btnFav.setVisibility(View.VISIBLE);
-            btnMake.setVisibility(View.VISIBLE);
-            btnMenu.setVisibility(View.VISIBLE);
+                btnFav.setVisibility(View.VISIBLE);
+                btnMake.setVisibility(View.VISIBLE);
+                btnMenu.setVisibility(View.VISIBLE);
+            }
+            else
+                titre.setText("Cannot connect to internet...");
+            progressDialog.dismiss();
         }
     }
 

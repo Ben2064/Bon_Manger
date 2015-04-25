@@ -29,9 +29,9 @@ import javax.xml.parsers.ParserConfigurationException;
  * Created by Nicolas on 2015-04-12.
  */
 public class BigOvenRecipeWebAPI {
-    public String imagePath = "";
+    public String imagePath = "http://images.bigoven.com/image/upload/t_recipe-256/recipe-no-image.jpg";
     public String ID = "";
-    public String titre = "";
+    public String titre = "OFFLINE"; //Keep offline in title if offline
     public String description = "";
     public String cuisine = "";
     public String categorie = "";
