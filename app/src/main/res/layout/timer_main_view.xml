@@ -49,8 +49,7 @@
         <LinearLayout
             android:orientation="horizontal"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="0"
+            android:layout_height="50dp"
             android:background="@color/box_dark">
 
             <EditText
@@ -76,11 +75,11 @@
                 android:layout_width="fill_parent"
                 android:layout_height="fill_parent"
                 android:text="@string/timer_new_button"
-                android:id="@+id/button"
+                android:id="@+id/addBtn"
                 android:layout_weight="22"
                 android:background="@color/yep_green"
                 android:textSize="30dp"
-                android:layout_margin="2dp" />
+                android:layout_margin="5dp" />
         </LinearLayout>
     </LinearLayout>
 </RelativeLayout>

@@ -82,7 +82,7 @@ public class Research_Fragment1 extends Fragment {
             rate = (RatingBar) getView().findViewById(R.id.myRatingBar);
             listv = (ListView) getView().findViewById(R.id.activity_list);
             research = (TextView) getView().findViewById(R.id.activity_title);
-            research.setText("Research");
+            research.setText("Search");
 
             //Load another page of result
             btnLoad = new Button(getActivity());

@@ -2,13 +2,25 @@
 <layer-list xmlns:android="http://schemas.android.com/apk/res/android">
     <item android:id="@android:id/progress">
         <shape
-            android:innerRadiusRatio="3"
+            android:innerRadiusRatio="5"
             android:shape="ring"
             android:thicknessRatio="3.0"
             android:useLevel="true">
             <gradient
-                android:startColor="#fb0000"
-                android:endColor="#00FF00"
+                android:startColor="@color/box_dark"
+                android:endColor="@color/box_light"
+                android:type="sweep" />
+        </shape>
+    </item>
+    <item android:id="@android:id/progress">
+        <shape
+            android:innerRadiusRatio="2"
+            android:shape="ring"
+            android:thicknessRatio="8.0"
+            android:useLevel="true">
+            <gradient
+                android:startColor="@color/nope_red"
+                android:endColor="@color/box_blue"
                 android:type="sweep" />
         </shape>
     </item>
