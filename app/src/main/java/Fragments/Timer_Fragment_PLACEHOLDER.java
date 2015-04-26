@@ -36,7 +36,8 @@ public class Timer_Fragment_PLACEHOLDER extends Fragment
     Button addBtn;
     View view;
     ArrayList<Timer> timerArray;
-    ArrayList<String> timeArray, nameArray;
+    ArrayList<String> nameArray;
+    ArrayList<Integer> timeArray;
 
     public Timer_Fragment_PLACEHOLDER(){};
 
@@ -64,13 +65,17 @@ public class Timer_Fragment_PLACEHOLDER extends Fragment
             addTime = (EditText) getView().findViewById(R.id.editTimerTime);
             addName = (EditText) getView().findViewById(R.id.editTimerTime);
             addBtn = (Button) getView().findViewById((R.id.addBtn));
-
-            addBtn.setOnClickListener(new View.OnClickListener() {
-                public void onClick(View v) {
-                    //Add a timer with specified values
-                }
-            });
         }
+
+        addBtn.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                //Add a timer with specified values
+                timerArray.add(new Timer());
+                timeArray.add(Integer.parseInt((String) addTime.getText()));
+                nameArray.add((String) addName.getText());
+                ((BaseAdapter) timerList.getAdapter()).notifyDataSetChanged();
+            }
+        });
 
     }
 
@@ -78,10 +83,11 @@ public class Timer_Fragment_PLACEHOLDER extends Fragment
     {
 
         ArrayList<Timer> timerArray;
-        ArrayList<String> timeArray, nameArray;
+        ArrayList<String> nameArray;
+        ArrayList<Integer> timeArray;
         LayoutInflater inflater;
 
-        public TimerAdapter(ArrayList<Timer> timerArray, ArrayList<String> timeArray, ArrayList<String> nameArray)
+        public TimerAdapter(ArrayList<Timer> timerArray, ArrayList<Integer> timeArray, ArrayList<String> nameArray)
         {
             inflater = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
