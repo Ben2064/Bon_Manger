@@ -83,7 +83,7 @@ public class LivreListe_Fragment extends Fragment {
         }
     }
 
-    public static void receiveRecipe(String titre, String image, String description, String tempsCuisson,
+    public static void receiveRecipe(DBHelper dbh, String titre, String image, String description, String tempsCuisson,
                                      String tempsTotal, String instructions, Cursor c, String id) {
         //We receive the informations of the recipe to add from current recipe
         //Here we add it to memory

@@ -6,6 +6,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -49,6 +50,11 @@ public class CurrentRecipe_Fragment extends Fragment{
     Button btnMenu;
     Button arrow;
     View view;
+
+    //To pass to list
+    public static ArrayList<String> nameIngredients = new ArrayList<String>();
+    public static ArrayList<String> numberIngredients = new ArrayList<String>();
+    public static ArrayList<String> metricIngredients = new ArrayList<String>();
     boolean[] checkList;
 
     /**
@@ -199,8 +205,8 @@ public class CurrentRecipe_Fragment extends Fragment{
                 btnFav.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        Toast.makeText(getActivity(), "Added to my list", Toast.LENGTH_LONG).show();
-                        LivreListe_Fragment.receiveRecipe(t, i, d, ct, tt, ins, c2, id);
+                        Toast.makeText(getActivity(), "Added to my cookbook", Toast.LENGTH_LONG).show();
+                        LivreListe_Fragment.receiveRecipe(dbh, t, i, d, ct, tt, ins, c2, id);
                         btnFav.setBackgroundResource(android.R.drawable.btn_star_big_on);
                     }
                 });
@@ -214,7 +220,45 @@ public class CurrentRecipe_Fragment extends Fragment{
                 @Override
                 public void onClick(View v) {
                     Toast.makeText(getActivity(), "Add to menu", Toast.LENGTH_LONG).show();
-                    Menu_Fragment_PLACEHOLDER.receiveRecipe(t, i, d, ct, tt, ins, c2, id);
+                    Menu_Fragment_PLACEHOLDER.receiveRecipe(dbh, t, i, d, ct, tt, ins, c2, id);
+                }
+            });
+
+            //The button to add the ingredients to the list
+            addBtn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Toast.makeText(getActivity(), "Added to my list", Toast.LENGTH_LONG).show();
+                    boolean[] checktemp = getCheckList();
+                    c2.moveToPosition(0);
+                    String tempNom = c2.getString(c2.getColumnIndex(DBHelper.CI_NAME));
+
+                    //Store temporary
+                    ArrayList<String> tempName = getNameIngredients();
+                    ArrayList<String> tempNum = getNumberIngredients();
+                    ArrayList<String> tempMet = getMetricIngredients();
+
+                    if (!tempNom.equals("Nothing found")) {
+                        for (int i = 0; i < c2.getCount(); i++) {
+                            if (checktemp[i]) {
+                                c2.moveToPosition(i);
+                                tempName.add(c2.getString(c2.getColumnIndex(DBHelper.CI_NAME)));
+                                tempNum.add(c2.getString(c2.getColumnIndex(DBHelper.CI_NUMBER)));
+                                tempMet.add(c2.getString(c2.getColumnIndex(DBHelper.CI_METRIC)));
+                            }
+                        }
+
+                        //INSÉRER LE CODE POUR LIER AVEC LISTE RECETTE ICI, POUR L'INSTANT PRINT LA LISTE
+                        for (int j = 0; j < getNameIngredients().size(); j++) {
+                            Log.d("Liste", "" + tempName.get(j) + " "
+                                    + tempNum.get(j));
+                        }
+                        DBHelper dbh = new DBHelper(getActivity());
+                        Liste_Fragment_PLACEHOLDER.setListe(dbh, tempName, tempNum, tempMet);
+                        resetNameIngredients();
+                        resetNumberIngredients();
+                        resetMetricIngredients();
+                    }
                 }
             });
 
@@ -238,9 +282,9 @@ public class CurrentRecipe_Fragment extends Fragment{
             titre.setText(t);
             description.setText(d);
             if (!tt.equals("0"))
-                temps.setText("Ready in : " + tt);
+                temps.setText("Ready in : " + tt + "min");
             if (!ct.equals("0"))
-                cuisson.setText("Cooking time: " + ct);
+                cuisson.setText("Cooking time: " + ct + "min");
             btIns.setVisibility(View.VISIBLE);
             btIng.setVisibility(View.VISIBLE);
             instructions.setText(ins);
@@ -263,6 +307,55 @@ public class CurrentRecipe_Fragment extends Fragment{
             checkList[i] = false;
         }
     }
+
+    /**
+     * Get checkList informations about ingredients
+     * @return
+     */
+    public boolean[] getCheckList() {
+        return checkList;
+    }
+
+    /**
+     * Get list of ingredients name
+     * @return  List
+     */
+    public ArrayList<String> getNameIngredients() {
+        return nameIngredients;
+    }
+
+    /**
+     * Get list of how many ingredients
+     * @return  List
+     */
+    public ArrayList<String> getNumberIngredients() {
+        return numberIngredients;
+    }
+
+    /**
+     * Get list of wich metric it's in use with the ingredients
+     * @return  List
+     */
+    public ArrayList<String> getMetricIngredients() { return metricIngredients; }
+
+    /**
+     * Erease the list of ingredients name when we put a new current recipe
+     */
+    public void resetNameIngredients() {
+        nameIngredients = new ArrayList<String>();
+    }
+
+    /**
+     * Erease the list of number of ingredients when we put a new current recipe
+     */
+    public void resetNumberIngredients() {
+        numberIngredients = new ArrayList<String>();
+    }
+
+    /**
+     * Erease the list of metrics uses by number of ingredients when we put a new current recipe
+     */
+    public void resetMetricIngredients() { metricIngredients = new ArrayList<String>();}
 
     /**
      * Put everything in listview

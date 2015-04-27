@@ -168,7 +168,7 @@ public class ResearchRecipe_Fragment extends Fragment {
                 btnFav.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        Toast.makeText(getActivity(), "Added to my list", Toast.LENGTH_LONG).show();
+                        Toast.makeText(getActivity(), "Added to my cookbook", Toast.LENGTH_LONG).show();
                         //Getting info
                         final String titre = web.getTitre();
                         final String imagePath = web.getImagePath();
@@ -419,9 +419,9 @@ public class ResearchRecipe_Fragment extends Fragment {
                             .into(image);
                 description.setText(descriptionR);
                 if (!tempsR.equals("0"))
-                    temps.setText("Ready in : " + tempsR);
+                    temps.setText("Ready in : " + tempsR + "min");
                 if (!cuissonR.equals("0"))
-                    cuisson.setText("Cooking time: " + cuissonR);
+                    cuisson.setText("Cooking time: " + cuissonR + "min");
                 btIns.setVisibility(View.VISIBLE);
                 btIng.setVisibility(View.VISIBLE);
                 instructions.setText(instructionsR);
@@ -438,6 +438,7 @@ public class ResearchRecipe_Fragment extends Fragment {
                 addBtn.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
+                        Toast.makeText(getActivity(), "Added to my list", Toast.LENGTH_LONG).show();
                         boolean[] checktemp = getCheckList();
                         String temp = ingredientsN.get(0);
 
