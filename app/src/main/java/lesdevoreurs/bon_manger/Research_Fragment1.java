@@ -17,6 +17,7 @@ import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.RatingBar;
@@ -350,6 +351,7 @@ public class Research_Fragment1 extends Fragment {
             TextView sousCategorie = (TextView) v.findViewById(R.id.subcategorieRechRecette);    //SubCategorie
             ImageView imageView = (ImageView) v.findViewById(R.id.imageRechRecette); //Image
             RatingBar rating = (RatingBar) v.findViewById(R.id.myRatingBar); //Rating
+            FrameLayout ratingFrame = (FrameLayout) v.findViewById(R.id.ratingFrame); //Blank behind rating
             titre.setText(titres.get(position));
 
             //Check if offline
@@ -371,8 +373,9 @@ public class Research_Fragment1 extends Fragment {
                 cuisine.setVisibility(View.GONE);
                 categorie.setVisibility(View.GONE);
                 sousCategorie.setVisibility(View.GONE);
-                imageView.setVisibility(View.GONE);
+                imageView.setBackgroundResource(android.R.drawable.ic_dialog_alert);
                 rating.setVisibility(View.GONE);
+                ratingFrame.setVisibility(View.GONE);
             }
             return v;
         }
