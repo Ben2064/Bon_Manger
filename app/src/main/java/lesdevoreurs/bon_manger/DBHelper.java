@@ -81,10 +81,10 @@ public class DBHelper extends SQLiteOpenHelper {
 
         //GROCERY::
         sql = "create table " + TABLE_GROCERY
-                + " (" + G_NAME + " primary key, "
+                + " (" + G_NAME + " text, "
                 + G_NUMBER + " text, "
                 + G_METRIC + " text, "
-                + G_ID + " text)";
+                + G_ID + " primary key)";
         db.execSQL(sql);
 
         //COOKBOOK::
@@ -176,6 +176,10 @@ public class DBHelper extends SQLiteOpenHelper {
         db.execSQL("delete from " + TABLE_COOKBOOK + " where _id='" + id + "'");
         db.execSQL("delete from " + TABLE_CINGREDIENTS + " where _id='" + id + "'");
     }
+    //GROCERY::delete ingredient
+    public static void deleteIngredient(SQLiteDatabase db, String name) {
+        db.execSQL("delete from " + TABLE_GROCERY + " where " + RI_NAME+ " ='" + name + "'");
+    }
 
     //CURRENT::Return the recipe for current
     public static Cursor currentRecipe(SQLiteDatabase db) {
@@ -252,9 +256,8 @@ public class DBHelper extends SQLiteOpenHelper {
 
     //GROCERY::add more of the same ingredients by passing the new number and the name of the ingredient
     public static void setIngredientsNumber(SQLiteDatabase db, String name, String number) {
-        ContentValues cv = new ContentValues();
-        cv.put(G_NUMBER, number);
-        db.update(TABLE_GROCERY, cv, G_NAME + " = " + name.replace("'", "''"), null);
+        String sql = "UPDATE "+ TABLE_GROCERY + " SET "+G_NUMBER+ " = '" + number + "' WHERE "+ G_NAME + " = '" + name.replace(" ","'")+"'";
+        db.execSQL(sql);
     }
 
     //GROCERY::add ingredients
@@ -263,6 +266,10 @@ public class DBHelper extends SQLiteOpenHelper {
                 + TABLE_GROCERY
                 + " (" + G_NAME + ", " + G_NUMBER + ", " + G_METRIC + ")"
                 + " VALUES ('" + name.replace("'", "''") + "', '" + number + "', '" + metric +"')";
+        db.execSQL(sql);
+    }
+    public static void setIngredientsMetric(SQLiteDatabase db, String name, String metric) {
+        String sql = "UPDATE "+ TABLE_GROCERY + " SET "+G_METRIC+ " = '" + metric + "' WHERE "+ G_NAME + " = '" + name.replace(" ","'")+"'";
         db.execSQL(sql);
     }
 }

@@ -5,6 +5,7 @@ import android.app.Fragment;
 import android.app.FragmentManager;
 import android.content.res.Configuration;
 import android.content.res.TypedArray;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.view.MenuItemCompat;
@@ -16,6 +17,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 
@@ -45,7 +47,6 @@ public class MainActivity extends Activity {
     private ActionBarDrawerToggle mDrawerToggle;
 
     private boolean first_fragment;
-
 
     // nav drawer title
     private CharSequence mDrawerTitle;
@@ -222,7 +223,7 @@ public class MainActivity extends Activity {
                 fragment = new Timer_Fragment_PLACEHOLDER();
                 break;
             case 4: //Liste d'epicerie
-                fragment = new Liste_Fragment_PLACEHOLDER();
+                fragment = Liste_Fragment_PLACEHOLDER.getInstance();
                 break;
             case 5:// Menu
                 fragment = new Menu_Fragment_PLACEHOLDER();
@@ -278,5 +279,26 @@ public class MainActivity extends Activity {
             // display view for selected nav drawer item
             displayView(position);
         }
+    }
+    public void onQtButtonClick(View vi){
+        View v = (View) vi.getParent();
+        TextView iTextView = (TextView) v.findViewById(R.id.ingTextView);
+        String ing = iTextView.getText().toString();
+        Liste_Fragment_PLACEHOLDER fragment=Liste_Fragment_PLACEHOLDER.getInstance();
+        fragment.quantity(ing.substring(2));
+    }
+    public void onMetButtonClick(View vi){
+        View v = (View) vi.getParent();
+        TextView iTextView = (TextView) v.findViewById(R.id.ingTextView);
+        String ing = iTextView.getText().toString();
+        Liste_Fragment_PLACEHOLDER fragment=Liste_Fragment_PLACEHOLDER.getInstance();
+        fragment.metrique(ing.substring(2));
+    }
+    public void onCheck(View vi){
+        View v = (View) vi.getParent();
+        TextView iTextView = (TextView) v.findViewById(R.id.ingTextView);
+        String ing = iTextView.getText().toString();
+        Liste_Fragment_PLACEHOLDER fragment=Liste_Fragment_PLACEHOLDER.getInstance();
+        fragment.check(ing.substring(2));
     }
 };
