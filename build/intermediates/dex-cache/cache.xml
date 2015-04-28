@@ -2,11 +2,11 @@
 <items version="2" >
 
     <item
-        jar="C:\Users\BenZen\.gradle\caches\modules-2\files-2.1\com.squareup.picasso\picasso\2.3.3\1262995965440e28ba5c4d480c9c9ab4ccce84cc\picasso-2.3.3.jar"
+        jar="C:\Users\virgile\.gradle\caches\modules-2\files-2.1\com.squareup.picasso\picasso\2.3.3\1262995965440e28ba5c4d480c9c9ab4ccce84cc\picasso-2.3.3.jar"
         jumboMode="false"
         revision="21.1.2"
         sha1="1262995965440e28ba5c4d480c9c9ab4ccce84cc">
-        <dex dex="C:\Users\BenZen\Bon_Manger\Bon_Manger\app\build\intermediates\pre-dexed\debug\picasso-2.3.3-6a18271be18c408600a542212f3edd3ed9cce91f.jar" />
+        <dex dex="C:\Users\virgile\AndroidStudioProjects\Bon_Manger\app\build\intermediates\pre-dexed\debug\picasso-2.3.3-03fd56387c66263be57aeb4f9384cb07239df57e.jar" />
     </item>
 
 </items>

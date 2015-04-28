@@ -1,6 +1,7 @@
 package Fragments;
 
 import android.app.Fragment;
+import android.app.FragmentManager;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.database.Cursor;
@@ -12,6 +13,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.CursorAdapter;
 import android.widget.ImageView;
@@ -130,7 +132,7 @@ public class LivreListe_Fragment extends Fragment {
         cookbook = (TextView) getView().findViewById(R.id.activity_title);
         Cursor cursor1 = dbh.listRecipe(db);
         if(cursor1.getCount()==0)
-            cookbook.setText("Cookbook empty!");
+            cookbook.setText("The cookbook is empty!");
         else
             cookbook.setText("CookBook");
 
@@ -140,6 +142,7 @@ public class LivreListe_Fragment extends Fragment {
             // edR = (EditText) getView().findViewById(R.id.cherche);
             spin = (Spinner) getView().findViewById((R.id.nbp));
             spin.setSelection(3);
+            spin.setVisibility(view.GONE);
             rate = (RatingBar) getView().findViewById(R.id.myRatingBar);
             listv = (ListView) getView().findViewById(R.id.activity_list);
 
@@ -164,10 +167,10 @@ public class LivreListe_Fragment extends Fragment {
                             InputMethodManager.HIDE_NOT_ALWAYS);*/
                 }
             });
-            listv.addFooterView(btnLoad);
+            //listv.addFooterView(btnLoad);
 
             //Load previous results
-            btnBack = new Button(getActivity());
+           /* btnBack = new Button(getActivity());
             btnBack.setText("Previous Page");
             btnBack.setTextColor(Color.LTGRAY);
             btnBack.setOnClickListener(new View.OnClickListener() {
@@ -183,14 +186,31 @@ public class LivreListe_Fragment extends Fragment {
                             getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
 
                     inputManager.hideSoftInputFromWindow(getActivity().getCurrentFocus().getWindowToken(),
-                            InputMethodManager.HIDE_NOT_ALWAYS);*/
+                            InputMethodManager.HIDE_NOT_ALWAYS);
                 }
             });
             listv.addHeaderView(btnBack);
-            btnBack.setVisibility(View.GONE);
+            btnBack.setVisibility(View.GONE);*/
 
             adapter = new MyAdapter(getActivity(), cursor1);
             listv.setAdapter(adapter);
+
+            //Open recipe onclick
+            listv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+
+                    View slcRecette = listv.getChildAt(position);
+                    TextView iRecette = (TextView)slcRecette.findViewById(R.id.categorieRechRecette);
+                    String idRecette = iRecette.getText().toString();
+                    System.out.println("ss"+idRecette);
+                    FragmentManager fragmentManager = getFragmentManager();
+                    fragmentManager.beginTransaction().replace(R.id.frame_container, LivreRecette_Fragment.newInstance(
+                            idRecette)).addToBackStack("rechercheBACK").commit();
+                }
+
+            });
         }
     }
 
@@ -233,6 +253,7 @@ public class LivreListe_Fragment extends Fragment {
             tt.setLayoutParams(new TableLayout.LayoutParams(60,60,5));
             TextView st = (TextView) v.findViewById(R.id.categorieRechRecette);
             st.setVisibility(View.GONE);
+            st.setText(id);
             ImageView image = (ImageView) v.findViewById(R.id.imageRechRecette);
             Picasso.with(getActivity())
                     .load(imagePath)

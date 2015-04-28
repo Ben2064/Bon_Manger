@@ -15,10 +15,13 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.CursorAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.squareup.picasso.Picasso;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
@@ -37,12 +40,10 @@ import lesdevoreurs.bon_manger.R;
  */
 
 public class LivreRecette_Fragment extends Fragment{
-    //To pass to list
-    public static ArrayList<String> nameIngredients = new ArrayList<String>();
-    public static ArrayList<String> numberIngredients = new ArrayList<String>();
-    public static boolean checkList[] = null;
+
     static SQLiteDatabase db;
     static DBHelper dbh;
+    MyAdapter adapter;
 
 
     //UI
@@ -62,6 +63,12 @@ public class LivreRecette_Fragment extends Fragment{
     View view;
     private String idRecette;   //The ID of the recipe to show
 
+    //To pass to list
+    public static ArrayList<String> nameIngredients = new ArrayList<String>();
+    public static ArrayList<String> numberIngredients = new ArrayList<String>();
+    public static ArrayList<String> metricIngredients = new ArrayList<String>();
+    boolean[] checkList;
+
     public LivreRecette_Fragment() {
     }
 
@@ -77,13 +84,18 @@ public class LivreRecette_Fragment extends Fragment{
         return fragment;
     }
 
+
     @Override
     public void onActivityCreated(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        dbh = new DBHelper(getActivity());
+        db=dbh.getWritableDatabase();
+
         if (btIng == null) {
 
             idRecette = getArguments().getString("ID_RECETTE");
+            System.out.println(idRecette);
             Cursor c = dbh.searchBookRecipe(db, idRecette);
             c.moveToPosition(0);
             final String id = c.getString(c.getColumnIndex(DBHelper.R_ID));
@@ -93,6 +105,29 @@ public class LivreRecette_Fragment extends Fragment{
             final String ins = c.getString(c.getColumnIndex(DBHelper.R_INSTRUCTIONS));
             final String tt = c.getString(c.getColumnIndex(DBHelper.R_TOTALTIME));
             final String ct = c.getString(c.getColumnIndex(DBHelper.R_COOKTIME));
+
+            Cursor c2 = dbh.searchBookRecipeIngredients(db, idRecette);
+
+            int size = c2.getCount();
+            setCheckList(size);
+            adapter = new MyAdapter(getActivity(), c2);
+
+            //new DownloadImageTask(i).execute();
+
+            titre = (TextView) getView().findViewById(R.id.titreL);
+            description = (TextView) getView().findViewById(R.id.descL);
+            temps = (TextView) getView().findViewById(R.id.ttL);
+            cuisson = (TextView) getView().findViewById(R.id.tcL);
+            instructions = (TextView) getView().findViewById(R.id.instL);
+            ingredients = (ListView) getView().findViewById(R.id.ingreL);
+            image = (ImageView) getView().findViewById(R.id.imgL);
+            btIng = (Button) getView().findViewById(R.id.ingL);
+            btIns = (Button) getView().findViewById(R.id.insL);
+            btnMenu = (Button) getView().findViewById(R.id.btnMenu);
+            btnDelete = (Button) getView().findViewById(R.id.btnRemove);
+            btnMake = (Button) getView().findViewById(R.id.btnMake);
+
+            ingredients.setAdapter(adapter);
 
             titre.setText(t);
             description.setText(d);
@@ -105,15 +140,11 @@ public class LivreRecette_Fragment extends Fragment{
             instructions.setText(ins);
             btnDelete.setVisibility(View.VISIBLE);
             btnMenu.setVisibility(View.VISIBLE);
+            btnMake.setVisibility(View.VISIBLE);
 
-            new DownloadImageTask(i).execute();
-
-            description = (TextView) getView().findViewById(R.id.descL);
-            temps = (TextView) getView().findViewById(R.id.ttL);
-            cuisson = (TextView) getView().findViewById(R.id.tcL);
-            instructions = (TextView) getView().findViewById(R.id.instL);
-            ingredients = (ListView) getView().findViewById(R.id.ingreL);
-            image = (ImageView) getView().findViewById(R.id.imgL);
+            Picasso.with(getActivity())
+                    .load(i)
+                    .into(image);
 
             //Show images, descriptions and temps when clicking on title
             titre.setOnClickListener(new View.OnClickListener() {
@@ -131,7 +162,7 @@ public class LivreRecette_Fragment extends Fragment{
             });
 
             //Show only title and ingredients
-            btIng = (Button) getView().findViewById(R.id.ingR);
+            //btIng = (Button) getView().findViewById(R.id.ingR);
             btIng.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -147,7 +178,7 @@ public class LivreRecette_Fragment extends Fragment{
             });
 
             //Show only title and instructions
-            btIns = (Button) getView().findViewById(R.id.insR);
+            //btIns = (Button) getView().findViewById(R.id.insR);
             btIns.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -171,12 +202,21 @@ public class LivreRecette_Fragment extends Fragment{
            /* final DownloadWebTask web = new DownloadWebTask();
             web.execute();*/
 
-            //Add to cookbook
-            btnDelete = (Button) getView().findViewById(R.id.btnFav);
+            //Remove from cookbook
+            //btnDelete = (Button) getView().findViewById(R.id.btnFav);
             btnDelete.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Toast.makeText(getActivity(), "Deleted from my cookbook", Toast.LENGTH_LONG).show();
+                    if (dbh.searchBookRecipe(db,id).getCount()==0)
+                    {
+                        btnDelete.setVisibility(view.GONE);
+                    }else
+                    {
+                        DBHelper.deleteRecipe(db,idRecette);
+                        btnDelete.setVisibility(view.GONE);
+                        Toast.makeText(getActivity(), "Deleted from my cookbook", Toast.LENGTH_LONG).show();
+                    }
+
                     //Getting info
                    /* final String titre = web.getTitre();
                     final String imagePath = web.getImagePath();
@@ -189,17 +229,18 @@ public class LivreRecette_Fragment extends Fragment{
                     final String id = web.getID();
                     Livre_Fragment_PLACEHOLDER.receiveRecipe(titre, imagePath, description, tempsCuisson, tempsTotal,
                             instructions, ingreNom, ingreNum, id);*/
-                    DBHelper.deleteRecipe(db,idRecette);
+
 
                 }
             });
 
             //Add to current recipe
-            btnMake = (Button) getView().findViewById(R.id.btnMake);
+            //btnMake = (Button) getView().findViewById(R.id.btnMake);
             btnMake.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     Toast.makeText(getActivity(), "Added to current recipe", Toast.LENGTH_LONG).show();
+
                     //Getting info
                    /* final String titre = web.getTitre();
                     final String imagePath = web.getImagePath();
@@ -215,13 +256,16 @@ public class LivreRecette_Fragment extends Fragment{
                             instructions, ingreNom, ingreNum, id);*/
 
                     DBHelper dbh = new DBHelper(getActivity());
+                    //DBHelper dbh = new DBHelper(getActivity());
+                    CurrentRecipe_Fragment.receiveRecipe(dbh, t, i, d, ct, tt,
+                            ins, nameIngredients, numberIngredients, metricIngredients, id);
 
                     //CurrentRecipe_Fragment.receiveRecipe(dbh,t,i,d,ct,tt,ins,;
                 }
             });
 
             //Add to menu
-            btnMenu = (Button) getView().findViewById(R.id.btnMenu);
+            //btnMenu = (Button) getView().findViewById(R.id.btnMenu);
             btnMenu.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -251,7 +295,7 @@ public class LivreRecette_Fragment extends Fragment{
 
         //Reload the view in case of "back" or create a new one if it's the first time
         if (view == null)
-            view = inflater.inflate(R.layout.research_recipe, container, false);
+            view = inflater.inflate(R.layout.livre_recipe, container, false);
         return view;
     }
 
@@ -284,158 +328,8 @@ public class LivreRecette_Fragment extends Fragment{
     public void resetNumberIngredients() {
         numberIngredients = new ArrayList<String>();
     }
-/*
-    //Search in BigOvenRecipeWebAPI
-    public class DownloadWebTask extends AsyncTask<Void, Void, BigOvenRecipeWebAPI> {
-        ProgressDialog progressDialog;
-        String ID;
-        String titreR;
-        String descriptionR;
-        String tempsR;
-        String cuissonR;
-        String instructionsR;
-        String imagePath;
-        Drawable cuisineR;
-        ArrayList<String> ingredientsN = new ArrayList<String>();
-        ArrayList<String> ingredientsNb = new ArrayList<String>();
-        boolean[] checkList;
 
-        public DownloadWebTask() {
-        }
-
-        protected String getID() {
-            return ID;
-        }
-
-        protected String getTitre() {
-            return titreR;
-        }
-
-        protected String getDesc() {
-            return descriptionR;
-        }
-
-        protected String getTemps() {
-            return tempsR;
-        }
-
-        protected String getCuisson() {
-            return cuissonR;
-        }
-
-        protected String getInstructions() {
-            return instructionsR;
-        }
-
-        protected Drawable getImage() {
-            return cuisineR;
-        }
-
-        protected String getImagePath() {
-            return imagePath;
-        }
-
-        protected ArrayList<String> getInumber() {
-            return ingredientsNb;
-        }
-
-        protected ArrayList<String> getIname() {
-            return ingredientsN;
-        }
-
-        @Override
-        protected BigOvenRecipeWebAPI doInBackground(Void... params) {
-            //Load API of the recipe
-            BigOvenRecipeWebAPI web = new BigOvenRecipeWebAPI(idRecette);
-            return web;
-        }
-
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-            progressDialog = new ProgressDialog(getActivity());
-            progressDialog.setTitle("Showing Recipe ...");
-            progressDialog.setMessage("Loading. Please Wait");
-            progressDialog.setIndeterminate(false);
-            progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-            progressDialog.setCancelable(false);
-            progressDialog.show();
-        }
-
-        @Override
-        protected void onPostExecute(final BigOvenRecipeWebAPI bigovenrecipewebapi) {
-
-            //Get from BigOvenRecipeWebAPI
-            titreR = bigovenrecipewebapi.titre;
-            descriptionR = bigovenrecipewebapi.description;
-            tempsR = bigovenrecipewebapi.tempsTotal;
-            cuissonR = bigovenrecipewebapi.tempsCuisson;
-            instructionsR = bigovenrecipewebapi.instructions;
-            cuisineR = bigovenrecipewebapi.image;
-            imagePath = bigovenrecipewebapi.imagePath;
-            ingredientsN = bigovenrecipewebapi.ingredientsNom;
-            ingredientsNb = bigovenrecipewebapi.ingredientsQuantite;
-            ID = bigovenrecipewebapi.ID;
-
-            //Set text in UI
-            titre.setText(titreR);
-            image.setImageDrawable(cuisineR);
-            description.setText(descriptionR);
-            if (!tempsR.equals("0"))
-                temps.setText("Ready in : " + tempsR);
-            if (!cuissonR.equals("0"))
-                cuisson.setText("Cooking time: " + cuissonR);
-            btIns.setVisibility(View.VISIBLE);
-            btIng.setVisibility(View.VISIBLE);
-            instructions.setText(instructionsR);
-
-            //Create checklist with false
-            int size = ingredientsN.size();
-            setCheckList(size);
-
-            //Setup ingredient listview
-            final MyAdapter adapter = new MyAdapter(ingredientsN, ingredientsNb);
-            ingredients.setAdapter(adapter);
-            progressDialog.dismiss();
-
-            //The button to add the ingredients to the list
-            addBtn.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    boolean[] checktemp = getCheckList();
-                    String temp = ingredientsN.get(0);
-
-                    //Store temporary
-                    ArrayList<String> tempName = getNameIngredients();
-                    ArrayList<String> tempNum = getNumberIngredients();
-
-                    if (!temp.equals("Nothing found")) {
-                        for (int i = 0; i < checktemp.length; i++) {
-                            if (checktemp[i]) {
-                                tempName.add(ingredientsN.get(i));
-                                tempNum.add(ingredientsNb.get(i));
-                            }
-                        }
-
-                        //INSÉRER LE CODE POUR LIER AVEC LISTE RECETTE ICI, POUR L'INSTANT PRINT LA LISTE
-                        for (int j = 0; j < getNameIngredients().size(); j++) {
-                            Log.d("Liste", "" + tempName.get(j) + " "
-                                    + tempNum.get(j));
-                        }
-                        Liste_Fragment_PLACEHOLDER.setListe(tempName, tempNum);
-                        resetNameIngredients();
-                        resetNumberIngredients();
-                    }
-                }
-            });
-
-            btnDelete.setVisibility(View.VISIBLE);
-            btnMake.setVisibility(View.VISIBLE);
-            btnMenu.setVisibility(View.VISIBLE);
-        }
-    }*/
-
-    public class MyAdapter extends BaseAdapter {
+ /*   public class MyAdapter extends BaseAdapter {
 
         ArrayList<String> nom;
         ArrayList<String> nombre;
@@ -495,9 +389,76 @@ public class LivreRecette_Fragment extends Fragment{
 
             return v;
         }
+    }*/
+
+    /**
+     * Put everything in listview
+     */
+    public class MyAdapter extends CursorAdapter {
+
+        LayoutInflater inflater;
+        CheckBox check;
+
+        public MyAdapter(Context context, Cursor c) {
+            super(context, c, true);
+            inflater = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        }
+
+        @Override
+        public View getView(final int position, View convertView, ViewGroup parent) {
+            View v = convertView;
+
+            if (v == null) {
+                v = inflater.inflate(R.layout.research_recipe_item, parent, false);
+            }
+
+            //Get ingredients info
+            Cursor c = getCursor();
+            c.moveToPosition(position);
+            String id = c.getString(c.getColumnIndex(DBHelper.RI_ID));
+            String name = c.getString(c.getColumnIndex(DBHelper.RI_NAME));
+            String number = c.getString(c.getColumnIndex(DBHelper.RI_NUMBER));
+            String metric = c.getString(c.getColumnIndex(DBHelper.RI_METRIC));
+            nameIngredients.add(name);
+            numberIngredients.add(number);
+            metricIngredients.add(metric);
+
+            //Put ingredients info
+            TextView titre = (TextView) v.findViewById(R.id.textI);
+            titre.setText(number + " " + metric + " " + name);
+
+            //Store if checkbox are checked or not in the position of the ingredient
+            check = (CheckBox) v.findViewById(R.id.checkI); //Name
+            check.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View arg0) {
+                    if (!checkList[position])
+                        checkList[position] = true;
+                    else
+                        checkList[position] = false;
+                }
+            });
+
+            //If nothing found
+            if (name.equals("Nothing found"))
+                check.setTextIsSelectable(false);
+
+            return v;
+        }
+        @Override
+        public View newView(Context context, Cursor cursor, ViewGroup parent) {
+
+            return null;
+        }
+
+        @Override
+        public void bindView(View view, Context context, Cursor cursor) {
+
+        }
     }
 
-    //Load and put image
+
+        //Load and put image
     public class DownloadImageTask extends AsyncTask<Void, Void, Drawable> {
 
         String imagePath;

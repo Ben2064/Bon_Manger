@@ -14,7 +14,7 @@ import android.util.Log;
 public class DBHelper extends SQLiteOpenHelper {
 
     static final String DB_NAME = "bonmanger.db";
-    static final int DB_VERSION = 46;    //******************METTRE À JOUR À CHAQUE FOIS!!!!!!!***********************//
+    static final int DB_VERSION = 47;    //******************METTRE À JOUR À CHAQUE FOIS!!!!!!!***********************//
 
     //CURRENT::table recipe for current recipe
     static final String TABLE_RECIPES = "recipes";
@@ -173,8 +173,8 @@ public class DBHelper extends SQLiteOpenHelper {
 
     //COOKBOOK::delete recipe
     public static void deleteRecipe(SQLiteDatabase db, String id) {
-        db.execSQL("delete from " + TABLE_COOKBOOK + " where id='" + id + "'");
-        db.execSQL("delete from " + TABLE_CINGREDIENTS + " where id='" + id + "'");
+        db.execSQL("delete from " + TABLE_COOKBOOK + " where _id='" + id + "'");
+        db.execSQL("delete from " + TABLE_CINGREDIENTS + " where _id='" + id + "'");
     }
 
     //CURRENT::Return the recipe for current

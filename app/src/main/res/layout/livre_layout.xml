@@ -17,12 +17,12 @@
             android:textAppearance="?android:attr/textAppearanceLarge"
             android:id="@+id/activity_title"
             android:padding="10dp"
-            android:textColor="#ffffffff" />
+            android:textColor="#ffffffff"
+            android:layout_weight="2" />
 
         <RelativeLayout
             android:layout_width="wrap_content"
             android:layout_height="35dp"
-            android:background="#ffffffff"
             android:layout_weight="5"
             android:layout_marginTop="10dp"
             android:layout_marginBottom="10dp"
@@ -37,15 +37,6 @@
                 android:layout_alignParentLeft="true"
                 android:layout_alignParentStart="true" />
         </RelativeLayout>
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:text="by page"
-            android:id="@+id/textView2"
-            android:textColor="#ffffffff"
-            android:layout_weight="0" />
 
     </LinearLayout>
 
