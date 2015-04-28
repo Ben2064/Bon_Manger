@@ -29,7 +29,10 @@
             android:fastScrollAlwaysVisible="false"
             android:layout_weight="6"
             android:background="@color/box_dark"
-            android:nestedScrollingEnabled="false" />
+            android:nestedScrollingEnabled="false"
+            android:divider="@color/background_dark"
+            android:dividerHeight="2dp"
+            android:drawSelectorOnTop="false" />
 
         <TextView
             android:layout_width="match_parent"
@@ -50,21 +53,19 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="time"
-                android:ems="10"
                 android:id="@+id/editTimerTime"
                 android:layout_weight="20"
                 android:text="@string/timer_greyout_time"
-                android:textColor="#ffafafaf" />
+                android:textColor="@color/text_white" />
 
             <EditText
-                android:layout_width="fill_parent"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:inputType="text"
                 android:id="@+id/editTimerName"
                 android:layout_weight="10"
                 android:text="@string/timer_greyout_name"
-                android:textColor="#ffafafaf"
-                android:enabled="false"
-                android:inputType="text" />
+                android:textColor="@color/text_white"/>
 
             <Button
                 style="?android:attr/buttonStyleSmall"

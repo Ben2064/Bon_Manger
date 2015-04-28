@@ -6,10 +6,13 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.os.CountDownTimer;
+import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.RotateAnimation;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -149,7 +152,7 @@ public class Timer_Fragment_PLACEHOLDER extends Fragment
         }
 
         @Override
-        public View getView(int position, View convertView, ViewGroup parent)
+        public View getView(final int position, View convertView, ViewGroup parent)
         {
             final TimerClass thisTimer = timerArray.get(position);
             View v = convertView;
@@ -167,29 +170,38 @@ public class Timer_Fragment_PLACEHOLDER extends Fragment
             //Sets the infos for this timer
             name.setText(nameArray.get(position));
             time.setText(timerArray.get(position).timeShown);
-            progress.setProgress(timerArray.get(position).percentComplete);
 
-            //Delete button listener + onClick
-            delButton.setOnClickListener(new View.OnClickListener() {
-                public void onClick(View v) {
-                    //get the index of this timer
-                    int index = timerArray.indexOf(thisTimer);
-                    //checks if it exists just in case
-                    if (index >= 0)
-                    {
-                        //remove the timer from the database and update
-                        timerArray.get(index).cancel();
-                        timerArray.remove(index);
-                        nameArray.remove(index);
-                        timeArray.remove(index);
-                        ((BaseAdapter) timerList.getAdapter()).notifyDataSetChanged();
-                    }
-                }
-            });
+            //Sets the progress for the circular bar, first two lines are a workaround
+            //for a known bug...
+            progress.setMax(0);
+            progress.setProgress(0);
+            progress.setMax((int) timerArray.get(position).totalTime);
+            progress.setProgress((int) timerArray.get(position).millisec);
 
-            return v;
+                //Delete button listener + onClick
+                delButton.setOnClickListener(new View.OnClickListener()
+
+                                             {
+                                                 public void onClick(View v) {
+                                                     //get the index of this timer
+                                                     int index = timerArray.indexOf(thisTimer);
+                                                     //checks if it exists just in case
+                                                     if (index >= 0) {
+                                                         //remove the timer from the database and update
+                                                         timerArray.get(index).cancel();
+                                                         timerArray.remove(index);
+                                                         nameArray.remove(index);
+                                                         timeArray.remove(index);
+                                                         ((BaseAdapter) timerList.getAdapter()).notifyDataSetChanged();
+                                                     }
+                                                 }
+                                             }
+
+                );
+
+                return v;
+            }
         }
-    }
 
     public class TimerClass extends CountDownTimer
     {
@@ -212,7 +224,7 @@ public class Timer_Fragment_PLACEHOLDER extends Fragment
         {
             //Updates time remaining and display!
             millisec = millisUntilFinished;
-            percentComplete = (int) (millisUntilFinished/totalTime);
+            percentComplete = (int) (millisec*100/totalTime);
 
             if (millisec < 60000) {
                 //show only seconds if < 1 min
@@ -220,8 +232,8 @@ public class Timer_Fragment_PLACEHOLDER extends Fragment
             }
             else if (millisec < 600000) {
                 //show min:sec if < 10 min
-                timeShown = String.format("%02d:%d20", TimeUnit.MILLISECONDS.toMinutes(millisec),
-                        TimeUnit.MILLISECONDS.toSeconds(millisec) - TimeUnit.HOURS.toSeconds(TimeUnit.MILLISECONDS.toMinutes(millisec)));
+                timeShown = String.format("%02d:%02d", TimeUnit.MILLISECONDS.toMinutes(millisec),
+                        TimeUnit.MILLISECONDS.toSeconds(millisec) - TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(millisec)));
             }
             else if (millisec < 3600000) {
                 //show only minutes if < 1 hour

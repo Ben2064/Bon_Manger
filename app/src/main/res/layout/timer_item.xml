@@ -17,16 +17,16 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:id="@+id/timerIcon"
-            android:indeterminate="false"
-            android:max="100"
-            android:progress="80"
+            android:max="50"
+            android:progress="40"
             android:progressDrawable="@drawable/circular_countdown"
-            android:layout_margin="5dp" />
+            android:layout_margin="2dp"
+            android:indeterminate="false" />
         <TextView
             android:id="@+id/timeLeft"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:text="12:25"
+            android:text="VOID"
             android:textColor="@color/text_white"
             android:textStyle="bold"
             android:gravity="center"
