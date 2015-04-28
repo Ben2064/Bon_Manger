@@ -50,7 +50,9 @@ public class Liste_Fragment_PLACEHOLDER extends Fragment {
         //We receive the informations of the ingredients list to add
         //Here we add it to memory
         for (int i=0;i<tempName.size();i++){
-            dbhelp.addIngredient(db,tempName.get(i),tempNum.get(i),tempMet.get(i));
+            Cursor c3=DBHelper.searchIngredient(db,tempName.get(i));
+            if (c3.getCount()==0)
+                dbhelp.addIngredient(db,tempName.get(i),tempNum.get(i),tempMet.get(i));
         }
     }
 
