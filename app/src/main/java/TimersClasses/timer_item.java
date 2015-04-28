@@ -1,8 +1,7 @@
-package Timer;
+package TimersClasses;
 
 
 import android.app.Activity;
-import android.app.ListActivity;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.view.View;
@@ -19,7 +18,7 @@ import lesdevoreurs.bon_manger.R;
 /**
  * Created by BenZen on 20/04/15.
  */
- /*
+/**
 public class timer_item extends Activity
 {
     ProgressBar timerBar;
@@ -128,4 +127,5 @@ public class timer_item extends Activity
     }
 
 
-}*/
+}
+ */

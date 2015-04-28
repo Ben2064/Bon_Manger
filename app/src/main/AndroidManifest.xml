@@ -27,6 +27,11 @@
             android:name = ".RecetteActivity"
             android:label="@string/app_name">
         </activity>
+
+        <activity
+            android:name="com.igor.map.TimerAlert"
+            android:theme="@android:style/Theme.Dialog">
+        </activity>
     </application>
 
 </manifest>

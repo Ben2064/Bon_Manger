@@ -17,12 +17,8 @@
             android:textAppearance="?android:attr/textAppearanceLarge"
             android:text="@string/timer_title"
             android:id="@+id/timerTitle"
-            android:layout_above="@+id/timerList"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true"
             android:layout_weight="0"
-            android:textSize="30dp"
-            android:autoText="true"
+            android:textSize="30sp"
             android:textIsSelectable="false"
             android:textColor="#ffffffff" />
 
@@ -30,11 +26,10 @@
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
             android:id="@+id/timerList"
-            android:layout_alignParentRight="true"
-            android:layout_alignParentEnd="true"
             android:fastScrollAlwaysVisible="false"
             android:layout_weight="6"
-            android:background="@color/box_dark" />
+            android:background="@color/box_dark"
+            android:nestedScrollingEnabled="false" />
 
         <TextView
             android:layout_width="match_parent"
@@ -43,8 +38,7 @@
             android:text="@string/timer_new"
             android:id="@+id/textView"
             android:layout_weight="0"
-            android:textColor="#ffffffff"
-            android:autoText="true" />
+            android:textColor="#ffffffff" />
 
         <LinearLayout
             android:orientation="horizontal"
@@ -68,7 +62,9 @@
                 android:id="@+id/editTimerName"
                 android:layout_weight="10"
                 android:text="@string/timer_greyout_name"
-                android:textColor="#ffafafaf" />
+                android:textColor="#ffafafaf"
+                android:enabled="false"
+                android:inputType="text" />
 
             <Button
                 style="?android:attr/buttonStyleSmall"
@@ -78,7 +74,7 @@
                 android:id="@+id/addBtn"
                 android:layout_weight="22"
                 android:background="@color/yep_green"
-                android:textSize="30dp"
+                android:textSize="30sp"
                 android:layout_margin="5dp" />
         </LinearLayout>
     </LinearLayout>
