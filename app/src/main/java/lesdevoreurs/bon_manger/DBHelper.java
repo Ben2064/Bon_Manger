@@ -256,7 +256,7 @@ public class DBHelper extends SQLiteOpenHelper {
 
     //GROCERY::add more of the same ingredients by passing the new number and the name of the ingredient
     public static void setIngredientsNumber(SQLiteDatabase db, String name, String number) {
-        String sql = "UPDATE "+ TABLE_GROCERY + " SET "+G_NUMBER+ " = '" + number + "' WHERE "+ G_NAME + " = '" + name.replace(" ","'")+"'";
+        String sql = "UPDATE "+ TABLE_GROCERY + " SET "+G_NUMBER+ " = '" + number + "' WHERE "+ G_NAME + " = '" + name.replace("'", "''")+"'";
         db.execSQL(sql);
     }
 
@@ -269,7 +269,7 @@ public class DBHelper extends SQLiteOpenHelper {
         db.execSQL(sql);
     }
     public static void setIngredientsMetric(SQLiteDatabase db, String name, String metric) {
-        String sql = "UPDATE "+ TABLE_GROCERY + " SET "+G_METRIC+ " = '" + metric + "' WHERE "+ G_NAME + " = '" + name.replace(" ","'")+"'";
+        String sql = "UPDATE "+ TABLE_GROCERY + " SET "+G_METRIC+ " = '" + metric + "' WHERE "+ G_NAME + " = '" + name.replace("'", "''")+"'";
         db.execSQL(sql);
     }
 }
