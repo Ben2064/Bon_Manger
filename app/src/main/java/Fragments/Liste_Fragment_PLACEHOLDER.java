@@ -16,6 +16,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.CursorAdapter;
 import android.widget.EditText;
 import android.widget.ListView;
@@ -96,10 +97,9 @@ public class Liste_Fragment_PLACEHOLDER extends Fragment {
         builder.setPositiveButton("Add", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
-                String CHANGECAMANNECRISSDEFOU = "ml";
                 Cursor c3=DBHelper.searchIngredient(db,inputField.getText().toString());
                 if (c3.getCount()==0){
-                    DBHelper.addIngredient(db, inputField.getText().toString(), "1", CHANGECAMANNECRISSDEFOU);
+                    DBHelper.addIngredient(db, inputField.getText().toString(), "1", " ");
                     update();
                 }
             }
@@ -226,6 +226,8 @@ public class Liste_Fragment_PLACEHOLDER extends Fragment {
             qt.setText(number);
             Button met = (Button) v.findViewById(R.id.metButton);
             met.setText(metrique);
+            CheckBox box = (CheckBox) v.findViewById(R.id.checkBox);
+            //box.setBackgroundColor(000000);
             titre.setText("- "+name);
             titre.setTextColor(Color.WHITE);
 

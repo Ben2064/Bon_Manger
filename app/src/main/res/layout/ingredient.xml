@@ -55,9 +55,10 @@
             android:layout_width="40dp"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
-            android:text=""
             android:id="@+id/checkBox"
-            android:onClick="onCheck" />
+            android:onClick="onCheck"
+            android:buttonTint="@color/box_light"
+            android:checked="false" />
 
 
     </LinearLayout>
