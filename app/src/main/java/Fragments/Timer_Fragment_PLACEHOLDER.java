@@ -174,12 +174,14 @@ public class Timer_Fragment_PLACEHOLDER extends Fragment
             //Put everything in the listview
             TextView name = (TextView) v.findViewById(R.id.timerName);
             TextView time = (TextView) v.findViewById(R.id.timeLeft);
+            TextView timeUnit = (TextView) v.findViewById(R.id.timeUnit);
             ProgressBar progress = (ProgressBar) v.findViewById(R.id.timerIcon);
             Button delButton = (Button) v.findViewById(R.id.timerDelete);
 
             //Sets the infos for this timer
             name.setText(timerArray.get(position).name);
             time.setText(timerArray.get(position).timeShown);
+            timeUnit.setText(timerArray.get(position).timeUnit);
 
             //Sets the progress for the circular bar, first two lines are a workaround
             //for a known bug...
@@ -218,6 +220,7 @@ public class Timer_Fragment_PLACEHOLDER extends Fragment
         public int percentComplete;
         public String timeShown;
         public String name = "VOID";
+        public String timeUnit = "VOID";
         private TimerClass thisTimer = this;
 
         @Override
@@ -245,20 +248,24 @@ public class Timer_Fragment_PLACEHOLDER extends Fragment
             if (millisec < 60000) {
                 //show only seconds if < 1 min
                 timeShown = String.format("%02d", TimeUnit.MILLISECONDS.toSeconds(millisec));
+                timeUnit = "sec";
             }
             else if (millisec < 600000) {
                 //show min:sec if < 10 min
                 timeShown = String.format("%02d:%02d", TimeUnit.MILLISECONDS.toMinutes(millisec),
                         TimeUnit.MILLISECONDS.toSeconds(millisec) - TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(millisec)));
+                timeUnit = "min:sec";
             }
             else if (millisec < 3600000) {
                 //show only minutes if < 1 hour
                 timeShown = String.format("%02d", TimeUnit.MILLISECONDS.toMinutes(millisec));
+                timeUnit = "min";
             }
             else {
                 //show hours:min
                 timeShown = String.format("%02d:%02d", TimeUnit.MILLISECONDS.toHours(millisec),
                         TimeUnit.MILLISECONDS.toMinutes(millisec) - TimeUnit.HOURS.toMinutes(TimeUnit.MILLISECONDS.toHours(millisec)));
+                timeUnit = "h:min";
             }
 
             //update the adapter

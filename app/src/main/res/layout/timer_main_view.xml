@@ -54,7 +54,7 @@
                 android:layout_height="wrap_content"
                 android:inputType="time"
                 android:id="@+id/editTimerTime"
-                android:layout_weight="20"
+                android:layout_weight="18"
                 android:text="@string/timer_greyout_time"
                 android:textColor="@color/text_white" />
 
@@ -73,7 +73,7 @@
                 android:layout_height="fill_parent"
                 android:text="@string/timer_new_button"
                 android:id="@+id/addBtn"
-                android:layout_weight="22"
+                android:layout_weight="21"
                 android:background="@color/yep_green"
                 android:textSize="30sp"
                 android:layout_margin="5dp" />

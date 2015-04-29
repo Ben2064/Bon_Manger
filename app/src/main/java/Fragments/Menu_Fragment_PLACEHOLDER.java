@@ -10,9 +10,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.DatePicker;
+import android.widget.ListView;
 import android.widget.Spinner;
 
 import java.util.ArrayList;
+import java.util.Map;
 
 import lesdevoreurs.bon_manger.DBHelper;
 import lesdevoreurs.bon_manger.R;
@@ -24,7 +28,12 @@ public class Menu_Fragment_PLACEHOLDER extends Fragment {
 
     ArrayAdapter<CharSequence> adapter;
     View rootView;
-    //Map<int, dailyMenu> menuBuckets;
+    DatePicker datePicker;
+    Button showButton;
+    ListView listMenu;
+    int currentDate;
+
+    Map<Integer, dailyMenu> menuBuckets;
 
     public Menu_Fragment_PLACEHOLDER() {
     }
@@ -51,86 +60,28 @@ public class Menu_Fragment_PLACEHOLDER extends Fragment {
         //if the view doesn't exist yet, create it
         if (rootView == null)
         rootView = inflater.inflate(R.layout.menu_layout_placeholder, container, false);
-/*
+
         //Init the objects assignation
-        if (showDayButton == null)
+        if (showButton == null)
         {
-            timerList = (ListView) view.findViewById(R.id.timerList);
-            addTime = (EditText) view.findViewById(R.id.editTimerTime);
-            addName = (EditText) view.findViewById(R.id.editTimerName);
-            addBtn = (Button) view.findViewById((R.id.addBtn));
+            datePicker = (DatePicker) rootView.findViewById((R.id.datePicker));
+            showButton = (Button) rootView.findViewById((R.id.showDay));
+            listMenu = (ListView) rootView.findViewById(R.id.listMenu);
 
-            addBtn.setOnClickListener(new View.OnClickListener() {
+            showButton.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View v) {
-                    //Convert the time data into milliseconds
-                    String timeText = String.valueOf(addTime.getText());
-                    String[] timeParts = timeText.split(":");
-
-                    int strToMillis;
-                    if (timeParts.length == 0)
-                    {
-                        strToMillis = 0;
-                    }
-                    else if (timeParts.length == 1)
-                    {
-                        strToMillis =
-                                Integer.parseInt(timeParts[0])*1000;
-                    }
-                    else if (timeParts.length == 2)
-                    {
-                        strToMillis =
-                                Integer.parseInt(timeParts[0])*60000
-                                        + Integer.parseInt(timeParts[1])*1000;
-                    }
-                    else
-                    {
-                        strToMillis =
-                                Integer.parseInt(timeParts[0])*3600000
-                                        + Integer.parseInt(timeParts[1])*60000
-                                        + Integer.parseInt(timeParts[2])*1000;
-                    }
-
-                    TimerClass realTimer = new TimerClass(strToMillis, 1000);
-
-                    //Add a timer with specified values
-                    timerArray.add(realTimer);
-                    timeArray.add(String.valueOf(addTime.getText()));
-                    nameArray.add(String.valueOf(addName.getText()));
-                    ((BaseAdapter) timerList.getAdapter()).notifyDataSetChanged();
-
-                    //start the timer
-                    realTimer.start();
+                    //Change the day
                 }
             });
         }
-*/
+
         return rootView;
     }
 
-    public class SpinnerActivity extends Activity implements AdapterView.OnItemSelectedListener {
-
-        public void onItemSelected(AdapterView<?> parent, View view,
-                                   int pos, long id) {
-            // An item was selected. You can retrieve the selected item using
-            // parent.getItemAtPosition(pos)
-        }
-
-        public void onNothingSelected(AdapterView<?> parent) {
-            // Another interface callback
-        }
-    }
-
+    //Contains all the info for one day's worth of menu
     public class dailyMenu
     {
         public dailyMenu ()
-        {
-
-        }
-    }
-
-    public class recipeItem
-    {
-        public recipeItem()
         {
 
         }

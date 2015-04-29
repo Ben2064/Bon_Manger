@@ -31,7 +31,20 @@
             android:textStyle="bold"
             android:gravity="center"
             android:layout_gravity="top|right"
-            android:textSize="15dip" />
+            android:textSize="15dip"
+            android:layout_marginBottom="10dp" />
+
+        <TextView
+            android:id="@+id/timeUnit"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:text="VOID"
+            android:textColor="@color/text_white"
+            android:textStyle="bold"
+            android:gravity="center"
+            android:layout_gravity="top|right"
+            android:textSize="15dip"
+            android:layout_marginTop="15dp" />
     </RelativeLayout>
 
     <TextView
