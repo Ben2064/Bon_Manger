@@ -165,9 +165,6 @@ public class MainActivity extends Activity {
         }
     }
 
-    /**
-     * Called when invalidateOptionsMenu() is triggered
-     */
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
         // if nav drawer is opened, hide the action items

@@ -36,7 +36,8 @@ import lesdevoreurs.bon_manger.DBHelper;
 import lesdevoreurs.bon_manger.R;
 
 /**
- * Created by virgile on 22/04/2015.
+ * Fragment to show recipe when selected in the cookbook. Can add items to the grocery list, add to menu(*) and remove from
+ * cookbook
  */
 
 public class LivreRecette_Fragment extends Fragment{
@@ -196,6 +197,8 @@ public class LivreRecette_Fragment extends Fragment{
             addBtn.setText("Add to my list");
             addBtn.setBackgroundColor(Color.GRAY);
             ingredients.addFooterView(addBtn);
+
+            //Adding items to grocery list
             addBtn.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -219,16 +222,8 @@ public class LivreRecette_Fragment extends Fragment{
                             }
                         }
 
-                        //INSÉRER LE CODE POUR LIER AVEC LISTE RECETTE ICI, POUR L'INSTANT PRINT LA LISTE
-                        for (int j = 0; j < getNameIngredients().size(); j++) {
-                            Log.d("Liste", "" + tempName.get(j) + " "
-                                    + tempNum.get(j));
-                        }
                         DBHelper dbh = new DBHelper(getActivity());
-                        Liste_Fragment_PLACEHOLDER.setListe(dbh, tempName, tempNum, tempMet);
-                        //resetNameIngredients();
-                        //resetNumberIngredients();
-                        //resetMetricIngredients();
+                        Liste_Fragment_PLACEHOLDER.setListe(dbh, tempName, tempNum, tempMet); //send to grocerylist
                     }
                 }
             });
@@ -238,7 +233,7 @@ public class LivreRecette_Fragment extends Fragment{
             btnDelete.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if (dbh.searchBookRecipe(db,id).getCount()==0)
+                    if (dbh.searchBookRecipe(db,id).getCount()==0)  //just to make sure
                     {
                         btnDelete.setVisibility(view.GONE);
                     }else
@@ -265,7 +260,7 @@ public class LivreRecette_Fragment extends Fragment{
                 }
             });
 
-            //Add to menu
+            //Add to menu, not implemented yet (deluxe version only!)
             btnMenu.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -310,76 +305,6 @@ public class LivreRecette_Fragment extends Fragment{
 
     public ArrayList<String> getMetricIngredients() { return metricIngredients; }
 
-    public void resetNameIngredients() {
-        nameIngredients = new ArrayList<String>();
-    }
-
-    public void resetNumberIngredients() {
-        numberIngredients = new ArrayList<String>();
-    }
-
-    public void resetMetricIngredients() { metricIngredients = new ArrayList<String>();}
- /*   public class MyAdapter extends BaseAdapter {
-
-        ArrayList<String> nom;
-        ArrayList<String> nombre;
-        LayoutInflater inflater;
-        CheckBox check;
-
-        public MyAdapter(ArrayList<String> n, ArrayList<String> nb) {
-            inflater = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-
-            this.nom = n;
-            this.nombre = nb;
-        }
-
-        @Override
-        public int getCount() {
-            return nom.size();
-        }
-
-        @Override
-        public Object getItem(int position) {
-            return null;
-        }
-
-        @Override
-        public long getItemId(int position) {
-            return position;
-        }
-
-        @Override
-        public View getView(final int position, View convertView, ViewGroup parent) {
-
-            View v = convertView;
-
-            if (v == null) {
-                v = inflater.inflate(R.layout.research_recipe_item, parent, false);
-            }
-
-            //Put everything in the listview
-            TextView titre = (TextView) v.findViewById(R.id.textI); //Name
-            titre.setText(nombre.get(position) + " " + nom.get(position));
-
-            //Store if checkbox are checked or not in the position of the ingredient
-            check = (CheckBox) v.findViewById(R.id.checkI); //Name
-            check.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View arg0) {
-                    if (!checkList[position])
-                        checkList[position] = true;
-                    else
-                        checkList[position] = false;
-                }
-            });
-
-            //If nothing found
-            if (nom.get(position).equals("Nothing found"))
-                check.setTextIsSelectable(false);
-
-            return v;
-        }
-    }*/
 
     /**
      * Put everything in listview
@@ -446,36 +371,5 @@ public class LivreRecette_Fragment extends Fragment{
 
         }
     }
-
-/*
-        //Load and put image
-    public class DownloadImageTask extends AsyncTask<Void, Void, Drawable> {
-
-        String imagePath;
-        Drawable imageDraw = null;
-
-        public DownloadImageTask() {
-        }
-
-        public DownloadImageTask(String imagePath) {
-            this.imagePath = imagePath;
-        }
-
-        @Override
-        protected Drawable doInBackground(Void... params) {
-            //Load image
-            HttpClient httpClient = new DefaultHttpClient();
-            HttpGet http = new HttpGet(imagePath);
-            HttpResponse response = null;
-            try {
-                response = httpClient.execute(http);
-                InputStream is = response.getEntity().getContent();
-                imageDraw = Drawable.createFromStream(is, "src");
-            } catch (IOException e) {
-                Log.d("Imageload", "Problème avec load d'image" + e);
-            }
-            return imageDraw;
-        }
-    }*/
 }
 

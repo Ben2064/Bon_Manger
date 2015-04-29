@@ -1,7 +1,11 @@
 package SlidingMenu;
 
 /**
- * Created by virgile on 15/04/2015.
+ * Used the following tutorial and provided code:
+ * http://www.androidhive.info/2013/11/android-sliding-menu-using-navigation-drawer/
+ *
+ *
+ * Items to populate the menu
  */
 public class NavDrawerItem {
 
