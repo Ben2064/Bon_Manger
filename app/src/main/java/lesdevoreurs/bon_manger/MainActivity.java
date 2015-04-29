@@ -65,6 +65,7 @@ public class MainActivity extends Activity {
     private ArrayList<NavDrawerItem> navDrawerItems;
     private NavDrawerListAdapter adapter;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -124,14 +125,12 @@ public class MainActivity extends Activity {
         ) {
             public void onDrawerClosed(View view) {
                 getActionBar().setTitle(mTitle);
-                //timers.setCount(Integer.toString(Timer_Fragment_PLACEHOLDER.getNumberOfTimer())); //update timers count
                 // calling onPrepareOptionsMenu() to show action bar icons
                 invalidateOptionsMenu();
             }
 
             public void onDrawerOpened(View drawerView) {
                 getActionBar().setTitle(mDrawerTitle);
-                //timers.setCount(Integer.toString(Timer_Fragment_PLACEHOLDER.getNumberOfTimer())); //update timer count
                 // calling onPrepareOptionsMenu() to hide action bar icons
                 invalidateOptionsMenu();
             }
@@ -149,10 +148,7 @@ public class MainActivity extends Activity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_main, menu);
-       // MenuItem searchItem = menu.findItem(R.id.action_search);
-       // SearchView searchView = (SearchView) MenuItemCompat.getActionView(searchItem);
         return true;
     }
 
@@ -164,12 +160,6 @@ public class MainActivity extends Activity {
         }
         // Handle action bar actions click
         switch (item.getItemId()) {
-            //case R.id.action_settings:
-             //   return true;
-            //case R.id.action_search:
-                //acttioooonnnnssss smooothhtthaaaffukcaa
-                //openSearch();
-              //  return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
@@ -182,7 +172,8 @@ public class MainActivity extends Activity {
     public boolean onPrepareOptionsMenu(Menu menu) {
         // if nav drawer is opened, hide the action items
         boolean drawerOpen = mDrawerLayout.isDrawerOpen(mDrawerList);
-        //menu.findItem(R.id.action_settings).setVisible(!drawerOpen);
+        timersDrawer.setCount(Integer.toString(Timer_Fragment_PLACEHOLDER.getNumberOfTimer()));
+        adapter.notifyDataSetChanged();
         return super.onPrepareOptionsMenu(menu);
     }
 
@@ -210,6 +201,8 @@ public class MainActivity extends Activity {
         // Pass any configuration change to the drawer toggls
         mDrawerToggle.onConfigurationChanged(newConfig);
     }
+
+
 
     /**
      * Diplaying fragment view for selected nav drawer list item
@@ -258,8 +251,7 @@ public class MainActivity extends Activity {
                 mDrawerList.setSelection(position);
                 setTitle(navMenuTitles[position]);
                 mDrawerLayout.closeDrawer(mDrawerList);
-           /* if (intent !=null) {
-                startActivity(intent);*/
+
             } else { //do not addToBackStack -> was causing blank page
                 FragmentManager fragmentManager = getFragmentManager();
                 fragmentManager.beginTransaction()

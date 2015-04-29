@@ -24,6 +24,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.concurrent.TimeUnit;
 
+import lesdevoreurs.bon_manger.MainActivity;
 import lesdevoreurs.bon_manger.R;
 
 /**
@@ -50,6 +51,7 @@ public class Timer_Fragment_PLACEHOLDER extends Fragment
     {
         return timerArray.size();
     }
+
 
     @Nullable
     @Override
