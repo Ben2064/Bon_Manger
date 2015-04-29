@@ -7,61 +7,30 @@
     <LinearLayout
         android:orientation="horizontal"
         android:layout_width="fill_parent"
-        android:layout_height="40dp">
+        android:layout_height="150dp"
+        android:background="@color/box_light"
+        android:layout_margin="5dp">
 
-        <FrameLayout
+        <DatePicker
+            android:layout_width="wrap_content"
+            android:layout_height="150dp"
+            android:id="@+id/datePicker"
+            android:calendarViewShown="false"
+            android:datePickerMode="spinner" />
+
+        <Button
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_weight="15"></FrameLayout>
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:text="@string/calendar_title"
-            android:id="@+id/calendar_text_title"
-            android:layout_gravity="center_horizontal"
-            android:textColor="@color/text_white"
-            android:textSize="30dp"
-            android:textAlignment="center"
-            android:textIsSelectable="true"
-            android:layout_weight="10" />
-
-        <FrameLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="15"></FrameLayout>
+            android:text="Show"
+            android:id="@+id/showDay"
+            android:layout_margin="30dp"
+            android:background="@color/yep_green" />
     </LinearLayout>
 
-    <LinearLayout
-        android:orientation="horizontal"
+    <ListView
         android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginLeft="50dp"
-        android:layout_marginRight="50dp"
-        android:layout_marginTop="10dp">
-
-        <Spinner
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:id="@+id/calendar_date_select"
-            android:spinnerMode="dropdown"
-            android:contentDescription="@string/calendar_date"
-            android:drawSelectorOnTop="true"/>
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:orientation="horizontal"
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:layout_margin="10dp"
-        android:background="@color/box_dark">
-
-        <GridView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:id="@+id/gridView" />
-    </LinearLayout>
+        android:layout_height="match_parent"
+        android:id="@+id/listMenu"
+        android:headerDividersEnabled="false" />
 
 </LinearLayout>

@@ -22,8 +22,8 @@ import lesdevoreurs.bon_manger.R;
  */
 public class Menu_Fragment_PLACEHOLDER extends Fragment {
 
-    Spinner spinner;
     ArrayAdapter<CharSequence> adapter;
+    View rootView;
 
     public Menu_Fragment_PLACEHOLDER() {
     }
@@ -47,14 +47,62 @@ public class Menu_Fragment_PLACEHOLDER extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
-        View rootView = inflater.inflate(R.layout.menu_layout_placeholder, container, false);
+        //if the view doesn't exist yet, create it
+        if (rootView == null)
+        rootView = inflater.inflate(R.layout.menu_layout_placeholder, container, false);
+/*
+        //Init the objects assignation
+        if (showDayButton == null)
+        {
+            timerList = (ListView) view.findViewById(R.id.timerList);
+            addTime = (EditText) view.findViewById(R.id.editTimerTime);
+            addName = (EditText) view.findViewById(R.id.editTimerName);
+            addBtn = (Button) view.findViewById((R.id.addBtn));
 
-        //Crée les items du spinner, ceci est du placeholder material solide
-        spinner = (Spinner) rootView.findViewById(R.id.calendar_date_select);
-        adapter = ArrayAdapter.createFromResource(getActivity(), R.array.rolldown_date, android.R.layout.simple_spinner_item);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinner.setAdapter(adapter);
+            addBtn.setOnClickListener(new View.OnClickListener() {
+                public void onClick(View v) {
+                    //Convert the time data into milliseconds
+                    String timeText = String.valueOf(addTime.getText());
+                    String[] timeParts = timeText.split(":");
 
+                    int strToMillis;
+                    if (timeParts.length == 0)
+                    {
+                        strToMillis = 0;
+                    }
+                    else if (timeParts.length == 1)
+                    {
+                        strToMillis =
+                                Integer.parseInt(timeParts[0])*1000;
+                    }
+                    else if (timeParts.length == 2)
+                    {
+                        strToMillis =
+                                Integer.parseInt(timeParts[0])*60000
+                                        + Integer.parseInt(timeParts[1])*1000;
+                    }
+                    else
+                    {
+                        strToMillis =
+                                Integer.parseInt(timeParts[0])*3600000
+                                        + Integer.parseInt(timeParts[1])*60000
+                                        + Integer.parseInt(timeParts[2])*1000;
+                    }
+
+                    TimerClass realTimer = new TimerClass(strToMillis, 1000);
+
+                    //Add a timer with specified values
+                    timerArray.add(realTimer);
+                    timeArray.add(String.valueOf(addTime.getText()));
+                    nameArray.add(String.valueOf(addName.getText()));
+                    ((BaseAdapter) timerList.getAdapter()).notifyDataSetChanged();
+
+                    //start the timer
+                    realTimer.start();
+                }
+            });
+        }
+*/
         return rootView;
     }
 

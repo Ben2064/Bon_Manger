@@ -90,7 +90,7 @@ public class MainActivity extends Activity {
         // Recette en cours
         navDrawerItems.add(new NavDrawerItem(navMenuTitles[2], navMenuIcons.getResourceId(2, -1)));
         // Timers ----- le counter peut permettre d'afficher le nomber de timer qui sont actifs mettons
-        navDrawerItems.add(new NavDrawerItem(navMenuTitles[3], navMenuIcons.getResourceId(3, -1), true, "22"));
+        navDrawerItems.add(new NavDrawerItem(navMenuTitles[3], navMenuIcons.getResourceId(3, -1), true, Integer.toString(Timer_Fragment_PLACEHOLDER.getNumberOfTimer())));
         // Liste d'epicerie
         navDrawerItems.add(new NavDrawerItem(navMenuTitles[4], navMenuIcons.getResourceId(4, -1)));
         // Menu

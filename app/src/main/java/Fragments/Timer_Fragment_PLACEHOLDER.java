@@ -41,11 +41,14 @@ public class Timer_Fragment_PLACEHOLDER extends Fragment
     TextView addTime, addName;
     Button addBtn;
     View view;
-    ArrayList<TimerClass> timerArray = new ArrayList<TimerClass>();
-    ArrayList<String> nameArray = new ArrayList<String>();
-    ArrayList<String> timeArray = new ArrayList<String>();
+    static ArrayList<TimerClass> timerArray = new ArrayList<TimerClass>();
 
     public Timer_Fragment_PLACEHOLDER(){};
+
+    public static int getNumberOfTimer()
+    {
+        return timerArray.size();
+    }
 
     @Nullable
     @Override
@@ -93,12 +96,10 @@ public class Timer_Fragment_PLACEHOLDER extends Fragment
                               + Integer.parseInt(timeParts[2])*1000;
                     }
 
-                    TimerClass realTimer = new TimerClass(strToMillis, 1000);
+                    TimerClass realTimer = new TimerClass(strToMillis, 1000, String.valueOf(addName.getText()));
 
                     //Add a timer with specified values
                     timerArray.add(realTimer);
-                    timeArray.add(String.valueOf(addTime.getText()));
-                    nameArray.add(String.valueOf(addName.getText()));
                     ((BaseAdapter) timerList.getAdapter()).notifyDataSetChanged();
 
                     //start the timer
@@ -107,7 +108,7 @@ public class Timer_Fragment_PLACEHOLDER extends Fragment
             });
         }
 
-        timerList.setAdapter(new TimerAdapter(timerArray, timeArray, nameArray));
+        timerList.setAdapter(new TimerAdapter(timerArray));
 
         return view;
     }
@@ -121,17 +122,13 @@ public class Timer_Fragment_PLACEHOLDER extends Fragment
     {
 
         ArrayList<TimerClass> timerArray;
-        ArrayList<String> nameArray;
-        ArrayList<String> timeArray;
         LayoutInflater inflater;
 
-        public TimerAdapter(ArrayList<TimerClass> timerArray, ArrayList<String> timeArray, ArrayList<String> nameArray)
+        public TimerAdapter(ArrayList<TimerClass> timerArray)
         {
             inflater = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
             this.timerArray = timerArray;
-            this.timeArray = timeArray;
-            this.nameArray = nameArray;
         }
 
         @Override
@@ -168,7 +165,7 @@ public class Timer_Fragment_PLACEHOLDER extends Fragment
             Button delButton = (Button) v.findViewById(R.id.timerDelete);
 
             //Sets the infos for this timer
-            name.setText(nameArray.get(position));
+            name.setText(timerArray.get(position).name);
             time.setText(timerArray.get(position).timeShown);
 
             //Sets the progress for the circular bar, first two lines are a workaround
@@ -190,8 +187,6 @@ public class Timer_Fragment_PLACEHOLDER extends Fragment
                                                          //remove the timer from the database and update
                                                          timerArray.get(index).cancel();
                                                          timerArray.remove(index);
-                                                         nameArray.remove(index);
-                                                         timeArray.remove(index);
                                                          ((BaseAdapter) timerList.getAdapter()).notifyDataSetChanged();
                                                      }
                                                  }
@@ -209,14 +204,22 @@ public class Timer_Fragment_PLACEHOLDER extends Fragment
         public long millisec;
         public int percentComplete;
         public String timeShown;
-        TimerClass thisTimer = this;
+        public String name = "VOID";
+        private TimerClass thisTimer = this;
 
-        public TimerClass(long millisInFuture, long countDownInterval)
+        @Override
+        public String toString()
+        {
+            return this.name;
+        }
+
+        public TimerClass(long millisInFuture, long countDownInterval, String name)
         {
             super(millisInFuture, countDownInterval);
             this.totalTime = millisInFuture;
             this.millisec = millisInFuture;
             this.timeShown = Integer.toString((int) millisInFuture);
+            this.name = name;
         }
 
         @Override
@@ -258,7 +261,7 @@ public class Timer_Fragment_PLACEHOLDER extends Fragment
             // Title and message + button
             alertDialogBuilder.setTitle("TimersClasses");
             alertDialogBuilder
-                    .setMessage("A timer has just finished!")
+                    .setMessage("The timer \"" + thisTimer.toString() + "\" has just finished!")
                     .setCancelable(false)
                     .setNeutralButton("OK", new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int id) {
@@ -271,8 +274,6 @@ public class Timer_Fragment_PLACEHOLDER extends Fragment
                             {
                                 //remove the finished timer from the database and update
                                 timerArray.remove(index);
-                                nameArray.remove(index);
-                                timeArray.remove(index);
                                 ((BaseAdapter) timerList.getAdapter()).notifyDataSetChanged();
                             }
                         }
