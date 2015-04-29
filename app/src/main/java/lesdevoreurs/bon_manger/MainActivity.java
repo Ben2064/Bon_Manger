@@ -48,9 +48,9 @@ public class MainActivity extends Activity {
 
     private boolean first_fragment;
 
-    private NavDrawerItem timersDrawer;
+    private static NavDrawerItem timersDrawer;
 
-    public NavDrawerItem getTimersDrawer(){return this.timersDrawer;}
+    public static NavDrawerItem getTimersDrawer(){return timersDrawer;}
 
     // nav drawer title
     private CharSequence mDrawerTitle;

@@ -24,6 +24,7 @@ public class Menu_Fragment_PLACEHOLDER extends Fragment {
 
     ArrayAdapter<CharSequence> adapter;
     View rootView;
+    //Map<int, dailyMenu> menuBuckets;
 
     public Menu_Fragment_PLACEHOLDER() {
     }
@@ -116,6 +117,22 @@ public class Menu_Fragment_PLACEHOLDER extends Fragment {
 
         public void onNothingSelected(AdapterView<?> parent) {
             // Another interface callback
+        }
+    }
+
+    public class dailyMenu
+    {
+        public dailyMenu ()
+        {
+
+        }
+    }
+
+    public class recipeItem
+    {
+        public recipeItem()
+        {
+
         }
     }
 }

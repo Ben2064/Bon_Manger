@@ -21,6 +21,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.concurrent.TimeUnit;
 
 import lesdevoreurs.bon_manger.R;
@@ -99,7 +100,19 @@ public class Timer_Fragment_PLACEHOLDER extends Fragment
                     TimerClass realTimer = new TimerClass(strToMillis, 1000, String.valueOf(addName.getText()));
 
                     //Add a timer with specified values
-                    timerArray.add(realTimer);
+                    boolean added = false;
+                    if(timerArray.size() != 0) {
+                        for (TimerClass c : timerArray) {
+                            if (realTimer.totalTime <= c.millisec) {
+                                timerArray.add(timerArray.indexOf(c), realTimer);
+                                added = true;
+                                break;
+                            }
+                        }
+                    }
+                    if (added == false)
+                        timerArray.add(realTimer);
+
                     ((BaseAdapter) timerList.getAdapter()).notifyDataSetChanged();
 
                     //start the timer
@@ -194,7 +207,7 @@ public class Timer_Fragment_PLACEHOLDER extends Fragment
 
                 );
 
-                return v;
+            return v;
             }
         }
 
