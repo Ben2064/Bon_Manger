@@ -301,4 +301,12 @@ public class MainActivity extends Activity {
         Liste_Fragment_PLACEHOLDER fragment=Liste_Fragment_PLACEHOLDER.getInstance();
         fragment.check(ing.substring(2));
     }
+    public void onAdd(View vi){
+        Liste_Fragment_PLACEHOLDER fragment=Liste_Fragment_PLACEHOLDER.getInstance();
+        fragment.add();
+    }
+    public void onDel(View vi){
+        Liste_Fragment_PLACEHOLDER fragment=Liste_Fragment_PLACEHOLDER.getInstance();
+        fragment.del();
+    }
 };

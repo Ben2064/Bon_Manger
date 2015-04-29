@@ -12,6 +12,23 @@
         android:id="@+id/textView4"
         android:layout_gravity="center_horizontal"
         android:textColor="@color/text_white" />
+
+    <Button
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="Add Ingredient"
+        android:id="@+id/addButton"
+        android:layout_gravity="center_horizontal"
+        android:onClick="onAdd" />
+
+    <Button
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="Delete Checked Items"
+        android:id="@+id/delCheck"
+        android:layout_gravity="center_horizontal"
+        android:onClick="onDel" />
+
     <ListView
         android:layout_width="match_parent"
         android:layout_height="match_parent"

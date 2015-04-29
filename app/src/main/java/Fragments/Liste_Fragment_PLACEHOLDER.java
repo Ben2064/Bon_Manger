@@ -82,55 +82,40 @@ public class Liste_Fragment_PLACEHOLDER extends Fragment {
         update();
     }
 
-    @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        inflater.inflate(R.menu.add_ingredient, menu);
-        inflater.inflate(R.menu.delchecked, menu);
-        super.onCreateOptionsMenu(menu, inflater);
-
-    }
-
     public static Liste_Fragment_PLACEHOLDER getInstance(){
         if (instance==null)
             instance= new Liste_Fragment_PLACEHOLDER();
         return instance;
     }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.action_add_ingredient:
-                AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-                builder.setTitle("Add an ingredient");
-                builder.setMessage("What do you need to buy?");
-                final EditText inputField = new EditText(getActivity());
-                builder.setView(inputField);
-                builder.setPositiveButton("Add", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        String CHANGECAMANNECRISSDEFOU = "ml";
-                        Cursor c3=DBHelper.searchIngredient(db,inputField.getText().toString());
-                        if (c3.getCount()==0){
-                            DBHelper.addIngredient(db, inputField.getText().toString(), "1", CHANGECAMANNECRISSDEFOU);
-                            update();
-                        }
-                    }
-                });
-
-                builder.setNegativeButton("Cancel", null);
-                builder.create().show();
-                return true;
-            case R.id.action_del_checked:
-                for (int i=0;i<ings.size();i++){
-                    DBHelper.deleteIngredient(db,ings.get(i));
+    public void add(){
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        builder.setTitle("Add an ingredient");
+        builder.setMessage("What do you need to buy?");
+        final EditText inputField = new EditText(getActivity());
+        builder.setView(inputField);
+        builder.setPositiveButton("Add", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                String CHANGECAMANNECRISSDEFOU = "ml";
+                Cursor c3=DBHelper.searchIngredient(db,inputField.getText().toString());
+                if (c3.getCount()==0){
+                    DBHelper.addIngredient(db, inputField.getText().toString(), "1", CHANGECAMANNECRISSDEFOU);
+                    update();
                 }
-                ings=new ArrayList<String>();
-                update();
-                return true;
-            default:
-                return false;
-        }
+            }
+        });
+
+        builder.setNegativeButton("Cancel", null);
+        builder.create().show();
     }
+    public void del(){
+        for (int i=0;i<ings.size();i++){
+            DBHelper.deleteIngredient(db,ings.get(i));
+        }
+        ings=new ArrayList<String>();
+        update();
+    }
+
     public void quantity(String texte){
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         builder.setTitle("Quantity");
