@@ -1,9 +1,11 @@
 package Adapter;
 
 /**
- * Created by virgile
  *Used the following tutorial and provided code:
  * http://www.androidhive.info/2013/11/android-sliding-menu-using-navigation-drawer/
+ *
+ *
+ * Adapter to help populate the menu with NavDrawerItems
  */
 
 import android.app.Activity;

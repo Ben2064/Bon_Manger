@@ -31,7 +31,8 @@ import lesdevoreurs.bon_manger.DBHelper;
 import lesdevoreurs.bon_manger.R;
 
 /**
- * Created by virgile on 22/04/2015.
+ * Fragment for the cookbook. Shows the liked recipes in the form of a list. Also allows users to
+ * click a recipe to show it<s informations
  */
 public class LivreListe_Fragment extends Fragment {
     static ProgressDialog progressDialog;
@@ -42,11 +43,8 @@ public class LivreListe_Fragment extends Fragment {
 
 
     //UI elements
-    //Button btnSearch;
-    //Button btnEff;
     Button btnLoad;
     Button btnBack;
-    //EditText edR;
     ListView listv;
     RatingBar rate;
     Spinner spin;
@@ -72,7 +70,6 @@ public class LivreListe_Fragment extends Fragment {
         db = dbh.getWritableDatabase();
 
         //Add recipe
-        //byte[] imageDB = imageSQL(image);
         Log.d("Fromrecherche",image);
         if(DBHelper.searchBookRecipe(db,id).getCount() == 0) {
             DBHelper.addRecipe(db, id, titre, image, description,
@@ -136,9 +133,6 @@ public class LivreListe_Fragment extends Fragment {
         else
             cookbook.setText("CookBook");
 
-        /*spin = (Spinner) getView().findViewById((R.id.nbp));
-        spin.setSelection(3);
-        spin.setVisibility(view.GONE);*/
         rate = (RatingBar) getView().findViewById(R.id.myRatingBar);
         listv = (ListView) getView().findViewById(R.id.activity_list);
 
@@ -208,7 +202,6 @@ public class LivreListe_Fragment extends Fragment {
             titre.setText(title);
             TextView ct = (TextView) v.findViewById(R.id.cuisineRechRecette);
             ct.setText("Cook: "+cookTime+" min");
-           // ct.setWidth(120);
             ct.setLayoutParams(new TableLayout.LayoutParams(60,60,5));
             TextView tt = (TextView) v.findViewById(R.id.subcategorieRechRecette);
             tt.setText("Total: "+totalTime + " min");
