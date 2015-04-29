@@ -1,8 +1,8 @@
 package Adapter;
 
 /**
- * Created by virgile on 16/04/2015.
- *
+ * Created by virgile
+ *Used the following tutorial and provided code:
  * http://www.androidhive.info/2013/11/android-sliding-menu-using-navigation-drawer/
  */
 
@@ -20,10 +20,6 @@ import lesdevoreurs.bon_manger.R;
 
 import java.util.ArrayList;
 
-
-/**
- * Created by virgile on 15/04/2015.
- */
 
 public class NavDrawerListAdapter extends BaseAdapter {
 

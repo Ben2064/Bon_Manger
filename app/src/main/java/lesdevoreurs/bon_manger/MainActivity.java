@@ -205,6 +205,9 @@ public class MainActivity extends Activity {
 
     /**
      * Diplaying fragment view for selected nav drawer list item
+     *
+     * Drawer menu made using code and tutorial from http://www.androidhive.info/2013/11/android-sliding-menu-using-navigation-drawer/
+     *
      */
     private void displayView(int position) {
         // update the main content by replacing fragments

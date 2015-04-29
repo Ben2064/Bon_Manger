@@ -93,7 +93,7 @@ public class LivreListe_Fragment extends Fragment {
         db = dbh.getWritableDatabase();
 
         //Add recipe
-        //byte[] imageDB = imageSQL(image);
+
         DBHelper.addRecipe(db, id, titre, image, description,
                 tempsCuisson, tempsTotal, instructions);
 
@@ -136,82 +136,44 @@ public class LivreListe_Fragment extends Fragment {
         else
             cookbook.setText("CookBook");
 
-        if (spin == null) {
-            // btnSearch = (Button) getView().findViewById(R.id.docherche);
-            // btnEff = (Button) getView().findViewById(R.id.doefface);
-            // edR = (EditText) getView().findViewById(R.id.cherche);
-            spin = (Spinner) getView().findViewById((R.id.nbp));
-            spin.setSelection(3);
-            spin.setVisibility(view.GONE);
-            rate = (RatingBar) getView().findViewById(R.id.myRatingBar);
-            listv = (ListView) getView().findViewById(R.id.activity_list);
+        /*spin = (Spinner) getView().findViewById((R.id.nbp));
+        spin.setSelection(3);
+        spin.setVisibility(view.GONE);*/
+        rate = (RatingBar) getView().findViewById(R.id.myRatingBar);
+        listv = (ListView) getView().findViewById(R.id.activity_list);
 
 
-            //Load another page of result
-            btnLoad = new Button(getActivity());
-            btnLoad.setText("Next Page");
-            btnLoad.setTextColor(Color.LTGRAY);
-            btnLoad.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View arg0) {
+        //Load another page of result
+        btnLoad = new Button(getActivity());
+        btnLoad.setText("Next Page");
+        btnLoad.setTextColor(Color.LTGRAY);
+        btnLoad.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View arg0) {
 
-                  /*  // Starting new async task
-                    numPage++;
-                    new DownloadWebTask().execute();
-
-                    //Hide keyboard after hit the button
-                    InputMethodManager inputManager = (InputMethodManager)
-                            getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
-
-                    inputManager.hideSoftInputFromWindow(getActivity().getCurrentFocus().getWindowToken(),
-                            InputMethodManager.HIDE_NOT_ALWAYS);*/
-                }
-            });
-            //listv.addFooterView(btnLoad);
-
-            //Load previous results
-           /* btnBack = new Button(getActivity());
-            btnBack.setText("Previous Page");
-            btnBack.setTextColor(Color.LTGRAY);
-            btnBack.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View arg0) {
-
-                    // Starting new async task
-                    numPage--;
-                    /*new DownloadWebTask().execute();
-
-                    //Hide keyboard after hit the button
-                    InputMethodManager inputManager = (InputMethodManager)
-                            getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
-
-                    inputManager.hideSoftInputFromWindow(getActivity().getCurrentFocus().getWindowToken(),
-                            InputMethodManager.HIDE_NOT_ALWAYS);
-                }
-            });
-            listv.addHeaderView(btnBack);
-            btnBack.setVisibility(View.GONE);*/
-
-            adapter = new MyAdapter(getActivity(), cursor1);
-            listv.setAdapter(adapter);
-
-            //Open recipe onclick
-            listv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                @Override
-                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+            }
+        });
 
 
-                    View slcRecette = listv.getChildAt(position);
-                    TextView iRecette = (TextView)slcRecette.findViewById(R.id.categorieRechRecette);
-                    String idRecette = iRecette.getText().toString();
-                    System.out.println("ss"+idRecette);
-                    FragmentManager fragmentManager = getFragmentManager();
-                    fragmentManager.beginTransaction().replace(R.id.frame_container, LivreRecette_Fragment.newInstance(
-                            idRecette)).addToBackStack("rechercheBACK").commit();
-                }
+        adapter = new MyAdapter(getActivity(), cursor1);
+        listv.setAdapter(adapter);
 
-            });
-        }
+        //Open recipe onclick
+        listv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+
+                View slcRecette = listv.getChildAt(position);
+                TextView iRecette = (TextView)slcRecette.findViewById(R.id.categorieRechRecette);
+                String idRecette = iRecette.getText().toString();
+                System.out.println("ss"+idRecette);
+                FragmentManager fragmentManager = getFragmentManager();
+                fragmentManager.beginTransaction().replace(R.id.frame_container, LivreRecette_Fragment.newInstance(
+                        idRecette)).addToBackStack("rechercheBACK").commit();
+            }
+
+        });
     }
 
     public class MyAdapter extends CursorAdapter {

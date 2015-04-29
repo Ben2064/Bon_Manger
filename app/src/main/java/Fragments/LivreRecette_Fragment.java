@@ -162,7 +162,6 @@ public class LivreRecette_Fragment extends Fragment{
             });
 
             //Show only title and ingredients
-            //btIng = (Button) getView().findViewById(R.id.ingR);
             btIng.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -178,7 +177,7 @@ public class LivreRecette_Fragment extends Fragment{
             });
 
             //Show only title and instructions
-            //btIns = (Button) getView().findViewById(R.id.insR);
+
             btIns.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -198,12 +197,8 @@ public class LivreRecette_Fragment extends Fragment{
             addBtn.setBackgroundColor(Color.GRAY);
             ingredients.addFooterView(addBtn);
 
-            //Start searching API
-           /* final DownloadWebTask web = new DownloadWebTask();
-            web.execute();*/
 
             //Remove from cookbook
-            //btnDelete = (Button) getView().findViewById(R.id.btnFav);
             btnDelete.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -217,74 +212,30 @@ public class LivreRecette_Fragment extends Fragment{
                         Toast.makeText(getActivity(), "Deleted from my cookbook", Toast.LENGTH_LONG).show();
                     }
 
-                    //Getting info
-                   /* final String titre = web.getTitre();
-                    final String imagePath = web.getImagePath();
-                    final String description = web.getDesc();
-                    final String tempsCuisson = web.getCuisson();
-                    final String tempsTotal = web.getTemps();
-                    final String instructions = web.getInstructions();
-                    final ArrayList<String> ingreNom = web.getIname();
-                    final ArrayList<String> ingreNum = web.getInumber();
-                    final String id = web.getID();
-                    Livre_Fragment_PLACEHOLDER.receiveRecipe(titre, imagePath, description, tempsCuisson, tempsTotal,
-                            instructions, ingreNom, ingreNum, id);*/
-
-
                 }
             });
 
             //Add to current recipe
-            //btnMake = (Button) getView().findViewById(R.id.btnMake);
             btnMake.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     Toast.makeText(getActivity(), "Added to current recipe", Toast.LENGTH_LONG).show();
 
-                    //Getting info
-                   /* final String titre = web.getTitre();
-                    final String imagePath = web.getImagePath();
-                    final String description = web.getDesc();
-                    final String tempsCuisson = web.getCuisson();
-                    final String tempsTotal = web.getTemps();
-                    final String instructions = web.getInstructions();
-                    final ArrayList<String> ingreNom = web.getIname();
-                    final ArrayList<String> ingreNum = web.getInumber();
-                    final String id = web.getID();
-                    DBHelper dbh = new DBHelper(getActivity());
-                    CurrentRecipe_Fragment.receiveRecipe(dbh, titre, imagePath, description, tempsCuisson, tempsTotal,
-                            instructions, ingreNom, ingreNum, id);*/
 
                     DBHelper dbh = new DBHelper(getActivity());
-                    //DBHelper dbh = new DBHelper(getActivity());
+
                     CurrentRecipe_Fragment.receiveRecipe(dbh, t, i, d, ct, tt,
                             ins, nameIngredients, numberIngredients, metricIngredients, id);
-
-                    //CurrentRecipe_Fragment.receiveRecipe(dbh,t,i,d,ct,tt,ins,;
                 }
             });
 
             //Add to menu
-            //btnMenu = (Button) getView().findViewById(R.id.btnMenu);
             btnMenu.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     Toast.makeText(getActivity(), "Add to menu", Toast.LENGTH_LONG).show();
-                    //Getting info
-                    /*final String titre = web.getTitre();
-                    final String imagePath = web.getImagePath();
-                    final String description = web.getDesc();
-                    final String tempsCuisson = web.getCuisson();
-                    final String tempsTotal = web.getTemps();
-                    final String instructions = web.getInstructions();
-                    final ArrayList<String> ingreNom = web.getIname();
-                    final ArrayList<String> ingreNum = web.getInumber();
-                    final String id = web.getID();
-                    Menu_Fragment_PLACEHOLDER.receiveRecipe(titre, imagePath, description, tempsCuisson, tempsTotal,
-                            instructions, ingreNom, ingreNum, id);*/
                     dbh = new DBHelper(getActivity());
                     db = dbh.getWritableDatabase();
-                    //DBHelper.deleteRecipe(db,id,i,d,ct,);
                 }
             });
         }
