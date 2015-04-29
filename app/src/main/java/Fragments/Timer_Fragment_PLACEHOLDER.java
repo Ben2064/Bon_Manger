@@ -69,6 +69,19 @@ public class Timer_Fragment_PLACEHOLDER extends Fragment
             addName = (EditText) view.findViewById(R.id.editTimerName);
             addBtn = (Button) view.findViewById((R.id.addBtn));
 
+
+            addTime.setOnClickListener(new View.OnClickListener() {
+                public void onClick(View v) {
+                    addTime.setText("");
+                }
+            });
+
+            addName.setOnClickListener(new View.OnClickListener() {
+                public void onClick(View v) {
+                    addName.setText("");
+                }
+            });
+
             addBtn.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View v) {
                     //Convert the time data into milliseconds
