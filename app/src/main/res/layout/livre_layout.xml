@@ -20,24 +20,6 @@
             android:textColor="#ffffffff"
             android:layout_weight="2" />
 
-        <RelativeLayout
-            android:layout_width="wrap_content"
-            android:layout_height="35dp"
-            android:layout_weight="5"
-            android:layout_marginTop="10dp"
-            android:layout_marginBottom="10dp"
-            android:layout_marginRight="2dp">
-            <Spinner
-                android:layout_width="fill_parent"
-                android:layout_height="35dp"
-                android:id="@+id/nbp"
-                android:entries="@array/element_nbp"
-                android:layout_below="@+id/textView"
-                android:focusable="false"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentStart="true" />
-        </RelativeLayout>
-
     </LinearLayout>
 
     <FrameLayout

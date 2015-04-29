@@ -34,8 +34,6 @@
                 android:id="@+id/nbp"
                 android:layout_width="80dp"
                 android:layout_height="35dp"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentStart="true"
                 android:layout_below="@+id/textView"
                 android:entries="@array/element_nbp"
                 android:focusable="false" />
