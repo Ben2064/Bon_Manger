@@ -1,7 +1,32 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:orientation="horizontal" android:layout_width="match_parent"
+    android:layout_height="wrap_content"
     android:background="@color/item_light">
 
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/dotImg"
+        android:layout_gravity="center_vertical"
+        android:src="@drawable/dot_img"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="20dp"
+        android:text="Small Text"
+        android:id="@+id/subItemText"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"
+        android:layout_marginTop="2dp"
+        android:layout_marginBottom="2dp"
+        android:textSize="15dp" />
+
+    <Button
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:text="X"
+        android:id="@+id/delBtn"
+        android:background="@color/nope_red"
+        android:layout_margin="2dp" />
 </LinearLayout>
