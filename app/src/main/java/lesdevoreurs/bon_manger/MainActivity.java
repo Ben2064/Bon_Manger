@@ -48,6 +48,10 @@ public class MainActivity extends Activity {
 
     private boolean first_fragment;
 
+    private NavDrawerItem timersDrawer;
+
+    public NavDrawerItem getTimersDrawer(){return this.timersDrawer;}
+
     // nav drawer title
     private CharSequence mDrawerTitle;
 
@@ -90,7 +94,9 @@ public class MainActivity extends Activity {
         // Recette en cours
         navDrawerItems.add(new NavDrawerItem(navMenuTitles[2], navMenuIcons.getResourceId(2, -1)));
         // Timers ----- le counter peut permettre d'afficher le nomber de timer qui sont actifs mettons
-        navDrawerItems.add(new NavDrawerItem(navMenuTitles[3], navMenuIcons.getResourceId(3, -1), true, Integer.toString(Timer_Fragment_PLACEHOLDER.getNumberOfTimer())));
+        timersDrawer=new NavDrawerItem(navMenuTitles[3], navMenuIcons.getResourceId(3, -1), true, Integer.toString(Timer_Fragment_PLACEHOLDER.getNumberOfTimer()));
+        //navDrawerItems.add(new NavDrawerItem(navMenuTitles[3], navMenuIcons.getResourceId(3, -1), true, Integer.toString(Timer_Fragment_PLACEHOLDER.getNumberOfTimer())));
+        navDrawerItems.add(timersDrawer);
         // Liste d'epicerie
         navDrawerItems.add(new NavDrawerItem(navMenuTitles[4], navMenuIcons.getResourceId(4, -1)));
         // Menu
@@ -118,12 +124,14 @@ public class MainActivity extends Activity {
         ) {
             public void onDrawerClosed(View view) {
                 getActionBar().setTitle(mTitle);
+                //timers.setCount(Integer.toString(Timer_Fragment_PLACEHOLDER.getNumberOfTimer())); //update timers count
                 // calling onPrepareOptionsMenu() to show action bar icons
                 invalidateOptionsMenu();
             }
 
             public void onDrawerOpened(View drawerView) {
                 getActionBar().setTitle(mDrawerTitle);
+                //timers.setCount(Integer.toString(Timer_Fragment_PLACEHOLDER.getNumberOfTimer())); //update timer count
                 // calling onPrepareOptionsMenu() to hide action bar icons
                 invalidateOptionsMenu();
             }
