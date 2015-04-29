@@ -7,7 +7,7 @@ import android.content.res.Configuration;
 import android.content.res.TypedArray;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
-import android.support.v4.app.ActionBarDrawerToggle;
+import android.support.v4.app.ActionBarDrawerToggle;  //deprecated  ლ(ಠ益ಠ)ლ
 import android.support.v4.view.MenuItemCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.widget.SearchView;
@@ -44,7 +44,7 @@ public class MainActivity extends Activity {
 
     private DrawerLayout mDrawerLayout;
     private ListView mDrawerList;
-    private ActionBarDrawerToggle mDrawerToggle;
+    private ActionBarDrawerToggle mDrawerToggle; //deprecated  ლ(ಠ益ಠ)ლ
 
     private boolean first_fragment;
 
@@ -143,8 +143,8 @@ public class MainActivity extends Activity {
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_main, menu);
-        MenuItem searchItem = menu.findItem(R.id.action_search);
-        SearchView searchView = (SearchView) MenuItemCompat.getActionView(searchItem);
+       // MenuItem searchItem = menu.findItem(R.id.action_search);
+       // SearchView searchView = (SearchView) MenuItemCompat.getActionView(searchItem);
         return true;
     }
 
@@ -156,12 +156,12 @@ public class MainActivity extends Activity {
         }
         // Handle action bar actions click
         switch (item.getItemId()) {
-            case R.id.action_settings:
-                return true;
-            case R.id.action_search:
+            //case R.id.action_settings:
+             //   return true;
+            //case R.id.action_search:
                 //acttioooonnnnssss smooothhtthaaaffukcaa
                 //openSearch();
-                return true;
+              //  return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
@@ -174,7 +174,7 @@ public class MainActivity extends Activity {
     public boolean onPrepareOptionsMenu(Menu menu) {
         // if nav drawer is opened, hide the action items
         boolean drawerOpen = mDrawerLayout.isDrawerOpen(mDrawerList);
-        menu.findItem(R.id.action_settings).setVisible(!drawerOpen);
+        //menu.findItem(R.id.action_settings).setVisible(!drawerOpen);
         return super.onPrepareOptionsMenu(menu);
     }
 

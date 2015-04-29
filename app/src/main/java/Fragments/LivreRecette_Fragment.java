@@ -106,7 +106,7 @@ public class LivreRecette_Fragment extends Fragment{
             final String tt = c.getString(c.getColumnIndex(DBHelper.R_TOTALTIME));
             final String ct = c.getString(c.getColumnIndex(DBHelper.R_COOKTIME));
 
-            Cursor c2 = dbh.searchBookRecipeIngredients(db, idRecette);
+            final Cursor c2 = dbh.searchBookRecipeIngredients(db, idRecette);
 
             int size = c2.getCount();
             setCheckList(size);
@@ -196,6 +196,42 @@ public class LivreRecette_Fragment extends Fragment{
             addBtn.setText("Add to my list");
             addBtn.setBackgroundColor(Color.GRAY);
             ingredients.addFooterView(addBtn);
+            addBtn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Toast.makeText(getActivity(), "Added to my list", Toast.LENGTH_LONG).show();
+                    boolean[] checktemp = getCheckList();
+                    c2.moveToPosition(0);
+                    String tempNom = c2.getString(c2.getColumnIndex(DBHelper.CI_NAME));
+
+                    //Store temporary
+                    ArrayList<String> tempName = getNameIngredients();
+                    ArrayList<String> tempNum = getNumberIngredients();
+                    ArrayList<String> tempMet = getMetricIngredients();
+
+                    if (!tempNom.equals("Nothing found")) {
+                        for (int i = 0; i < c2.getCount(); i++) {
+                            if (checktemp[i]) {
+                                c2.moveToPosition(i);
+                                tempName.add(c2.getString(c2.getColumnIndex(DBHelper.CI_NAME)));
+                                tempNum.add(c2.getString(c2.getColumnIndex(DBHelper.CI_NUMBER)));
+                                tempMet.add(c2.getString(c2.getColumnIndex(DBHelper.CI_METRIC)));
+                            }
+                        }
+
+                        //INSÉRER LE CODE POUR LIER AVEC LISTE RECETTE ICI, POUR L'INSTANT PRINT LA LISTE
+                        for (int j = 0; j < getNameIngredients().size(); j++) {
+                            Log.d("Liste", "" + tempName.get(j) + " "
+                                    + tempNum.get(j));
+                        }
+                        DBHelper dbh = new DBHelper(getActivity());
+                        Liste_Fragment_PLACEHOLDER.setListe(dbh, tempName, tempNum, tempMet);
+                        //resetNameIngredients();
+                        //resetNumberIngredients();
+                        //resetMetricIngredients();
+                    }
+                }
+            });
 
 
             //Remove from cookbook
@@ -272,6 +308,8 @@ public class LivreRecette_Fragment extends Fragment{
         return numberIngredients;
     }
 
+    public ArrayList<String> getMetricIngredients() { return metricIngredients; }
+
     public void resetNameIngredients() {
         nameIngredients = new ArrayList<String>();
     }
@@ -280,6 +318,7 @@ public class LivreRecette_Fragment extends Fragment{
         numberIngredients = new ArrayList<String>();
     }
 
+    public void resetMetricIngredients() { metricIngredients = new ArrayList<String>();}
  /*   public class MyAdapter extends BaseAdapter {
 
         ArrayList<String> nom;
@@ -408,7 +447,7 @@ public class LivreRecette_Fragment extends Fragment{
         }
     }
 
-
+/*
         //Load and put image
     public class DownloadImageTask extends AsyncTask<Void, Void, Drawable> {
 
@@ -437,6 +476,6 @@ public class LivreRecette_Fragment extends Fragment{
             }
             return imageDraw;
         }
-    }
+    }*/
 }
 
