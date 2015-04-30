@@ -2,7 +2,6 @@ package Fragments;
 
 import android.app.AlertDialog;
 import android.app.DialogFragment;
-import android.app.Fragment;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.database.Cursor;
@@ -206,27 +205,6 @@ public class CurrentRecipe_Fragment extends RecipeHelper_Fragment{
 
             //Add to cookbook
             btnFav = (Button) getView().findViewById(R.id.btnFav);
-            /*if(dbh.searchBookRecipe(db,id).getCount()==0) {
-                btnFav.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        Toast.makeText(getActivity(), "Added to my cookbook", Toast.LENGTH_LONG).show();
-                        LivreListe_Fragment.receiveRecipe(dbh, t, i, d, ct, tt, ins, c2, id);
-                        btnFav.setBackgroundResource(android.R.drawable.btn_star_big_on);
-                    }
-                });
-            }
-            else {
-                btnFav.setBackgroundResource(android.R.drawable.btn_star_big_on);
-                btnFav.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        Toast.makeText(getActivity(), "Removed from my cookbook", Toast.LENGTH_LONG).show();
-                        DBHelper.deleteRecipe(db, id);
-                        btnFav.setBackgroundResource(android.R.drawable.btn_star_big_off);
-                    }
-                });
-            }*/
             if (dbh.searchBookRecipe(db,id).getCount()==0)
             {
                 btnFav.setBackgroundResource(android.R.drawable.btn_star_big_off);
@@ -238,7 +216,7 @@ public class CurrentRecipe_Fragment extends RecipeHelper_Fragment{
                     if (dbh.searchBookRecipe(db,id).getCount()==0)
                     {
                         Toast.makeText(getActivity(), "Added to my cookbook", Toast.LENGTH_LONG).show();
-                        LivreListe_Fragment.receiveRecipe(dbh, t, i, d, ct, tt, ins, c2, id);
+                        Livre_Fragment.receiveRecipe(dbh, t, i, d, ct, tt, ins, c2, id);
                         btnFav.setBackgroundResource(android.R.drawable.btn_star_big_on);
                     }else {
                         Toast.makeText(getActivity(), "Removed from my cookbook", Toast.LENGTH_LONG).show();
@@ -290,7 +268,7 @@ public class CurrentRecipe_Fragment extends RecipeHelper_Fragment{
                                     + tempNum.get(j));
                         }
                         DBHelper dbh = new DBHelper(getActivity());
-                        Liste_Fragment_PLACEHOLDER.setListe(dbh, tempName, tempNum, tempMet);
+                        Liste_Fragment.setListe(dbh, tempName, tempNum, tempMet);
                         resetNameIngredients();
                         resetNumberIngredients();
                         resetMetricIngredients();

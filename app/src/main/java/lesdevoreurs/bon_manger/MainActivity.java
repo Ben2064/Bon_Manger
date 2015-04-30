@@ -22,7 +22,7 @@ import Adapter.NavDrawerListAdapter;
 import Fragments.CurrentRecipe_Fragment;
 import Fragments.Home_Fragment;
 import Fragments.Liste_Fragment;
-import Fragments.LivreListe_Fragment;
+import Fragments.Livre_Fragment;
 import Fragments.Menu_Fragment;
 import Fragments.Timer_Fragment;
 import SlidingMenu.NavDrawerItem;
@@ -227,7 +227,7 @@ public class MainActivity extends Activity {
                 fragment = new Menu_Fragment();
                 break;
             case 6: //Livre
-                fragment = new LivreListe_Fragment();
+                fragment = new Livre_Fragment();
                 break;
 
             default:

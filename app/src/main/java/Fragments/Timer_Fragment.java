@@ -28,9 +28,8 @@ import lesdevoreurs.bon_manger.MainActivity;
 import lesdevoreurs.bon_manger.R;
 
 /**
- * Created by Benoir on 17/04/2015.
  *
- * This is the java file for most of the timer-related stuff. It holds the dataase
+ * This is the java file for most of the timer-related stuff. It holds the database
  * for them and utility classes/methods.
  */
 

@@ -3,7 +3,7 @@ package Fragments;
 import android.app.Fragment;
 
 /**
- * Created by virgile on 30/04/2015.
+ * fragment that's used to share a recipe with the calendar
  */
 public class RecipeHelper_Fragment extends Fragment {
 

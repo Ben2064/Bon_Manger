@@ -4,23 +4,6 @@
     android:layout_height="match_parent"
     android:background="@color/background_dark">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="Grocery list"
-        android:id="@+id/textView4"
-        android:layout_gravity="center_horizontal"
-        android:textColor="@color/text_white" />
-
-    <Button
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:text="Add Ingredient"
-        android:id="@+id/addButton"
-        android:layout_gravity="center_horizontal"
-        android:onClick="onAdd" />
-
     <Button
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
@@ -33,5 +16,15 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:id="@+id/list"
-        android:layout_weight="1" />
+        android:layout_weight="1"
+        android:layout_margin="5dp"
+        android:background="@color/box_dark" />
+
+    <Button
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="Add Ingredient"
+        android:id="@+id/addButton"
+        android:layout_gravity="center_horizontal"
+        android:onClick="onAdd" />
 </LinearLayout>

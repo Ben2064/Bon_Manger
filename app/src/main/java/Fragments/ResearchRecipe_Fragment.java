@@ -2,7 +2,6 @@ package Fragments;
 
 import android.app.AlertDialog;
 import android.app.DialogFragment;
-import android.app.Fragment;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -219,7 +218,7 @@ public class ResearchRecipe_Fragment extends RecipeHelper_Fragment {
                           final ArrayList<String> ingreMet = web.getImetric();
                           final String id = web.getID();
                           DBHelper dbh = new DBHelper(getActivity());
-                          LivreListe_Fragment.receiveRecipe(dbh, titre, imagePath, description, tempsCuisson, tempsTotal,
+                          Livre_Fragment.receiveRecipe(dbh, titre, imagePath, description, tempsCuisson, tempsTotal,
                                   instructions, ingreNom, ingreNum, ingreMet, id);
                           btnFav.setBackgroundResource(android.R.drawable.btn_star_big_on);
                       }else
@@ -556,7 +555,7 @@ public class ResearchRecipe_Fragment extends RecipeHelper_Fragment {
                                         + tempNum.get(j));
                             }
                             DBHelper dbh = new DBHelper(getActivity());
-                            Liste_Fragment_PLACEHOLDER.setListe(dbh, tempName, tempNum, tempMet);
+                            Liste_Fragment.setListe(dbh, tempName, tempNum, tempMet);
                             resetNameIngredients();
                             resetNumberIngredients();
                             resetMetricIngredients();

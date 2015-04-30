@@ -32,7 +32,7 @@ import Fragments.ResearchRecipe_Fragment;
 
 /**
  * Fragment for search
- * Created by Nicolas on 17/04/2015.
+ *
  */
 public class Research_Fragment1 extends Fragment {
 
@@ -83,7 +83,7 @@ public class Research_Fragment1 extends Fragment {
             rate = (RatingBar) getView().findViewById(R.id.myRatingBar);
             listv = (ListView) getView().findViewById(R.id.activity_list);
             research = (TextView) getView().findViewById(R.id.activity_title);
-            research.setText("Search");
+            research.setText("");
 
             //Load another page of result
             btnLoad = new Button(getActivity());
@@ -193,12 +193,12 @@ public class Research_Fragment1 extends Fragment {
     /**
      * Search in BigOvenWebAPI
      */
-    public class DownloadWebTask extends AsyncTask<Void, Void, BigOvenWebAPI> {
+    public class DownloadWebTask extends AsyncTask<Void, Void, BigOvenSearchWebAPI> {
 
         String numByPage = "20";
 
         @Override
-        protected BigOvenWebAPI doInBackground(Void... params) {
+        protected BigOvenSearchWebAPI doInBackground(Void... params) {
 
             String query = rechPage;
 
@@ -209,7 +209,7 @@ public class Research_Fragment1 extends Fragment {
             } else    //If load more
                 query = rechPage;
             numByPage = String.valueOf(spin.getSelectedItem());
-            BigOvenWebAPI web = new BigOvenWebAPI(query, numPage, numByPage);
+            BigOvenSearchWebAPI web = new BigOvenSearchWebAPI(query, numPage, numByPage);
 
             return web;
         }
@@ -228,7 +228,7 @@ public class Research_Fragment1 extends Fragment {
         }
 
         @Override
-        protected void onPostExecute(final BigOvenWebAPI bigovenwebapi) {
+        protected void onPostExecute(final BigOvenSearchWebAPI bigovenwebapi) {
 
             //Get from BigOvenWebAPI
             final ArrayList<String> titres = bigovenwebapi.titres;

@@ -26,7 +26,7 @@ import lesdevoreurs.bon_manger.DBHelper;
 import lesdevoreurs.bon_manger.R;
 
 /**
- * Created by virgile on 17/04/2015.
+ * Fragment for the grocery list.
  */
 public class Liste_Fragment extends Fragment {
 

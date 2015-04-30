@@ -11,17 +11,6 @@
         android:layout_width="fill_parent"
         android:layout_height="fill_parent">
 
-        <TextView
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:text="@string/timer_title"
-            android:id="@+id/timerTitle"
-            android:layout_weight="0"
-            android:textSize="30sp"
-            android:textIsSelectable="false"
-            android:textColor="#ffffffff" />
-
         <ListView
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"

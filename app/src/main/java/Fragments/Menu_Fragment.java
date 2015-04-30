@@ -27,7 +27,7 @@ import lesdevoreurs.bon_manger.DBHelper;
 import lesdevoreurs.bon_manger.R;
 
 /**
- * Created by virgile on 17/04/2015.
+ * Fragment for the calendar
  */
 public class Menu_Fragment extends Fragment {
 

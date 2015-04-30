@@ -15,7 +15,7 @@ import Fragments.LivreRecette_Fragment;
 import java.util.Calendar;
 
 /**
- * Created by virgile on 30/04/2015.
+ *
  * Used this for reference:
  * http://developer.android.com/guide/topics/ui/controls/pickers.html#DatePicker
  */

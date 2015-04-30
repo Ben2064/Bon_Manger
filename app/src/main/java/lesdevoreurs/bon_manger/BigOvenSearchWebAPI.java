@@ -28,7 +28,7 @@ import javax.xml.parsers.ParserConfigurationException;
  * Here we load everything from the Big Oven API for recipe that we'll need for the app
  * Created by Nicolas on 2015-02-19.
  */
-public class BigOvenWebAPI {
+public class BigOvenSearchWebAPI {
     ArrayList<String> IDS;
     ArrayList<String> titres;
     ArrayList<String> cuisines;
@@ -44,7 +44,7 @@ public class BigOvenWebAPI {
      * @param numPage   Number of the page to load
      * @param numByPage Number of recipe by page to load
      */
-    public BigOvenWebAPI(String query, int numPage, String numByPage){
+    public BigOvenSearchWebAPI(String query, int numPage, String numByPage){
 
         //Search URL style from BigOven
         String url = "http://api.bigoven.com/recipes?any_kw="+query+"&pg="+numPage+"&rpp="+numByPage+"&api_key=dvxRg7vK4t5RBlTap04zYHqbu08e374G";
