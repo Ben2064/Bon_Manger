@@ -11,6 +11,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
@@ -108,6 +109,16 @@ public class ResearchRecipe_Fragment extends RecipeHelper_Fragment {
             image = (ImageView) getView().findViewById(R.id.imgR);
             titreMore = (LinearLayout) getView().findViewById(R.id.titreMore);
             arrow = (Button) getView().findViewById(R.id.arrow);
+
+            ingredients.setOnTouchListener(new View.OnTouchListener() {
+                // Setting on Touch Listener for handling the touch inside ScrollView
+                @Override
+                public boolean onTouch(View v, MotionEvent event) {
+                    // Disallow the touch request for parent scroll on touch of child view
+                    v.getParent().requestDisallowInterceptTouchEvent(true);
+                    return false;
+                }
+            });
 
             //Show images, descriptions and temps when clicking on title
             titreMore.setOnClickListener(new View.OnClickListener() {
