@@ -37,7 +37,6 @@ public class Menu_Fragment extends Fragment {
     Button showButton;
     Button addButton;
     ListView listMenu;
-    int currentDate;
     static SQLiteDatabase db;
     static DBHelper dbh;
     MyAdapter adapt;

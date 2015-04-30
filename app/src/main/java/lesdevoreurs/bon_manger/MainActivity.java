@@ -306,11 +306,4 @@ public class MainActivity extends Activity {
         Liste_Fragment fragment= Liste_Fragment.getInstance();
         fragment.del();
     }
-    /*public void onMealDel(View vi){
-        View v = (View) vi.getParent();
-        TextView iTextView = (TextView) v.findViewById(R.id.subItemText);
-        String meal = iTextView.getText().toString();
-        Menu_Fragment fragment=Menu_Fragment.getInstance();
-        fragment.del(meal);
-    }*/
 };
