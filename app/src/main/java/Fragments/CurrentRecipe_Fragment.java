@@ -201,7 +201,7 @@ public class CurrentRecipe_Fragment extends Fragment{
 
             //Add to cookbook
             btnFav = (Button) getView().findViewById(R.id.btnFav);
-            if(dbh.searchBookRecipe(db,id).getCount()==0) {
+            /*if(dbh.searchBookRecipe(db,id).getCount()==0) {
                 btnFav.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -211,8 +211,39 @@ public class CurrentRecipe_Fragment extends Fragment{
                     }
                 });
             }
-            else
+            else {
                 btnFav.setBackgroundResource(android.R.drawable.btn_star_big_on);
+                btnFav.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Toast.makeText(getActivity(), "Removed from my cookbook", Toast.LENGTH_LONG).show();
+                        DBHelper.deleteRecipe(db, id);
+                        btnFav.setBackgroundResource(android.R.drawable.btn_star_big_off);
+                    }
+                });
+            }*/
+            if (dbh.searchBookRecipe(db,id).getCount()==0)
+            {
+                btnFav.setBackgroundResource(android.R.drawable.btn_star_big_off);
+            }else btnFav.setBackgroundResource(android.R.drawable.btn_star_big_on);
+
+            btnFav.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (dbh.searchBookRecipe(db,id).getCount()==0)
+                    {
+                        Toast.makeText(getActivity(), "Added to my cookbook", Toast.LENGTH_LONG).show();
+                        LivreListe_Fragment.receiveRecipe(dbh, t, i, d, ct, tt, ins, c2, id);
+                        btnFav.setBackgroundResource(android.R.drawable.btn_star_big_on);
+                    }else {
+                        Toast.makeText(getActivity(), "Removed from my cookbook", Toast.LENGTH_LONG).show();
+                        DBHelper.deleteRecipe(db, id);
+                        btnFav.setBackgroundResource(android.R.drawable.btn_star_big_off);
+                    }
+                }
+            });
+
+
 
             //Add to menu
             btnMenu = (Button) getView().findViewById(R.id.btnMenu);

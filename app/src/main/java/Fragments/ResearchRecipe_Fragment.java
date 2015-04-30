@@ -162,12 +162,14 @@ public class ResearchRecipe_Fragment extends Fragment {
 
             //Add to cookbook
             btnFav = (Button) getView().findViewById(R.id.btnFav);
-            DBHelper dbh = new DBHelper(getActivity());
-            SQLiteDatabase db = dbh.getWritableDatabase();
+            final DBHelper dbh = new DBHelper(getActivity());
+            final SQLiteDatabase db = dbh.getWritableDatabase();
             if(dbh.searchBookRecipe(db,idRecette).getCount()==0) {
-                btnFav.setOnClickListener(new View.OnClickListener() {
+                btnFav.setBackgroundResource(android.R.drawable.btn_star_big_off);
+                /*btnFav.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
+
                         Toast.makeText(getActivity(), "Added to my cookbook", Toast.LENGTH_LONG).show();
                         //Getting info
                         final String titre = web.getTitre();
@@ -185,10 +187,41 @@ public class ResearchRecipe_Fragment extends Fragment {
                                 instructions, ingreNom, ingreNum, ingreMet, id);
                         btnFav.setBackgroundResource(android.R.drawable.btn_star_big_on);
                     }
-                });
+                });*/
             }
             else
                 btnFav.setBackgroundResource(android.R.drawable.btn_star_big_on);
+
+            btnFav.setOnClickListener(new View.OnClickListener() {
+                  @Override
+                  public void onClick(View v) {
+                      if(dbh.searchBookRecipe(db,idRecette).getCount()==0) {
+
+                          Toast.makeText(getActivity(), "Added to my cookbook", Toast.LENGTH_LONG).show();
+                          //Getting info
+                          final String titre = web.getTitre();
+                          final String imagePath = web.getImagePath();
+                          final String description = web.getDesc();
+                          final String tempsCuisson = web.getCuisson();
+                          final String tempsTotal = web.getTemps();
+                          final String instructions = web.getInstructions();
+                          final ArrayList<String> ingreNom = web.getIname();
+                          final ArrayList<String> ingreNum = web.getInumber();
+                          final ArrayList<String> ingreMet = web.getImetric();
+                          final String id = web.getID();
+                          DBHelper dbh = new DBHelper(getActivity());
+                          LivreListe_Fragment.receiveRecipe(dbh, titre, imagePath, description, tempsCuisson, tempsTotal,
+                                  instructions, ingreNom, ingreNum, ingreMet, id);
+                          btnFav.setBackgroundResource(android.R.drawable.btn_star_big_on);
+                      }else
+                      {
+                          Toast.makeText(getActivity(), "Removed from my cookbook", Toast.LENGTH_LONG).show();
+                          final String id = web.getID();
+                          DBHelper.deleteRecipe(db, id);
+                          btnFav.setBackgroundResource(android.R.drawable.btn_star_big_off);
+                      }
+                  }
+              });
 
             //Add to current recipe
             btnMake = (Button) getView().findViewById(R.id.btnMake);
