@@ -1,19 +1,29 @@
 package Fragments;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.Fragment;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.CursorAdapter;
 import android.widget.DatePicker;
+import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Spinner;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.Map;
@@ -30,15 +40,25 @@ public class Menu_Fragment_PLACEHOLDER extends Fragment {
     View rootView;
     DatePicker datePicker;
     Button showButton;
+    Button addButton;
     ListView listMenu;
     int currentDate;
+    static SQLiteDatabase db;
+    static DBHelper dbh;
+    MyAdapter adapt;
+    String d = "29042015";
+    static Menu_Fragment_PLACEHOLDER instance;
 
     Map<Integer, dailyMenu> menuBuckets;
 
     public Menu_Fragment_PLACEHOLDER() {
     }
 
-
+    public static Menu_Fragment_PLACEHOLDER getInstance(){
+        if (instance==null)
+            instance= new Menu_Fragment_PLACEHOLDER();
+        return instance;
+    }
 
     public static void receiveRecipe(DBHelper dbh, String titre, String image, String description, String tempsCuisson,
                                      String tempsTotal, String instructions, ArrayList<String> ingreNom,
@@ -51,6 +71,20 @@ public class Menu_Fragment_PLACEHOLDER extends Fragment {
                                      String tempsTotal, String instructions, Cursor c, String id) {
         //We receive the informations of the recipe to add from current recipe
         //Here we add it to memory
+    }
+
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        dbh = new DBHelper(getActivity());
+        db = dbh.getWritableDatabase();
+        listMenu = (ListView) getView().findViewById(R.id.listMenu);
+        //Get ingredients info, and pass to adapter to fit in the listview
+        final Cursor c2 = dbh.listMeals(db,d);
+        //Create checklist with false
+        adapt = new MyAdapter(getActivity(), c2);
+        listMenu.setAdapter(adapter);
+        super.onCreate(savedInstanceState);
+        update(d);
     }
 
     @Nullable
@@ -66,12 +100,36 @@ public class Menu_Fragment_PLACEHOLDER extends Fragment {
         {
             datePicker = (DatePicker) rootView.findViewById((R.id.datePicker));
             showButton = (Button) rootView.findViewById((R.id.showDay));
+            addButton = (Button) rootView.findViewById((R.id.addmeal));
             listMenu = (ListView) rootView.findViewById(R.id.listMenu);
 
             showButton.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View v) {
                     //Change the day
                 }
+            });
+            addButton.setOnClickListener(new View.OnClickListener() {
+                public void onClick(View v) {
+                    AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+                    builder.setTitle("Add a meal");
+                    builder.setMessage("What meal do you want to eat?");
+                    final EditText inputField = new EditText(getActivity());
+                    builder.setView(inputField);
+                    builder.setPositiveButton("Add", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            Cursor c3=DBHelper.searchMeal(db, inputField.getText().toString());
+                            if (c3.getCount()==0){
+                                DBHelper.addMeal(db, inputField.getText().toString(), d);
+                                update(d);
+                            }
+                        }
+                    });
+
+                    builder.setNegativeButton("Cancel", null);
+                    builder.create().show();
+                }
+
             });
         }
 
@@ -83,6 +141,53 @@ public class Menu_Fragment_PLACEHOLDER extends Fragment {
     {
         public dailyMenu ()
         {
+
+        }
+    }
+    private void update(String date) {
+        final Cursor c2 = dbh.listMeals(db,date);
+        adapt = new MyAdapter(getActivity(), c2);
+        listMenu.setAdapter(adapt);
+    }
+    public void del(String s){
+        DBHelper.deleteMeal(db,s);
+        update(d);
+    }
+    public class MyAdapter extends CursorAdapter {
+
+        LayoutInflater inflater;
+
+        public MyAdapter(Context context, Cursor c) {
+            super(context, c, true);
+            inflater = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        }
+
+        @Override
+        public View getView(final int position, View convertView, ViewGroup parent) {
+            View v = convertView;
+
+            if (v == null) {
+                v = inflater.inflate(R.layout.menu_meal_item_sub, parent, false);
+            }
+            //Get ingredients info
+            Cursor c = getCursor();
+            c.moveToPosition(position);
+            String name = c.getString(c.getColumnIndex(DBHelper.CA_NAME));
+
+            TextView titre = (TextView) v.findViewById(R.id.subItemText);
+            titre.setText(name);
+
+            return v;
+        }
+
+        @Override
+        public View newView(Context context, Cursor cursor, ViewGroup parent) {
+
+            return null;
+        }
+
+        @Override
+        public void bindView(View view, Context context, Cursor cursor) {
 
         }
     }

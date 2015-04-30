@@ -309,4 +309,11 @@ public class MainActivity extends Activity {
         Liste_Fragment_PLACEHOLDER fragment=Liste_Fragment_PLACEHOLDER.getInstance();
         fragment.del();
     }
+    public void onMealDel(View vi){
+        View v = (View) vi.getParent();
+        TextView iTextView = (TextView) v.findViewById(R.id.subItemText);
+        String meal = iTextView.getText().toString();
+        Menu_Fragment_PLACEHOLDER fragment=Menu_Fragment_PLACEHOLDER.getInstance();
+        fragment.del(meal);
+    }
 };

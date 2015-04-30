@@ -23,9 +23,16 @@
             android:layout_height="match_parent"
             android:text="Show"
             android:id="@+id/showDay"
-            android:layout_margin="30dp"
+            android:layout_margin="25dp"
             android:background="@color/yep_green" />
     </LinearLayout>
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Add meal"
+        android:id="@+id/addmeal"
+        android:layout_gravity="center_horizontal" />
 
     <ListView
         android:layout_width="match_parent"

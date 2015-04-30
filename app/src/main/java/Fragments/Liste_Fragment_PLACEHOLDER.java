@@ -50,7 +50,7 @@ public class Liste_Fragment_PLACEHOLDER extends Fragment {
     public static void setListe(DBHelper dbhelp, ArrayList<String> tempName, ArrayList<String> tempNum, ArrayList<String> tempMet) {
         //We receive the informations of the ingredients list to add
         //Here we add it to memory
-        db=dbhelp.getWritableDatabase();
+        db = dbhelp.getWritableDatabase();
         for (int i=0;i<tempName.size();i++){
             Cursor c3=DBHelper.searchIngredient(db,tempName.get(i));
             if (c3.getCount()==0)
@@ -80,7 +80,6 @@ public class Liste_Fragment_PLACEHOLDER extends Fragment {
         adapter = new MyAdapter(getActivity(), c2);
         listI.setAdapter(adapter);
         super.onCreate(savedInstanceState);
-        setHasOptionsMenu(true);
         update();
     }
 
@@ -184,17 +183,8 @@ public class Liste_Fragment_PLACEHOLDER extends Fragment {
     }
 
     private void update() {
-        cu.moveToFirst();
-        /*Log.d("MainActivity cursor",
-                cu.getString(0));
-        while(cu.moveToNext()) {
-            Log.d("MainActivity cursor ",
-                    cu.getString(0));
-        }*/
-        //listI = (ListView) getView().findViewById(R.id.list);
         //Get ingredients info, and pass to adapter to fit in the listview
         final Cursor c2 = dbh.listIngredients(db);
-        //Create checklist with false
         adapter = new MyAdapter(getActivity(), c2);
         listI.setAdapter(adapter);
     }

@@ -14,7 +14,7 @@ import android.util.Log;
 public class DBHelper extends SQLiteOpenHelper {
 
     static final String DB_NAME = "bonmanger.db";
-    static final int DB_VERSION = 47;    //******************METTRE À JOUR À CHAQUE FOIS!!!!!!!***********************//
+    static final int DB_VERSION = 48;    //******************METTRE À JOUR À CHAQUE FOIS!!!!!!!***********************//
 
     //CURRENT::table recipe for current recipe
     static final String TABLE_RECIPES = "recipes";
@@ -26,6 +26,8 @@ public class DBHelper extends SQLiteOpenHelper {
     static final String TABLE_COOKBOOK = "cookbook";
     //COOKBOOK::table ingredients for cookbook
     static final String TABLE_CINGREDIENTS = "cookbookingredients";
+    //CALENDAR::table for calendar
+    static final String TABLE_CALENDAR = "calendar";
 
     public static final String R_ID = "_id";
     public static final String R_TITRE = "titre_recette";
@@ -53,6 +55,10 @@ public class DBHelper extends SQLiteOpenHelper {
     public static final String CI_NAME = "name";
     public static final String CI_NUMBER = "number";
     public static final String CI_METRIC = "metric";
+    public static final String CA_NAME = "name";
+    public static final String CA_ID = "_id";
+    public static final String CA_DATE = "jour";
+
 
     public DBHelper(Context context) {
         super(context, DB_NAME, null, DB_VERSION);
@@ -106,6 +112,13 @@ public class DBHelper extends SQLiteOpenHelper {
                 + CI_METRIC + " text)";
         db.execSQL(sql);
 
+        //CALENDAR::
+        sql = "create table " + TABLE_CALENDAR
+                + " (" + CA_ID + " primary key, "
+                + CA_DATE+ " text, "
+                + CA_NAME + " text)";
+        db.execSQL(sql);
+
         Log.d("DB", "database created");
     }
 
@@ -116,6 +129,7 @@ public class DBHelper extends SQLiteOpenHelper {
         db.execSQL("drop table if exists " + TABLE_GROCERY);
         db.execSQL("drop table if exists " + TABLE_COOKBOOK);
         db.execSQL("drop table if exists " + TABLE_CINGREDIENTS);
+        db.execSQL("drop table if exists " + TABLE_CALENDAR);
         onCreate(db);
     }
 
@@ -271,5 +285,31 @@ public class DBHelper extends SQLiteOpenHelper {
     public static void setIngredientsMetric(SQLiteDatabase db, String name, String metric) {
         String sql = "UPDATE "+ TABLE_GROCERY + " SET "+G_METRIC+ " = '" + metric + "' WHERE "+ G_NAME + " = '" + name.replace("'", "''")+"'";
         db.execSQL(sql);
+    }
+    //CALENDAR
+    public static void addMeal(SQLiteDatabase db, String name, String date) {
+        String sql = "INSERT INTO "
+                + TABLE_CALENDAR
+                + " (" + CA_NAME + ", " + CA_DATE +  ")"
+                + " VALUES ('" + name.replace("'", "''") + "', '" + date + "')";
+        db.execSQL(sql);
+    }
+    //CALENDAR
+    public static Cursor searchMeal(SQLiteDatabase db, String name) {
+        String args[] = new String[]{"%" + name.replace("'", "''") + "%"};
+        Cursor c = db.rawQuery("select * from " + TABLE_CALENDAR + " where " + CA_NAME + " like ?", args);
+        return c;
+    }
+    //CALENDAR
+    public static void deleteMeal(SQLiteDatabase db, String name) {
+        db.execSQL("delete from " + TABLE_CALENDAR + " where " + CA_NAME+ " = '" + name + "'");
+    }
+    //GROCERY::Return ingredients for grocery list
+    public static Cursor listMeals(SQLiteDatabase db,String date) {
+        String sql = "select * from " + TABLE_CALENDAR
+                + " where " + CA_DATE + " = '" + date + "'";
+        Cursor c = db.rawQuery(sql, null);
+        Log.d("DB", "lisle CALENDRIER nb = " + c.getCount());
+        return c;
     }
 }
