@@ -6,10 +6,15 @@
 
     <TextView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="35dp"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:text="Medium Text"
-        android:id="@+id/menu_day_text"
-        android:layout_gravity="center_horizontal"
-        android:textColor="@color/text_white" />
+        android:id="@+id/meal_name"
+        android:layout_gravity="center"
+        android:textSize="20dp"
+        android:textIsSelectable="true"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:background="@color/box_blue" />
+
 </LinearLayout>

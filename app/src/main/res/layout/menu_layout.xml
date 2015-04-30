@@ -28,21 +28,22 @@
             android:background="@color/yep_green" />
     </LinearLayout>
 
-    <Button
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Add meal"
-        android:id="@+id/addmeal"
-        android:layout_gravity="center_horizontal" />
-
     <ListView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="fill_parent"
         android:id="@+id/listMenu"
         android:headerDividersEnabled="false"
         android:layout_marginRight="20dp"
         android:layout_marginLeft="10dp"
         android:layout_marginTop="10dp"
-        android:layout_marginBottom="10dp" />
+        android:layout_marginBottom="10dp"
+        android:layout_weight="10" />
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Add an Item"
+        android:id="@+id/addmeal"
+        android:layout_gravity="center_horizontal" />
 
 </LinearLayout>

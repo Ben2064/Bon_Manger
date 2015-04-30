@@ -5,12 +5,9 @@ import android.app.Fragment;
 import android.app.FragmentManager;
 import android.content.res.Configuration;
 import android.content.res.TypedArray;
-import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.v4.app.ActionBarDrawerToggle;  //deprecated  ლ(ಠ益ಠ)ლ
-import android.support.v4.view.MenuItemCompat;
 import android.support.v4.widget.DrawerLayout;
-import android.support.v7.widget.SearchView;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -24,10 +21,10 @@ import java.util.ArrayList;
 import Adapter.NavDrawerListAdapter;
 import Fragments.CurrentRecipe_Fragment;
 import Fragments.Home_Fragment;
-import Fragments.Liste_Fragment_PLACEHOLDER;
+import Fragments.Liste_Fragment;
 import Fragments.LivreListe_Fragment;
-import Fragments.Menu_Fragment_PLACEHOLDER;
-import Fragments.Timer_Fragment_PLACEHOLDER;
+import Fragments.Menu_Fragment;
+import Fragments.Timer_Fragment;
 import SlidingMenu.NavDrawerItem;
 
 /**
@@ -95,8 +92,8 @@ public class MainActivity extends Activity {
         // Recette en cours
         navDrawerItems.add(new NavDrawerItem(navMenuTitles[2], navMenuIcons.getResourceId(2, -1)));
         // Timers ----- le counter peut permettre d'afficher le nomber de timer qui sont actifs mettons
-        timersDrawer=new NavDrawerItem(navMenuTitles[3], navMenuIcons.getResourceId(3, -1), true, Integer.toString(Timer_Fragment_PLACEHOLDER.getNumberOfTimer()));
-        //navDrawerItems.add(new NavDrawerItem(navMenuTitles[3], navMenuIcons.getResourceId(3, -1), true, Integer.toString(Timer_Fragment_PLACEHOLDER.getNumberOfTimer())));
+        timersDrawer=new NavDrawerItem(navMenuTitles[3], navMenuIcons.getResourceId(3, -1), true, Integer.toString(Timer_Fragment.getNumberOfTimer()));
+        //navDrawerItems.add(new NavDrawerItem(navMenuTitles[3], navMenuIcons.getResourceId(3, -1), true, Integer.toString(Timer_Fragment.getNumberOfTimer())));
         navDrawerItems.add(timersDrawer);
         // Liste d'epicerie
         navDrawerItems.add(new NavDrawerItem(navMenuTitles[4], navMenuIcons.getResourceId(4, -1)));
@@ -169,7 +166,7 @@ public class MainActivity extends Activity {
     public boolean onPrepareOptionsMenu(Menu menu) {
         // if nav drawer is opened, hide the action items
         boolean drawerOpen = mDrawerLayout.isDrawerOpen(mDrawerList);
-        timersDrawer.setCount(Integer.toString(Timer_Fragment_PLACEHOLDER.getNumberOfTimer()));
+        timersDrawer.setCount(Integer.toString(Timer_Fragment.getNumberOfTimer()));
         adapter.notifyDataSetChanged();
         return super.onPrepareOptionsMenu(menu);
     }
@@ -221,13 +218,13 @@ public class MainActivity extends Activity {
                 fragment = new CurrentRecipe_Fragment();
                 break;
             case 3: //Timers
-                fragment = new Timer_Fragment_PLACEHOLDER();
+                fragment = new Timer_Fragment();
                 break;
             case 4: //Liste d'epicerie
-                fragment = Liste_Fragment_PLACEHOLDER.getInstance();
+                fragment = Liste_Fragment.getInstance();
                 break;
             case 5:// Menu
-                fragment = new Menu_Fragment_PLACEHOLDER();
+                fragment = new Menu_Fragment();
                 break;
             case 6: //Livre
                 fragment = new LivreListe_Fragment();
@@ -284,36 +281,36 @@ public class MainActivity extends Activity {
         View v = (View) vi.getParent();
         TextView iTextView = (TextView) v.findViewById(R.id.ingTextView);
         String ing = iTextView.getText().toString();
-        Liste_Fragment_PLACEHOLDER fragment=Liste_Fragment_PLACEHOLDER.getInstance();
+        Liste_Fragment fragment= Liste_Fragment.getInstance();
         fragment.quantity(ing.substring(2));
     }
     public void onMetButtonClick(View vi){
         View v = (View) vi.getParent();
         TextView iTextView = (TextView) v.findViewById(R.id.ingTextView);
         String ing = iTextView.getText().toString();
-        Liste_Fragment_PLACEHOLDER fragment=Liste_Fragment_PLACEHOLDER.getInstance();
+        Liste_Fragment fragment= Liste_Fragment.getInstance();
         fragment.metrique(ing.substring(2));
     }
     public void onCheck(View vi){
         View v = (View) vi.getParent();
         TextView iTextView = (TextView) v.findViewById(R.id.ingTextView);
         String ing = iTextView.getText().toString();
-        Liste_Fragment_PLACEHOLDER fragment=Liste_Fragment_PLACEHOLDER.getInstance();
+        Liste_Fragment fragment= Liste_Fragment.getInstance();
         fragment.check(ing.substring(2));
     }
     public void onAdd(View vi){
-        Liste_Fragment_PLACEHOLDER fragment=Liste_Fragment_PLACEHOLDER.getInstance();
+        Liste_Fragment fragment= Liste_Fragment.getInstance();
         fragment.add();
     }
     public void onDel(View vi){
-        Liste_Fragment_PLACEHOLDER fragment=Liste_Fragment_PLACEHOLDER.getInstance();
+        Liste_Fragment fragment= Liste_Fragment.getInstance();
         fragment.del();
     }
     /*public void onMealDel(View vi){
         View v = (View) vi.getParent();
         TextView iTextView = (TextView) v.findViewById(R.id.subItemText);
         String meal = iTextView.getText().toString();
-        Menu_Fragment_PLACEHOLDER fragment=Menu_Fragment_PLACEHOLDER.getInstance();
+        Menu_Fragment fragment=Menu_Fragment.getInstance();
         fragment.del(meal);
     }*/
 };

@@ -5,14 +5,11 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
-import android.graphics.drawable.Drawable;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CursorAdapter;
@@ -23,13 +20,6 @@ import android.widget.Toast;
 
 import com.squareup.picasso.Picasso;
 
-import org.apache.http.HttpResponse;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.impl.client.DefaultHttpClient;
-
-import java.io.IOException;
-import java.io.InputStream;
 import java.util.ArrayList;
 
 import lesdevoreurs.bon_manger.DBHelper;
@@ -223,7 +213,7 @@ public class LivreRecette_Fragment extends Fragment{
                         }
 
                         DBHelper dbh = new DBHelper(getActivity());
-                        Liste_Fragment_PLACEHOLDER.setListe(dbh, tempName, tempNum, tempMet); //send to grocerylist
+                        Liste_Fragment.setListe(dbh, tempName, tempNum, tempMet); //send to grocerylist
                     }
                 }
             });

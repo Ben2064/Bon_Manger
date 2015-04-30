@@ -36,7 +36,7 @@ import lesdevoreurs.bon_manger.R;
 
 
 
-public class Timer_Fragment_PLACEHOLDER extends Fragment
+public class Timer_Fragment extends Fragment
 {
 
     ListView timerList;
@@ -45,7 +45,7 @@ public class Timer_Fragment_PLACEHOLDER extends Fragment
     View view;
     static ArrayList<TimerClass> timerArray = new ArrayList<TimerClass>();
 
-    public Timer_Fragment_PLACEHOLDER(){};
+    public Timer_Fragment(){};
 
     public static int getNumberOfTimer()
     {

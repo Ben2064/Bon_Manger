@@ -265,7 +265,7 @@ public class ResearchRecipe_Fragment extends Fragment {
                     final ArrayList<String> ingreMet = web.getImetric();
                     final String id = web.getID();
                     DBHelper dbh = new DBHelper(getActivity());
-                    Menu_Fragment_PLACEHOLDER.receiveRecipe(dbh, titre, imagePath, description, tempsCuisson, tempsTotal,
+                    Menu_Fragment.receiveRecipe(dbh, titre, imagePath, description, tempsCuisson, tempsTotal,
                             instructions, ingreNom, ingreNum, ingreMet, id);
                 }
             });
@@ -495,7 +495,7 @@ public class ResearchRecipe_Fragment extends Fragment {
                                         + tempNum.get(j));
                             }
                             DBHelper dbh = new DBHelper(getActivity());
-                            Liste_Fragment_PLACEHOLDER.setListe(dbh, tempName, tempNum, tempMet);
+                            Liste_Fragment.setListe(dbh, tempName, tempNum, tempMet);
                             resetNameIngredients();
                             resetNumberIngredients();
                             resetMetricIngredients();

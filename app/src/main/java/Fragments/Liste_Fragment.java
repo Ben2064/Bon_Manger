@@ -10,9 +10,6 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -31,18 +28,18 @@ import lesdevoreurs.bon_manger.R;
 /**
  * Created by virgile on 17/04/2015.
  */
-public class Liste_Fragment_PLACEHOLDER extends Fragment {
+public class Liste_Fragment extends Fragment {
 
     static SQLiteDatabase db;
     static DBHelper dbh;
-    static Liste_Fragment_PLACEHOLDER instance;
+    static Liste_Fragment instance;
     Cursor cu;
     ListView listI;
     MyAdapter adapter;
     View view;
     ArrayList<String> ings = new ArrayList<>();
 
-    public Liste_Fragment_PLACEHOLDER() {
+    public Liste_Fragment() {
     }
 
     ;
@@ -62,7 +59,7 @@ public class Liste_Fragment_PLACEHOLDER extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
         if (view == null)
-            view = inflater.inflate(R.layout.liste_layout_placeholder, container, false);
+            view = inflater.inflate(R.layout.liste_layout, container, false);
         Log.d("a", "createview");
         return view;
     }
@@ -83,9 +80,9 @@ public class Liste_Fragment_PLACEHOLDER extends Fragment {
         update();
     }
 
-    public static Liste_Fragment_PLACEHOLDER getInstance(){
+    public static Liste_Fragment getInstance(){
         if (instance==null)
-            instance= new Liste_Fragment_PLACEHOLDER();
+            instance= new Liste_Fragment();
         return instance;
     }
     public void add(){

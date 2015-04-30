@@ -251,7 +251,7 @@ public class CurrentRecipe_Fragment extends Fragment{
                 @Override
                 public void onClick(View v) {
                     Toast.makeText(getActivity(), "Add to menu", Toast.LENGTH_LONG).show();
-                    Menu_Fragment_PLACEHOLDER.receiveRecipe(dbh, t, i, d, ct, tt, ins, c2, id);
+                    Menu_Fragment.receiveRecipe(dbh, t, i, d, ct, tt, ins, c2, id);
                 }
             });
 
@@ -285,7 +285,7 @@ public class CurrentRecipe_Fragment extends Fragment{
                                     + tempNum.get(j));
                         }
                         DBHelper dbh = new DBHelper(getActivity());
-                        Liste_Fragment_PLACEHOLDER.setListe(dbh, tempName, tempNum, tempMet);
+                        Liste_Fragment.setListe(dbh, tempName, tempNum, tempMet);
                         resetNameIngredients();
                         resetNumberIngredients();
                         resetMetricIngredients();

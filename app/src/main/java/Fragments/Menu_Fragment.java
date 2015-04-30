@@ -1,38 +1,27 @@
 package Fragments;
 
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Fragment;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.util.Log;
-import android.view.DragEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.BaseAdapter;
 import android.widget.Button;
-import android.widget.CheckBox;
 import android.widget.CursorAdapter;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ListView;
-import android.widget.Spinner;
 import android.widget.TextView;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
-import java.util.GregorianCalendar;
-import java.util.Map;
 
 import lesdevoreurs.bon_manger.DBHelper;
 import lesdevoreurs.bon_manger.R;
@@ -40,7 +29,7 @@ import lesdevoreurs.bon_manger.R;
 /**
  * Created by virgile on 17/04/2015.
  */
-public class Menu_Fragment_PLACEHOLDER extends Fragment {
+public class Menu_Fragment extends Fragment {
 
     ArrayAdapter<CharSequence> adapter;
     View rootView;
@@ -53,14 +42,14 @@ public class Menu_Fragment_PLACEHOLDER extends Fragment {
     static DBHelper dbh;
     MyAdapter adapt;
     String d = "29042015";
-    static Menu_Fragment_PLACEHOLDER instance;
+    static Menu_Fragment instance;
 
-    public Menu_Fragment_PLACEHOLDER() {
+    public Menu_Fragment() {
     }
 
-    public static Menu_Fragment_PLACEHOLDER getInstance(){
+    public static Menu_Fragment getInstance(){
         if (instance == null)
-            instance = new Menu_Fragment_PLACEHOLDER();
+            instance = new Menu_Fragment();
         return instance;
     }
 
@@ -85,7 +74,6 @@ public class Menu_Fragment_PLACEHOLDER extends Fragment {
 
         //Get today's date and set it as default
         d = new SimpleDateFormat("ddMMyyyy").format(new Date());
-        System.out.println("DATE IS: " +d);
 
         //Get ingredients info, and pass to adapter to fit in the listview
         final Cursor c2 = dbh.listMeals(db,d);
@@ -103,7 +91,7 @@ public class Menu_Fragment_PLACEHOLDER extends Fragment {
 
         //if the view doesn't exist yet, create it
         if (rootView == null)
-        rootView = inflater.inflate(R.layout.menu_layout_placeholder, container, false);
+        rootView = inflater.inflate(R.layout.menu_layout, container, false);
 
         //Init the objects assignation
         if (showButton == null)
@@ -177,7 +165,7 @@ public class Menu_Fragment_PLACEHOLDER extends Fragment {
             View v = convertView;
 
             if (v == null) {
-                v = inflater.inflate(R.layout.menu_meal_item_sub, parent, false);
+                v = inflater.inflate(R.layout.menu_meal_item, parent, false);
             }
 
             Button delButton = (Button) v.findViewById(R.id.delBtn);
