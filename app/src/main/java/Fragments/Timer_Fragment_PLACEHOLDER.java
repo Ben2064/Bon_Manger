@@ -70,17 +70,9 @@ public class Timer_Fragment_PLACEHOLDER extends Fragment
             addBtn = (Button) view.findViewById((R.id.addBtn));
 
 
-            addTime.setOnClickListener(new View.OnClickListener() {
-                public void onClick(View v) {
-                    addTime.setText("");
-                }
-            });
+            addTime.setSelectAllOnFocus(true);
 
-            addName.setOnClickListener(new View.OnClickListener() {
-                public void onClick(View v) {
-                    addName.setText("");
-                }
-            });
+            addName.setSelectAllOnFocus(true);
 
             addBtn.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View v) {
@@ -144,6 +136,16 @@ public class Timer_Fragment_PLACEHOLDER extends Fragment
     public void onActivityCreated(final Bundle savedInstanceState)
     {
         super.onActivityCreated(savedInstanceState);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        if ((timerList.getAdapter()) != null)
+        {
+            timerList.setAdapter(new TimerAdapter(timerArray));
+            ((BaseAdapter) timerList.getAdapter()).notifyDataSetChanged();
+        }
     }
 
     public class TimerAdapter extends BaseAdapter
@@ -294,7 +296,7 @@ public class Timer_Fragment_PLACEHOLDER extends Fragment
             AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(getActivity());
 
             // Title and message + button
-            alertDialogBuilder.setTitle("TimersClasses");
+            alertDialogBuilder.setTitle("Timer finished");
             alertDialogBuilder
                     .setMessage("The timer \"" + thisTimer.toString() + "\" has just finished!")
                     .setCancelable(false)

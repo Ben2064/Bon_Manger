@@ -11,11 +11,13 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.util.Log;
+import android.view.DragEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CursorAdapter;
@@ -25,7 +27,11 @@ import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.Map;
 
 import lesdevoreurs.bon_manger.DBHelper;
@@ -49,14 +55,12 @@ public class Menu_Fragment_PLACEHOLDER extends Fragment {
     String d = "29042015";
     static Menu_Fragment_PLACEHOLDER instance;
 
-    Map<Integer, dailyMenu> menuBuckets;
-
     public Menu_Fragment_PLACEHOLDER() {
     }
 
     public static Menu_Fragment_PLACEHOLDER getInstance(){
-        if (instance==null)
-            instance= new Menu_Fragment_PLACEHOLDER();
+        if (instance == null)
+            instance = new Menu_Fragment_PLACEHOLDER();
         return instance;
     }
 
@@ -78,8 +82,14 @@ public class Menu_Fragment_PLACEHOLDER extends Fragment {
         dbh = new DBHelper(getActivity());
         db = dbh.getWritableDatabase();
         listMenu = (ListView) getView().findViewById(R.id.listMenu);
+
+        //Get today's date and set it as default
+        d = new SimpleDateFormat("ddMMyyyy").format(new Date());
+        System.out.println("DATE IS: " +d);
+
         //Get ingredients info, and pass to adapter to fit in the listview
         final Cursor c2 = dbh.listMeals(db,d);
+
         //Create checklist with false
         adapt = new MyAdapter(getActivity(), c2);
         listMenu.setAdapter(adapter);
@@ -106,6 +116,13 @@ public class Menu_Fragment_PLACEHOLDER extends Fragment {
             showButton.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View v) {
                     //Change the day
+                    String day = String.format("%02d", datePicker.getDayOfMonth());
+                    //Months returned by DatePickers start from 0 @January...
+                    String month = String.format("%02d", datePicker.getMonth()+1);
+                    String year = Integer.toString(datePicker.getYear());
+                    d = day + month + year;
+                    System.out.println("DATE IS NOW: " +d);
+                    update(d);
                 }
             });
             addButton.setOnClickListener(new View.OnClickListener() {
@@ -118,7 +135,7 @@ public class Menu_Fragment_PLACEHOLDER extends Fragment {
                     builder.setPositiveButton("Add", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialogInterface, int i) {
-                            Cursor c3=DBHelper.searchMeal(db, inputField.getText().toString());
+                            Cursor c3=DBHelper.searchMeal(db, inputField.getText().toString(), d);
                             if (c3.getCount()==0){
                                 DBHelper.addMeal(db, inputField.getText().toString(), d);
                                 update(d);
@@ -136,21 +153,14 @@ public class Menu_Fragment_PLACEHOLDER extends Fragment {
         return rootView;
     }
 
-    //Contains all the info for one day's worth of menu
-    public class dailyMenu
-    {
-        public dailyMenu ()
-        {
-
-        }
-    }
     private void update(String date) {
         final Cursor c2 = dbh.listMeals(db,date);
         adapt = new MyAdapter(getActivity(), c2);
         listMenu.setAdapter(adapt);
+        adapt.notifyDataSetChanged();
     }
-    public void del(String s){
-        DBHelper.deleteMeal(db,s);
+    public void del(String s, String date){
+        DBHelper.deleteMeal(db, s, date);
         update(d);
     }
     public class MyAdapter extends CursorAdapter {
@@ -169,12 +179,28 @@ public class Menu_Fragment_PLACEHOLDER extends Fragment {
             if (v == null) {
                 v = inflater.inflate(R.layout.menu_meal_item_sub, parent, false);
             }
+
+            Button delButton = (Button) v.findViewById(R.id.delBtn);
+            final TextView itemName = (TextView) v.findViewById(R.id.itemText);
+
+            //Delete button listener + onClick
+            delButton.setOnClickListener(new View.OnClickListener()
+                                         {
+                                             public void onClick(View v) {
+                                                 Cursor c3=DBHelper.searchMeal(db, itemName.getText().toString(), d);
+                                                 if (c3.getCount()!=0){
+                                                     DBHelper.deleteMeal(db, itemName.getText().toString(), d);
+                                                     update(d);
+                                                 }
+                                             }
+                                         });
+
             //Get ingredients info
             Cursor c = getCursor();
             c.moveToPosition(position);
             String name = c.getString(c.getColumnIndex(DBHelper.CA_NAME));
 
-            TextView titre = (TextView) v.findViewById(R.id.subItemText);
+            TextView titre = (TextView) v.findViewById(R.id.itemText);
             titre.setText(name);
 
             return v;

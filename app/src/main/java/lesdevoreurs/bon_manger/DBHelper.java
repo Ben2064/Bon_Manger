@@ -14,7 +14,7 @@ import android.util.Log;
 public class DBHelper extends SQLiteOpenHelper {
 
     static final String DB_NAME = "bonmanger.db";
-    static final int DB_VERSION = 48;    //******************METTRE À JOUR À CHAQUE FOIS!!!!!!!***********************//
+    static final int DB_VERSION = 51;    //******************METTRE À JOUR À CHAQUE FOIS!!!!!!!***********************//
 
     //CURRENT::table recipe for current recipe
     static final String TABLE_RECIPES = "recipes";
@@ -58,6 +58,7 @@ public class DBHelper extends SQLiteOpenHelper {
     public static final String CA_NAME = "name";
     public static final String CA_ID = "_id";
     public static final String CA_DATE = "jour";
+    public static final String CA_MEAL = "jour";
 
 
     public DBHelper(Context context) {
@@ -115,7 +116,7 @@ public class DBHelper extends SQLiteOpenHelper {
         //CALENDAR::
         sql = "create table " + TABLE_CALENDAR
                 + " (" + CA_ID + " primary key, "
-                + CA_DATE+ " text, "
+                + CA_DATE + " text, "
                 + CA_NAME + " text)";
         db.execSQL(sql);
 
@@ -286,6 +287,8 @@ public class DBHelper extends SQLiteOpenHelper {
         String sql = "UPDATE "+ TABLE_GROCERY + " SET "+G_METRIC+ " = '" + metric + "' WHERE "+ G_NAME + " = '" + name.replace("'", "''")+"'";
         db.execSQL(sql);
     }
+
+
     //CALENDAR
     public static void addMeal(SQLiteDatabase db, String name, String date) {
         String sql = "INSERT INTO "
@@ -294,22 +297,47 @@ public class DBHelper extends SQLiteOpenHelper {
                 + " VALUES ('" + name.replace("'", "''") + "', '" + date + "')";
         db.execSQL(sql);
     }
-    //CALENDAR
+    //CALENDAR: search with 1 parameter
     public static Cursor searchMeal(SQLiteDatabase db, String name) {
         String args[] = new String[]{"%" + name.replace("'", "''") + "%"};
         Cursor c = db.rawQuery("select * from " + TABLE_CALENDAR + " where " + CA_NAME + " like ?", args);
         return c;
     }
-    //CALENDAR
-    public static void deleteMeal(SQLiteDatabase db, String name) {
-        db.execSQL("delete from " + TABLE_CALENDAR + " where " + CA_NAME+ " = '" + name + "'");
+    //CALENDAR: search with 2 parameters
+    public static Cursor searchMeal(SQLiteDatabase db, String name, String date) {
+        String argsName[] = new String[]{"%" + name.replace("'", "''") + "%",
+                "%" + date.replace("'", "''") + "%"};
+        Cursor c = db.rawQuery("select * from " + TABLE_CALENDAR + " where (" + CA_NAME + " like ? AND " + CA_DATE + " like ?)", argsName);
+        return c;
     }
-    //GROCERY::Return ingredients for grocery list
-    public static Cursor listMeals(SQLiteDatabase db,String date) {
+    //CALENDAR: search with all parameters
+    public static Cursor searchMeal(SQLiteDatabase db, String name, String date, String meal) {
+        String argsName[] = new String[]{"%" + name.replace("'", "''") + "%",
+                                         "%" + date.replace("'", "''") + "%",
+                                         "%" + meal.replace("'", "''") + "%"};
+        Cursor c = db.rawQuery("select * from " + TABLE_CALENDAR + " where (" + CA_NAME + " like ? AND " + CA_DATE + " like ? AND " + CA_MEAL + " like ?)", argsName);
+        return c;
+    }
+    //CALENDAR: search with all parameters (int version)
+    public static Cursor searchMeal(SQLiteDatabase db, String name, int date, int meal) {
+        String argsName[] = new String[]{"%" + name.replace("'", "''") + "%",
+                                         "%" + date + "%",
+                                         "%" + meal + "%"};
+        Cursor c = db.rawQuery("select * from " + TABLE_CALENDAR + " where (" + CA_NAME + " like ? AND " + CA_DATE + " like ? AND " + CA_MEAL + " like ?)", argsName);
+        return c;
+    }
+    //CALENDAR
+    public static void deleteMeal(SQLiteDatabase db, String name, String date) {
+        db.execSQL("delete from " + TABLE_CALENDAR + " where (" + CA_NAME + " = '" + name + "' AND " + CA_DATE + " = '" + date + "')");
+    }
+    //CALENDAR: returns the list of items for a specific day
+    public static Cursor listMeals(SQLiteDatabase db, String date) {
         String sql = "select * from " + TABLE_CALENDAR
                 + " where " + CA_DATE + " = '" + date + "'";
         Cursor c = db.rawQuery(sql, null);
-        Log.d("DB", "lisle CALENDRIER nb = " + c.getCount());
+        Log.d("DB", "liste CALENDRIER nb = " + c.getCount());
         return c;
     }
+
+
 }
