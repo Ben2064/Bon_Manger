@@ -140,7 +140,7 @@ public class LivreRecette_Fragment extends Fragment{
             btIng.setVisibility(View.VISIBLE);
             instructions.setText(ins);
             btnDelete.setVisibility(View.VISIBLE);
-            btnMenu.setVisibility(View.VISIBLE);
+            btnMenu.setVisibility(View.GONE);
             btnMake.setVisibility(View.VISIBLE);
 
             Picasso.with(getActivity())

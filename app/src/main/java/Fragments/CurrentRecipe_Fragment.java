@@ -320,7 +320,7 @@ public class CurrentRecipe_Fragment extends Fragment{
             btIng.setVisibility(View.VISIBLE);
             instructions.setText(ins);
             btnFav.setVisibility(View.VISIBLE);
-            btnMenu.setVisibility(View.VISIBLE);
+            btnMenu.setVisibility(View.GONE);
 
             Picasso.with(getActivity())
                     .load(i)

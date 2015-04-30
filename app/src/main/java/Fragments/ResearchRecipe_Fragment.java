@@ -505,7 +505,7 @@ public class ResearchRecipe_Fragment extends Fragment {
 
                 btnFav.setVisibility(View.VISIBLE);
                 btnMake.setVisibility(View.VISIBLE);
-                btnMenu.setVisibility(View.VISIBLE);
+                btnMenu.setVisibility(View.GONE);
             }
             else
                 titre.setText("Cannot connect to internet...");
