@@ -1,7 +1,10 @@
 package Fragments;
 
+import android.app.AlertDialog;
+import android.app.DialogFragment;
 import android.app.Fragment;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
@@ -29,7 +32,7 @@ import lesdevoreurs.bon_manger.R;
  * Fragment for current recipe
  * Created by Nicolas on 2015-04-12.
  */
-public class CurrentRecipe_Fragment extends Fragment{
+public class CurrentRecipe_Fragment extends RecipeHelper_Fragment{
 
     static SQLiteDatabase db;
     static DBHelper dbh;
@@ -56,6 +59,8 @@ public class CurrentRecipe_Fragment extends Fragment{
     public static ArrayList<String> numberIngredients = new ArrayList<String>();
     public static ArrayList<String> metricIngredients = new ArrayList<String>();
     boolean[] checkList;
+
+    String meal;
 
     /**
      * Default constructor
@@ -250,8 +255,8 @@ public class CurrentRecipe_Fragment extends Fragment{
             btnMenu.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Toast.makeText(getActivity(), "Add to menu", Toast.LENGTH_LONG).show();
-                    Menu_Fragment.receiveRecipe(dbh, t, i, d, ct, tt, ins, c2, id);
+                    showMealPickerDialog(v);
+                    showDatePickerDialog(v);
                 }
             });
 
@@ -285,7 +290,7 @@ public class CurrentRecipe_Fragment extends Fragment{
                                     + tempNum.get(j));
                         }
                         DBHelper dbh = new DBHelper(getActivity());
-                        Liste_Fragment.setListe(dbh, tempName, tempNum, tempMet);
+                        Liste_Fragment_PLACEHOLDER.setListe(dbh, tempName, tempNum, tempMet);
                         resetNameIngredients();
                         resetNumberIngredients();
                         resetMetricIngredients();
@@ -320,7 +325,7 @@ public class CurrentRecipe_Fragment extends Fragment{
             btIng.setVisibility(View.VISIBLE);
             instructions.setText(ins);
             btnFav.setVisibility(View.VISIBLE);
-            btnMenu.setVisibility(View.GONE);
+            btnMenu.setVisibility(View.VISIBLE);
 
             Picasso.with(getActivity())
                     .load(i)
@@ -338,6 +343,62 @@ public class CurrentRecipe_Fragment extends Fragment{
             checkList[i] = false;
         }
     }
+
+
+    //show the datepicker for the menu
+    public void showDatePickerDialog(View v) {
+        DialogFragment newFragment = new DatePicker_Fragment();
+        newFragment.setTargetFragment(this,123);
+        newFragment.show(getFragmentManager(), "datePicker");
+    }
+
+    //Create and show the mealpicker dialog
+    public void showMealPickerDialog(View v) {
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+
+        builder.setTitle(R.string.mealPickerTitle);
+        builder.setPositiveButton(R.string.dinner, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                setMeal("2");
+                sendToMenu();
+            }
+        });
+        builder.setNeutralButton(R.string.lunch, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                setMeal("1");
+                sendToMenu();
+            }
+        });
+        builder.setNegativeButton(R.string.breakfast, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                setMeal("0");
+                sendToMenu();
+            }
+        });
+
+        AlertDialog dialog = builder.create();
+        dialog.show();
+
+    }
+
+    //send recipe to menu
+    public void sendToMenu(){
+        dbh = new DBHelper(getActivity());
+        db = dbh.getWritableDatabase();
+        String recette= (String) this.titre.getText();
+
+        dbh.addMeal(db,recette,super.getDate());
+        Toast.makeText(getActivity(), "Add "+recette+" to "+meal+" menu on:"+super.getDate(), Toast.LENGTH_LONG).show();
+    }
+    //set meal
+    public void setMeal(String m){
+        this.meal=m;
+    }
+
 
     /**
      * Get checkList informations about ingredients
