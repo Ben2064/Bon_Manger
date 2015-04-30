@@ -1,8 +1,11 @@
 package Fragments;
 
+import android.app.AlertDialog;
+import android.app.DialogFragment;
 import android.app.Fragment;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.os.AsyncTask;
@@ -32,7 +35,7 @@ import lesdevoreurs.bon_manger.R;
  * Recipe from research fragment
  * Created by Nicolas on 17/04/2015.
  */
-public class ResearchRecipe_Fragment extends Fragment {
+public class ResearchRecipe_Fragment extends RecipeHelper_Fragment {
 
     //To pass to list
     public static ArrayList<String> nameIngredients = new ArrayList<String>();
@@ -56,8 +59,14 @@ public class ResearchRecipe_Fragment extends Fragment {
     Button arrow;
     LinearLayout titreMore;
 
+    DBHelper dbh;
+    SQLiteDatabase db;
+
+
     View view;
     private String idRecette;   //The ID of the recipe to show
+    private String meal;
+    //private String date;
 
     /**
      * Default constructor
@@ -249,24 +258,12 @@ public class ResearchRecipe_Fragment extends Fragment {
 
             //Add to menu
             btnMenu = (Button) getView().findViewById(R.id.btnMenu);
+           // btnMenu.setVisibility(View.VISIBLE);
             btnMenu.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Toast.makeText(getActivity(), "Add to menu", Toast.LENGTH_LONG).show();
-                    //Getting info
-                    final String titre = web.getTitre();
-                    final String imagePath = web.getImagePath();
-                    final String description = web.getDesc();
-                    final String tempsCuisson = web.getCuisson();
-                    final String tempsTotal = web.getTemps();
-                    final String instructions = web.getInstructions();
-                    final ArrayList<String> ingreNom = web.getIname();
-                    final ArrayList<String> ingreNum = web.getInumber();
-                    final ArrayList<String> ingreMet = web.getImetric();
-                    final String id = web.getID();
-                    DBHelper dbh = new DBHelper(getActivity());
-                    Menu_Fragment_PLACEHOLDER.receiveRecipe(dbh, titre, imagePath, description, tempsCuisson, tempsTotal,
-                            instructions, ingreNom, ingreNum, ingreMet, id);
+                    showMealPickerDialog(v);
+                    showDatePickerDialog(v);
                 }
             });
         }
@@ -287,6 +284,70 @@ public class ResearchRecipe_Fragment extends Fragment {
             view = inflater.inflate(R.layout.research_recipe, container, false);
         return view;
     }
+
+    //show the datepicker for the menu
+    public void showDatePickerDialog(View v) {
+        DialogFragment newFragment = new DatePicker_Fragment();
+        newFragment.setTargetFragment(this,123);
+        newFragment.show(getFragmentManager(), "datePicker");
+    }
+
+    //Create and show the mealpicker dialog
+    public void showMealPickerDialog(View v) {
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+
+        builder.setTitle(R.string.mealPickerTitle);
+        builder.setPositiveButton(R.string.dinner, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                setMeal("2");
+                sendToMenu();
+            }
+        });
+        builder.setNeutralButton(R.string.lunch, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                setMeal("1");
+                sendToMenu();
+            }
+        });
+        builder.setNegativeButton(R.string.breakfast, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                setMeal("0");
+                sendToMenu();
+            }
+        });
+
+        AlertDialog dialog = builder.create();
+        dialog.show();
+
+    }
+
+    //send recipe to menu
+    public void sendToMenu(){
+        dbh = new DBHelper(getActivity());
+        db = dbh.getWritableDatabase();
+        String recette= (String) this.titre.getText();
+
+        dbh.addMeal(db,recette,super.getDate());
+        Toast.makeText(getActivity(), "Add "+recette+" to "+meal+" menu on:"+super.getDate(), Toast.LENGTH_LONG).show();
+    }
+    //set meal
+    public void setMeal(String m){
+        this.meal=m;
+    }
+
+   /* //set date
+    public void setDate(int d, int m, int y){
+        String day = String.format("%02d", d);
+        //Months returned by DatePickers start from 0 @January...
+        String month = String.format("%02d", m+1);
+        String year = Integer.toString(y);
+        this.date = day + month + year;
+    }*/
+
 
     /**
      * Get checkList informations about ingredients
@@ -505,7 +566,7 @@ public class ResearchRecipe_Fragment extends Fragment {
 
                 btnFav.setVisibility(View.VISIBLE);
                 btnMake.setVisibility(View.VISIBLE);
-                btnMenu.setVisibility(View.GONE);
+                btnMenu.setVisibility(View.VISIBLE);
             }
             else
                 titre.setText("Cannot connect to internet...");

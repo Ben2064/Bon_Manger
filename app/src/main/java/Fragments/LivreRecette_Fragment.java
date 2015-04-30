@@ -1,7 +1,12 @@
 package Fragments;
 
+
+import android.app.AlertDialog;
+import android.app.DialogFragment;
 import android.app.Fragment;
+import android.app.FragmentManager;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
@@ -34,13 +39,14 @@ import java.util.ArrayList;
 
 import lesdevoreurs.bon_manger.DBHelper;
 import lesdevoreurs.bon_manger.R;
+import Fragments.DatePicker_Fragment;
 
 /**
  * Fragment to show recipe when selected in the cookbook. Can add items to the grocery list, add to menu(*) and remove from
  * cookbook
  */
 
-public class LivreRecette_Fragment extends Fragment{
+public class LivreRecette_Fragment extends RecipeHelper_Fragment{
 
     static SQLiteDatabase db;
     static DBHelper dbh;
@@ -63,6 +69,8 @@ public class LivreRecette_Fragment extends Fragment{
     Button btnMenu;
     View view;
     private String idRecette;   //The ID of the recipe to show
+    private String meal;
+    //private String date;
 
     //To pass to list
     public static ArrayList<String> nameIngredients = new ArrayList<String>();
@@ -140,7 +148,7 @@ public class LivreRecette_Fragment extends Fragment{
             btIng.setVisibility(View.VISIBLE);
             instructions.setText(ins);
             btnDelete.setVisibility(View.VISIBLE);
-            btnMenu.setVisibility(View.GONE);
+            btnMenu.setVisibility(View.VISIBLE);
             btnMake.setVisibility(View.VISIBLE);
 
             Picasso.with(getActivity())
@@ -260,13 +268,12 @@ public class LivreRecette_Fragment extends Fragment{
                 }
             });
 
-            //Add to menu, not implemented yet (deluxe version only!)
+            //Add to menu
             btnMenu.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Toast.makeText(getActivity(), "Add to menu", Toast.LENGTH_LONG).show();
-                    dbh = new DBHelper(getActivity());
-                    db = dbh.getWritableDatabase();
+                    showMealPickerDialog(v);
+                    showDatePickerDialog(v);
                 }
             });
         }
@@ -305,6 +312,69 @@ public class LivreRecette_Fragment extends Fragment{
 
     public ArrayList<String> getMetricIngredients() { return metricIngredients; }
 
+
+    //show the datepicker for the menu
+    public void showDatePickerDialog(View v) {
+        DialogFragment newFragment = new DatePicker_Fragment();
+        newFragment.setTargetFragment(this,123);
+        newFragment.show(getFragmentManager(), "datePicker");
+    }
+
+    //Create and show the mealpicker dialog
+    public void showMealPickerDialog(View v) {
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+
+        builder.setTitle(R.string.mealPickerTitle);
+        builder.setPositiveButton(R.string.dinner, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                setMeal("2");
+                sendToMenu();
+            }
+        });
+        builder.setNeutralButton(R.string.lunch, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                setMeal("1");
+                sendToMenu();
+            }
+        });
+        builder.setNegativeButton(R.string.breakfast, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                setMeal("0");
+                sendToMenu();
+            }
+        });
+
+        AlertDialog dialog = builder.create();
+        dialog.show();
+
+    }
+
+    //send recipe to menu
+    public void sendToMenu(){
+        dbh = new DBHelper(getActivity());
+        db = dbh.getWritableDatabase();
+        String recette= (String) this.titre.getText();
+
+        dbh.addMeal(db,recette,super.getDate());
+        Toast.makeText(getActivity(), "Add "+recette+" to "+meal+" menu on:"+super.getDate(), Toast.LENGTH_LONG).show();
+    }
+    //set meal
+    public void setMeal(String m){
+        this.meal=m;
+    }
+
+  /*  //set date
+    public void setDate(int d, int m, int y){
+        String day = String.format("%02d", d);
+        //Months returned by DatePickers start from 0 @January...
+        String month = String.format("%02d", m+1);
+        String year = Integer.toString(y);
+        this.date = day + month + year;
+    }*/
 
     /**
      * Put everything in listview

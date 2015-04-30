@@ -13,6 +13,10 @@
     <string name="calendar_share_button">Share</string>
     <string name="calendar_week">Week:</string>
     <string name="Okay">OK</string>
+    <string name="mealPickerTitle">Select a meal</string>
+    <string name="breakfast">Breakfast</string>
+    <string name="lunch">Lunch</string>
+    <string name="dinner">Dinner</string>
 
 
 

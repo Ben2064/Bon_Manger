@@ -163,6 +163,7 @@ public class Research_Fragment1 extends Fragment {
         }
     }
 
+
     /**
      * Method to do when we hit the search button from keyboard or layout,
      * Perform the search
