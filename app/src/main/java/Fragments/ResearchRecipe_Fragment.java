@@ -657,7 +657,6 @@ public class ResearchRecipe_Fragment extends RecipeHelper_Fragment {
 
             //Put everything in the listview
             TextView titre = (TextView) v.findViewById(R.id.textI); //Name
-            String test = metric.get(position);
             titre.setText(nombre.get(position) + " " + metric.get(position) + " " + nom.get(position));
 
             //Store if checkbox are checked or not in the position of the ingredient
@@ -673,8 +672,10 @@ public class ResearchRecipe_Fragment extends RecipeHelper_Fragment {
             });
 
             //If nothing found
-            if (nom.get(position).equals("Nothing found"))
-                check.setTextIsSelectable(false);
+            if (nom.get(position).equals("Nothing found")) {
+                check.setVisibility(View.GONE);
+                addBtn.setVisibility(View.GONE);
+            }
 
             return v;
         }

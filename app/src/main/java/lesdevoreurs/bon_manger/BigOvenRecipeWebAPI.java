@@ -141,6 +141,7 @@ public class BigOvenRecipeWebAPI {
                 }
             } else {
                 ingredientsQuantite.add("");
+                ingredientsMetric.add("");
                 ingredientsNom.add("Nothing found");
             }
         } catch (IOException e) {
