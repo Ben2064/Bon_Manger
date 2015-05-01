@@ -134,13 +134,18 @@
                 android:textColor="#ffffffff"
                 android:visibility="gone" />
 
-            <ListView
-                android:id="@+id/ingreR"
-                android:layout_width="match_parent"
-                android:layout_height="380dp"
-                android:clickable="true"
-                android:focusable="true"
-                android:visibility="gone" />
+            <FrameLayout
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent">
+
+                <ListView
+                    android:id="@+id/ingreR"
+                    android:layout_width="match_parent"
+                    android:layout_height="380dp"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:visibility="gone" />
+            </FrameLayout>
 
         </LinearLayout>
     </ScrollView>
